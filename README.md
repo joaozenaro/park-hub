@@ -46,12 +46,13 @@
 ## Visão geral
 
 O projeto foi visto como uma oportunidade de aplicar praticas modernas de programação, o combo
+
 $$
-\begin{array}{cc}
-  SPA\space\textrm{(Single Page Aplication)} & \\
-  + & \\
-  API\space\textrm{(Application Programming Interface)} \\
-  REST\space\textrm{(Representational State Transfer)}
+\begin{array}
+    \space SPA\space\textrm{(Single Page Aplication)} & \\
+    + & \\
+    API\space\textrm{(Application Programming Interface)} \\
+    REST\space\textrm{(Representational State Transfer)}
 \end{array}
 $$
 
@@ -60,7 +61,7 @@ ou seja, websites totalmente divididos e especializados em suas responsabilidade
 <details>
 <summary>
 
-# 🏃‍♂️ Instalação
+# 🏗️ Instalação
 </summary>
 <br>
 
@@ -126,18 +127,30 @@ $$
 
 </details>
 
-# Executar o Ambiente de Desenvolvimento
-```bash
-$ composer update
-
+# 🏃‍♂️ Executar o Ambiente de Desenvolvimento
+### Comandos
+#### Backend
+Instalar pacotes
+```sh
+$ cd backend/
 $ composer install
-
+```
+Criar a primeira migração no banco, caso não exista
+```bash
 $ ./yii migrate
-
+```
+Executar o servidor
+```bash
 $ ./yii serve 0.0.0.0
-
+```
+#### Frontend
+Instalar pacotes
+```sh
+$ cd frontend/
 $ npm i
-
+```
+Executar o servidor
+```bash
 $ npm run dev
 ```
 
