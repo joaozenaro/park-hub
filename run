@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# screen https://wiki.alpinelinux.org/wiki/Screen_terminal_multiplexer
+# 
+# $ screen -r {back|front} -> use this command to check each process
+#
+
+case $1 in
+  dev)
+    # Start the backend server in a new screen session
+    screen -dmS back bash -c '(cd backend && ./yii serve 0.0.0.0)'
+
+    # Start the frontend server in a new screen session
+    screen -dmS front bash -c '(cd frontend && npm run dev)'
+    ;;
+
+  migrate)
+    # Run migration commands
+    (cd backend && ./yii migrate)
+    ;;
+
+  *)
+    echo "Usage: run {dev|migrate}"
+    ;;
+esac

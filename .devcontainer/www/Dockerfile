@@ -5,7 +5,7 @@ WORKDIR /var/www/
 RUN ln -snf /usr/share/zoneinfo/UTC /etc/localtime && echo UTC > /etc/timezone
 
 RUN apk add --no-cache --update \
-    sudo curl bash git supervisor nodejs npm \
+    sudo curl bash git supervisor nodejs npm screen \
     php \
     php83 php83-bcmath \
     php83-bz2 php83-calendar \

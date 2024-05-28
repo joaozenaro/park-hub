@@ -210,3 +210,9 @@ $ git commit -m "fix: Fixed bug where customer form was sending 404"
 - [ ] Consulta de vagas disponíveis no momento
 - [ ] Fluxo de veículos (entrada / saída)
 - [ ] Relatórios sobre movimentação financeira
+
+**Helper script**
+```console
+./run migrate
+./run dev
+```
