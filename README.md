@@ -1,8 +1,8 @@
-# Yii API + React SPA: App Estacionamento
+# 🐳 Docker + Yii API + React SPA: App Estacionamento
 
 > CC 5a Fase. Cada grupo deverá desenvolver uma aplicação para **gerenciamento de um estacionamento** utilizando o Framework definido por sorteio.
 
-## Framework Definido
+## 🎲 Framework Definido
 <p align="center">
     <a href="https://www.yiiframework.com/" target="_blank">
         <img src="https://www.yiiframework.com/image/yii_logo_light.svg" width="400" alt="Yii Framework" />
@@ -11,7 +11,7 @@
 
 [Yii2 Docs](https://www.yiiframework.com/doc/guide/2.0/en)
 
-## Tech stack
+## 📚 Tech stack
 
 <div align=center>
   
@@ -25,7 +25,7 @@
 ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
 </div>
 
-# Overview
+# 🤖 Overview
 
 ```js
 // TODO: Explicar os diretorios, escolha da stack, o fluxo das requests, organização, como o container funciona..
@@ -34,11 +34,11 @@
 <details>
 <summary>
 
-# Instalação
+# 🏃‍♂️ Instalação
 </summary>
 <br>
 
-## Instalação para Windows
+## 🪟 Instalação para Windows
 
 Irei detalhar o ambiente de desenvolvimento em [Dev Containers](https://containers.dev/) utilizando docker para um ambiente totalmente isolado e reproduzível.
 
@@ -48,7 +48,7 @@ Caso prefira se encorajar a instalar o PHP, Composer, MySQL, Node e NPM, ou mesm
 
 > Obs.: O guia a seguir é para executar a instação do [WSL](https://aka.ms/wsl), que recomendo altamente para desenvolvedores em Windows.
 
-### Instalar [WSL](https://aka.ms/wsl): Debian
+### 🐧 Instalar [WSL](https://aka.ms/wsl): Debian
 
 Powershell (Admin):
 ```powershell
@@ -57,7 +57,7 @@ PS> wsl --install -d debian
 Após instalado, execute as etapas de instalação e configure seu usuário linux. Então, em sua nova máquina Debian, continue:
 > Obs.: Recomendo que utilize um aplicativo de terminal. Ex.: [Windows Terminal](https://apps.microsoft.com/detail/9n0dx20hk701?rtc=1&hl=en-us&gl=US)
 
-### Instalar [Docker Engine](https://docs.docker.com/engine/install/)
+### 🐳 Instalar [Docker Engine](https://docs.docker.com/engine/install/)
 1. Caso seja **sua primeira vez** instalando o docker, é possível executar o script auxiliar **oficial** para facilitar a instalação:
 ```bash
 curl https://get.docker.com/ | sh
@@ -73,7 +73,7 @@ $ sudo gpasswd -a $USER docker
 $ docker run hello-world # Se esse comando funcionar corretamente sem 'sudo', parabéns! Está tudo devidamente configurado. 
 ```
 
-## Configuração [VS Code](https://code.visualstudio.com/)
+## ⚙️ Configuração [VS Code](https://code.visualstudio.com/)
 
 ### Extensões
 * [VS Code: Docker](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker)
@@ -100,7 +100,7 @@ $$
 
 </details>
 
-# Requisitos da aplicação
+# 🚩 Requisitos da aplicação
 
 * Níveis de acesso (Admin / User)
 * Login
