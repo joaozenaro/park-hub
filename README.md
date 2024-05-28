@@ -27,9 +27,35 @@
 
 # 🤖 Overview
 
-```js
-// TODO: Explicar os diretorios, escolha da stack, o fluxo das requests, organização, como o container funciona..
-```
+## Base do projeto
+* Backend: [Yii2 Rest API Template](https://github.com/hoaaah/yii2-rest-api-template)
+* Frontend: [Vite](https://vitejs.dev/guide/#scaffolding-your-first-vite-project)
+
+## Estrutura
+
+|Arquivo/Diretório|Definição|
+|-|-|
+|.devcontainer/ |Diretório de configurações Docker + Devcontainer|
+|.devcontainer/nginx/ |Servidor Proxy para conexão de back e front end em localhost ([NGINX](https://nginx.org/))|
+|.devcontainer/www/ |Configuração para container de desenvolvimento PHP + NodeJS (base Alpine)|
+|.devcontainer/docker-compose.yml|Configuração central dos containers (Banco de dados, PhpMyAdmin, NGINX, Aplicativos Web)|
+|.devcontainer/devcontainer.json |Arquivo de configuração Dev Container. A porta de entrada das demais configurações para desenvolvimento.|
+|backend/ |API REST em PHP (Yii2)|
+|frontend/ |SPA Vite utilizando React (Typescript)|
+
+## Visão geral
+
+O projeto foi visto como uma oportunidade de aplicar praticas modernas de programação, o combo
+$$
+\begin{array}{cc}
+  SPA\space\textrm{(Single Page Aplication)} & \\
+  + & \\
+  API\space\textrm{(Application Programming Interface)} \\
+  REST\space\textrm{(Representational State Transfer)}
+\end{array}
+$$
+
+ou seja, websites totalmente divididos e especializados em suas responsabilidades. Aplicativos de "única página" fazem requisições de transferência de estado representacional (*REST*) através de interfaces de programação de aplicativos (*APIs*), isso permite uma grande separação e uma aproximação maior dos princípios *SOLID*, de que cada componente do sistema é focado em uma única responsabilidade, promovendo a independência e a modularidade.
 
 <details>
 <summary>
