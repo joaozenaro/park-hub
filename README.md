@@ -46,12 +46,13 @@
 ## Visão geral
 
 O projeto foi visto como uma oportunidade de aplicar praticas modernas de programação, o combo
+
 $$
-\begin{array}{cc}
-  SPA\space\textrm{(Single Page Aplication)} & \\
-  + & \\
-  API\space\textrm{(Application Programming Interface)} \\
-  REST\space\textrm{(Representational State Transfer)}
+\begin{array}
+    \space SPA\space\textrm{(Single Page Aplication)} & \\
+    + & \\
+    API\space\textrm{(Application Programming Interface)} \\
+    REST\space\textrm{(Representational State Transfer)}
 \end{array}
 $$
 
@@ -60,7 +61,7 @@ ou seja, websites totalmente divididos e especializados em suas responsabilidade
 <details>
 <summary>
 
-# 🏃‍♂️ Instalação
+# 🏗️ Instalação
 </summary>
 <br>
 
@@ -125,6 +126,11 @@ $$
 [Docs](https://code.visualstudio.com/remote/advancedcontainers/develop-remote-host#_connect-using-the-remote-ssh-extension)
 
 </details>
+
+# Executar o aplicativo
+```js
+// TODO: Explicar o que rodar pra funcionar, talvez fazer scripts para ajudar a fazer o setup em uma unica ação
+```
 
 # 🚩 Requisitos da aplicação
 
