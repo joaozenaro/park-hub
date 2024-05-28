@@ -25,7 +25,12 @@
 ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
 </div>
 
+<details>
+<summary>
+
 # 🤖 Overview
+</summary>
+<br>
 
 ## Base do projeto
 * Backend: [Yii2 Rest API Template](https://github.com/hoaaah/yii2-rest-api-template)
@@ -58,102 +63,6 @@ $$
 
 ou seja, websites totalmente divididos e especializados em suas responsabilidades. Aplicativos de "única página" fazem requisições de transferência de estado representacional (*REST*) através de interfaces de programação de aplicativos (*APIs*), isso permite uma grande separação e uma aproximação maior dos princípios *SOLID*, de que cada componente do sistema é focado em uma única responsabilidade, promovendo a independência e a modularidade.
 
-<details>
-<summary>
-
-# 🏗️ Instalação
-</summary>
-<br>
-
-## 🪟 Instalação para Windows
-
-Irei detalhar o ambiente de desenvolvimento em [Dev Containers](https://containers.dev/) utilizando docker para um ambiente totalmente isolado e reproduzível.
-
-Refira-se ao [overview](#overview) do projeto para mais detalhes sobre.
-
-Caso prefira se encorajar a instalar o PHP, Composer, MySQL, Node e NPM, ou mesmo XAMPP na própria máquina, fique a vontade! *Boa sorte!*
-
-> Obs.: O guia a seguir é para executar a instação do [WSL](https://aka.ms/wsl), que recomendo altamente para desenvolvedores em Windows.
-
-### 🐧 Instalar [WSL](https://aka.ms/wsl): Debian
-
-Powershell (Admin):
-```powershell
-PS> wsl --install -d debian
-```
-Após instalado, execute as etapas de instalação e configure seu usuário linux. Então, em sua nova máquina Debian, continue:
-> Obs.: Recomendo que utilize um aplicativo de terminal. Ex.: [Windows Terminal](https://apps.microsoft.com/detail/9n0dx20hk701?rtc=1&hl=en-us&gl=US)
-
-### 🐳 Instalar [Docker Engine](https://docs.docker.com/engine/install/)
-1. Caso seja **sua primeira vez** instalando o docker, é possível executar o script auxiliar **oficial** para facilitar a instalação:
-```bash
-curl https://get.docker.com/ | sh
-```
-2. Após instalado, talvez seja necessário permitir que o Docker possa executar seus serviços, tradicionalmente através do *systemd*. 
-  * [O que é o systemd?](https://learn.microsoft.com/pt-br/windows/wsl/systemd#what-is-systemd-in-linux)
-  * [Habilitar systemd](https://learn.microsoft.com/pt-br/windows/wsl/systemd#how-to-enable-systemd)
-3. O Docker inicialmente precisa de privilégio de *super usuário*, nesse sentido, siga as instruções da [habilitar acesso ao seu usuario](https://askubuntu.com/a/477554).
-
-```bash
-$ sudo groupadd docker
-$ sudo gpasswd -a $USER docker
-$ docker run hello-world # Se esse comando funcionar corretamente sem 'sudo', parabéns! Está tudo devidamente configurado. 
-```
-
-## ⚙️ Configuração [VS Code](https://code.visualstudio.com/)
-
-### Extensões
-* [VS Code: Docker](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker)
-* [VS Code: Remote Dev Pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack)
-
-## E, finalmente!
-Clone o repositório do github
-```
-git clone git@github.com:JoaoZenaro/yii-estacionamento.git
-```
-
-Abra o diretório clonado com vscode
-```bash
-code yii-estacionamento/
-```
-
-Abra o Dev Container!
-
-$$
-Ctrl + Shift + P \longrightarrow \textrm{Dev Containers: Rebuild and Reopen in Container}
-$$
-
-[Docs](https://code.visualstudio.com/remote/advancedcontainers/develop-remote-host#_connect-using-the-remote-ssh-extension)
-
-</details>
-
-# 🏃‍♂️ Executar o Ambiente de Desenvolvimento
-### Comandos
-#### Backend
-Instalar pacotes
-```sh
-$ cd backend/
-$ composer install
-```
-Criar a primeira migração no banco, caso não exista
-```bash
-$ ./yii migrate
-```
-Executar o servidor
-```bash
-$ ./yii serve 0.0.0.0
-```
-#### Frontend
-Instalar pacotes
-```sh
-$ cd frontend/
-$ npm i
-```
-Executar o servidor
-```bash
-$ npm run dev
-```
-
 # Nomenclatura (A ser definido)
 
 Sigla|Significado
@@ -172,6 +81,113 @@ $ git checkout -b fix-customer-form-bugfix
 $ git checkout -b wip-new-nginx-config
 ```
 
+</details>
+
+<details>
+<summary>
+
+# 🏗️ Instalação requisitos técnicos
+</summary>
+<br>
+
+## 🪟 Instalação para Windows
+
+Irei detalhar o ambiente de desenvolvimento em [Dev Containers](https://containers.dev/) utilizando docker para um ambiente totalmente isolado e reproduzível.
+
+Refira-se ao [overview](#overview) do projeto para mais detalhes sobre.
+
+Caso prefira se encorajar a instalar o PHP, Composer, MySQL, Node e NPM, ou mesmo XAMPP na própria máquina, fique a vontade! *Boa sorte!*
+
+> Obs.: O guia a seguir é para executar a instação do [WSL](https://aka.ms/wsl), que recomendo altamente para desenvolvedores em Windows.
+
+### 🐧 Instalar [WSL](https://aka.ms/wsl): Debian
+
+Powershell (Admin):
+```console
+PS> wsl --install -d debian
+```
+Após instalado, execute as etapas de instalação e configure seu usuário linux. Então, em sua nova máquina Debian, continue:
+> Obs.: Recomendo que utilize um aplicativo de terminal. Ex.: [Windows Terminal](https://apps.microsoft.com/detail/9n0dx20hk701?rtc=1&hl=en-us&gl=US)
+
+### 🐳 Instalar [Docker Engine](https://docs.docker.com/engine/install/)
+1. Caso seja **sua primeira vez** instalando o docker, é possível executar o script auxiliar **oficial** para facilitar a instalação:
+```console
+curl https://get.docker.com/ | sh
+```
+2. Após instalado, talvez seja necessário permitir que o Docker possa executar seus serviços, tradicionalmente através do *systemd*. 
+  * [O que é o systemd?](https://learn.microsoft.com/pt-br/windows/wsl/systemd#what-is-systemd-in-linux)
+  * [Habilitar systemd](https://learn.microsoft.com/pt-br/windows/wsl/systemd#how-to-enable-systemd)
+3. O Docker inicialmente precisa de privilégio de *super usuário*, nesse sentido, siga as instruções da [habilitar acesso ao seu usuario](https://askubuntu.com/a/477554).
+
+```console
+$ sudo groupadd docker
+$ sudo gpasswd -a $USER docker
+$ docker run hello-world # Se esse comando funcionar corretamente sem 'sudo', parabéns! Está tudo devidamente configurado. 
+```
+
+## ⚙️ Configuração [VS Code](https://code.visualstudio.com/)
+
+### Extensões
+* [VS Code: Docker](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker)
+* [VS Code: Remote Dev Pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack)
+
+</details>
+
+<details>
+<summary>
+
+# 🏃‍♂️ Executar o Ambiente de Desenvolvimento
+</summary>
+<br>
+
+## 1. Setup do projeto
+### 🚀 Codespaces
+[Faça um fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo) do repositorio e então [abra uma instancia "codespace"](https://docs.github.com/en/codespaces/developing-in-a-codespace/creating-a-codespace-for-a-repository)
+
+É possível também [abrir um *codespace* localmente](https://docs.github.com/en/codespaces/developing-in-a-codespace/using-github-codespaces-in-visual-studio-code), fazendo um tunel de sua maquina até a instancia remota do GitHub.
+
+### 🐉 VS Code (Certifique-se que os passos de instalação e extensões estão corretos)
+Clone o repositório do github
+```bash
+git clone git@github.com:JoaoZenaro/yii-estacionamento.git
+```
+Abra o diretório clonado com o vscode
+```bash
+code yii-estacionamento/
+```
+Abra o container
+
+$$  
+Ctrl + Shift + P \longrightarrow \textrm{Dev Containers: Rebuild and Reopen in Container}  
+$$  
+
+[Docs](https://code.visualstudio.com/remote/advancedcontainers/develop-remote-host#_connect-using-the-remote-ssh-extension)
+## 2. Execução do projeto
+### Backend
+Instalar pacotes
+```sh
+$ cd backend/
+$ composer install
+```
+Criar a primeira migração no banco, caso não exista
+```bash
+$ ./yii migrate
+```
+Executar o servidor
+```bash
+$ ./yii serve 0.0.0.0
+```
+### Frontend
+Instalar pacotes
+```sh
+$ cd frontend/
+$ npm i
+```
+Executar o servidor
+```bash
+$ npm run dev
+```
+
 > Obs.: Fazer push da branch para remote pela **primeira vez**: `git push --set-upstream origin branch-name`
 
 ### Commit:
@@ -183,13 +199,14 @@ $ git commit -m "feat: Organized project structure"
 $ git commit -m "fix: Fixed bug where customer form was sending 404"
 ```
 
-# 🚩 Requisitos da aplicação
+</details>
 
-* Níveis de acesso (Admin / User)
-* Login
-* Planos (pré-pago / pós-pago)
-* Cadastro de vagas
-* Utilização de vagas (permanência para cobrança)
-* Consulta de vagas disponíveis no momento
-* Fluxo de veículos (entrada / saída)
-* Relatórios sobre movimentação financeira
+# 🚩 Requisitos da aplicação
+- [ ] Níveis de acesso (Admin / User)
+- [ ] Login
+- [ ] Planos (pré-pago / pós-pago)
+- [ ] Cadastro de vagas
+- [ ] Utilização de vagas (permanência para cobrança)
+- [ ] Consulta de vagas disponíveis no momento
+- [ ] Fluxo de veículos (entrada / saída)
+- [ ] Relatórios sobre movimentação financeira
