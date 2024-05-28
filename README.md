@@ -126,6 +126,50 @@ $$
 
 </details>
 
+# Executar o Ambiente de Desenvolvimento
+```bash
+$ composer update
+
+$ composer install
+
+$ ./yii migrate
+
+$ ./yii serve 0.0.0.0
+
+$ npm i
+
+$ npm run dev
+```
+
+# Nomenclatura (A ser definido)
+
+Sigla|Significado
+-|-
+Feat|*Feature*, ou seja, funcionalidade ou recurso novo
+Fix|Correção de algum bug, erro de gramatica, formatação
+WIP|*Work in Progress*, ou seja, trabalho em andamento em algo não bem definido, que pode ou não ser uma *feature*
+
+## Exemplos
+### Branch:
+```bash
+$ git checkout -b feat-jwt-implementation
+
+$ git checkout -b fix-customer-form-bugfix
+
+$ git checkout -b wip-new-nginx-config
+```
+
+> Obs.: Fazer push da branch para remote pela **primeira vez**: `git push --set-upstream origin branch-name`
+
+### Commit:
+```bash
+$ git commit -m "feat: Added Unit tests"
+
+$ git commit -m "feat: Organized project structure"
+
+$ git commit -m "fix: Fixed bug where customer form was sending 404"
+```
+
 # 🚩 Requisitos da aplicação
 
 * Níveis de acesso (Admin / User)

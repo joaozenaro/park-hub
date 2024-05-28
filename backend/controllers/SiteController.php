@@ -28,11 +28,11 @@ class SiteController extends Controller
     public function actionIndex()
     {
         $post = Post::find()->all();
-        return [
+        return $this->asJson([
             'status' => Status::STATUS_OK,
             'message' => 'Hello :)',
             'data' => $post
-        ];
+        ]);
     }
 
     
