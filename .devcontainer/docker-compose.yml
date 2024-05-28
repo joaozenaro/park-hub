@@ -1,0 +1,55 @@
+services:
+
+  www:
+    build:
+      context: ./www
+      dockerfile: Dockerfile
+    container_name: www
+    init: true
+    volumes:
+      - ../:/var/www
+    command: sleep infinity
+    ports:
+      - "80:80"
+      - "443:443"
+      - "5173:5173"
+      - "8080:8080"
+
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    volumes:
+      - ./nginx/config:/etc/nginx/conf.d/
+      # Forwards the local Docker socket to the container.
+      - /var/run/docker.sock:/var/run/docker-host.sock 
+      # - ../.docker/data/nginx/log:/var/log/nginx # logs
+      - ../:/var/www
+    depends_on:
+      - www
+    network_mode: service:www
+
+  phpmyadmin:
+    image: phpmyadmin:fpm-alpine
+    container_name: phpmyadmin
+    ports:
+      - 8001:8001
+    environment:
+      - PMA_HOST=mysql
+      - PMA_PORT=3306
+
+  mysql: 
+    image: mysql:latest
+    container_name: mysql
+    environment:
+      - MYSQL_DATABASE=docker
+      - MYSQL_USER=docker
+      - MYSQL_PASSWORD=docker
+      - MYSQL_ROOT_PASSWORD=docker
+      - MYSQL_ALLOW_EMPTY_PASSWORD=1
+    ports:
+      - 3306:3306
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+volumes:
+  mysql-data:

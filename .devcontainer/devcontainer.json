@@ -1,0 +1,21 @@
+// For more details, see https://aka.ms/devcontainer.json
+{
+    "name": "Yii && Vite",
+    "dockerComposeFile": "docker-compose.yml",
+	// Service from docker compose to use as the devcontainer base
+    "service": "www",
+	// Folder inside container to serve as workspace
+    "workspaceFolder": "/var/www",
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "terminal.integrated.defaultProfile.linux": "bash"
+            },
+            "extensions": [
+                "DEVSENSE.phptools-vscode"
+            ]
+        }
+    },
+	// Container user
+    "remoteUser": "vscode"
+}
