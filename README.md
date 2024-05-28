@@ -74,11 +74,11 @@ WIP|*Work in Progress*, ou seja, trabalho em andamento em algo não bem definido
 ## Exemplos
 ### Branch:
 ```bash
-$ git checkout -b feat-jwt-implementation
+$ git checkout -b feat/jwt-implementation
 
-$ git checkout -b fix-customer-form-bugfix
+$ git checkout -b fix/customer-form-bugfix
 
-$ git checkout -b wip-new-nginx-config
+$ git checkout -b wip/new-nginx-config
 ```
 
 </details>
