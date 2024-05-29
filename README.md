@@ -157,9 +157,7 @@ code yii-estacionamento/
 ```
 Abra o container
 
-$$  
-Ctrl + Shift + P \longrightarrow \textrm{Dev Containers: Rebuild and Reopen in Container}  
-$$  
+$Ctrl + Shift + P \longrightarrow \textrm{Dev Containers: Rebuild and Reopen in Container}$
 
 [Docs](https://code.visualstudio.com/remote/advancedcontainers/develop-remote-host#_connect-using-the-remote-ssh-extension)
 ## 2. Execução do projeto
