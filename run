@@ -19,7 +19,15 @@ case $1 in
     (cd backend && ./yii migrate)
     ;;
 
+  install|i)
+    # Install backend dependencies
+    (cd backend && composer install)
+
+    # Install frontend dependencies
+    (cd frontend && npm install)
+    ;;
+
   *)
-    echo "Usage: run {dev|migrate}"
+    echo -e "Helper Script.\nUsage: \n\n./run \t dev\n\t migrate\n\t install|i"
     ;;
 esac

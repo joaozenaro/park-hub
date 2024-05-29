@@ -20,5 +20,6 @@
         }
     },
 	// Container user
-    "remoteUser": "vscode"
+    "remoteUser": "vscode",
+    "postAttachCommand": "source ~/.bashrc"
 }
