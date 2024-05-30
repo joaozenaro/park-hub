@@ -12,10 +12,12 @@
                 "terminal.integrated.defaultProfile.linux": "bash"
             },
             "extensions": [
-                "DEVSENSE.phptools-vscode",
                 "csstools.postcss",
                 "ms-vscode.vscode-typescript-next",
-                "bradlc.vscode-tailwindcss"
+                "bradlc.vscode-tailwindcss",
+                "xdebug.php-debug",
+                "bmewburn.vscode-intelephense-client",
+                "zobo.php-intellisense"
             ]
         }
     },
