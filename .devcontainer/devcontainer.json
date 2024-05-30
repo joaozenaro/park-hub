@@ -21,5 +21,5 @@
     },
 	// Container user
     "remoteUser": "vscode",
-    "postAttachCommand": "source ~/.bashrc"
+    "postAttachCommand": "source ~/.bashrc && sudo chown -R vscode:vscode /tmp/uscreens/"
 }

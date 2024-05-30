@@ -211,6 +211,5 @@ $ git commit -m "fix: Fixed bug where customer form was sending 404"
 
 **Helper script**
 ```console
-./run migrate
-./run dev
+$ run [options]
 ```

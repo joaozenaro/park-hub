@@ -38,7 +38,7 @@ RUN addgroup -g 1337 vscode && \
 COPY config/php.ini /etc/php83/php.ini
 
 RUN mkdir -p /tmp/uscreens/S-vscode && \
-    chmod 700 /tmp/uscreens/S-vscode && \
-    chown vscode:vscode /tmp/uscreens/S-vscode
+    chmod 777 /tmp/uscreens && \
+    chmod 700 /tmp/uscreens/S-vscode
 
-RUN echo "alias run='/var/www/run.sh'" >> /home/vscode/.bashrc
+RUN echo "alias run='/var/www/run'" >> /home/vscode/.bashrc

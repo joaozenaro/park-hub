@@ -1,9 +1,11 @@
 #!/bin/bash
 
 # screen https://wiki.alpinelinux.org/wiki/Screen_terminal_multiplexer
-# 
-# $ screen -r {back|front} -> use this command to check each process
-#
+
+inspectWait() {
+  echo "Use \"Ctrl + A\" + \"Ctrl + D\" to detach from this screen"
+  sleep 3s
+}
 
 case $1 in
   dev)
@@ -12,6 +14,27 @@ case $1 in
 
     # Start the frontend server in a new screen session
     screen -dmS front bash -c '(cd frontend && npm run dev)'
+    ;;
+
+  kill)
+    killall screen
+    ;;
+
+  -i)
+    case $2 in
+      back)
+        inspectWait
+        screen -r back
+        ;;
+
+      front)
+        inspectWait
+        screen -r front
+        ;;
+      *)
+        echo "Screen unavailable"
+        ;;
+    esac
     ;;
 
   migrate)
@@ -28,6 +51,12 @@ case $1 in
     ;;
 
   *)
-    echo -e "Helper Script.\nUsage: \n\n./run \t dev\n\t migrate\n\t install|i"
+    echo -e "Helper Script. Use this script to run commands on the project \e[3msuperfast\e[0m"
+    echo "Usage:"
+    echo -e "run\t dev \t\t\t Runs backend and frontend in their own screens"
+    echo -e "\t migrate \t\t Runs the command \"migrate\" in the backend"
+    echo -e "\t kill \t\t\t Kills all screens"
+    echo -e "\t install|i \t\t Runs backend and frontend install commands"
+    echo -e "\t -i {back|front} \t Inspects respective screen"
     ;;
 esac
