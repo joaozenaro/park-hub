@@ -74,11 +74,11 @@ WIP|*Work in Progress*, ou seja, trabalho em andamento em algo não bem definido
 ## Exemplos
 ### Branch:
 ```bash
-$ git checkout -b feat-jwt-implementation
+$ git checkout -b feat/jwt-implementation
 
-$ git checkout -b fix-customer-form-bugfix
+$ git checkout -b fix/customer-form-bugfix
 
-$ git checkout -b wip-new-nginx-config
+$ git checkout -b wip/new-nginx-config
 ```
 
 </details>
@@ -157,9 +157,7 @@ code yii-estacionamento/
 ```
 Abra o container
 
-$$  
-Ctrl + Shift + P \longrightarrow \textrm{Dev Containers: Rebuild and Reopen in Container}  
-$$  
+$Ctrl + Shift + P \longrightarrow \textrm{Dev Containers: Rebuild and Reopen in Container}$
 
 [Docs](https://code.visualstudio.com/remote/advancedcontainers/develop-remote-host#_connect-using-the-remote-ssh-extension)
 ## 2. Execução do projeto
@@ -210,3 +208,8 @@ $ git commit -m "fix: Fixed bug where customer form was sending 404"
 - [ ] Consulta de vagas disponíveis no momento
 - [ ] Fluxo de veículos (entrada / saída)
 - [ ] Relatórios sobre movimentação financeira
+
+**Helper script**
+```console
+$ run [options]
+```

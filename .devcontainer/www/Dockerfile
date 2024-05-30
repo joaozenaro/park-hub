@@ -5,7 +5,7 @@ WORKDIR /var/www/
 RUN ln -snf /usr/share/zoneinfo/UTC /etc/localtime && echo UTC > /etc/timezone
 
 RUN apk add --no-cache --update \
-    sudo curl bash git supervisor nodejs npm \
+    sudo curl bash git supervisor nodejs npm screen \
     php \
     php83 php83-bcmath \
     php83-bz2 php83-calendar \
@@ -36,3 +36,9 @@ RUN addgroup -g 1337 vscode && \
     chmod 0440 /etc/sudoers.d/vscode
 
 COPY config/php.ini /etc/php83/php.ini
+
+RUN mkdir -p /tmp/uscreens/S-vscode && \
+    chmod 777 /tmp/uscreens && \
+    chmod 700 /tmp/uscreens/S-vscode
+
+RUN echo "alias run='/var/www/run'" >> /home/vscode/.bashrc
