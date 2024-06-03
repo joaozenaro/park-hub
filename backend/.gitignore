@@ -25,4 +25,6 @@ phpunit.phar
 # local phpunit config
 /phpunit.xml
 
+# custom
 vendor
+runtime

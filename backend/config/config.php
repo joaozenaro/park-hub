@@ -32,8 +32,9 @@ return [
             'class' => 'yii\web\UrlManager',
             'enablePrettyUrl' => true,
             'showScriptName' => false,
+            'enableStrictParsing' => false,
             'rules' => [
-                '<alias:\w+>' => 'site/<alias>',            
+                '<alias:\w+>' => 'site/<alias>',
             ],
         ],
         'user' => [

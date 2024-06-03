@@ -7,6 +7,8 @@ services:
     init: true
     volumes:
       - ../:/var/www
+    ports:
+      - "9003:9003"
     command: sleep infinity
     networks:
       - app-network

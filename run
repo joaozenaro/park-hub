@@ -50,6 +50,10 @@ case $1 in
     (cd frontend && npm install)
     ;;
 
+  rmdeps)
+    rm backend/vendor/ frontend/node_modules/ -rf
+    ;;
+
   *)
     echo -e "Helper Script. Use this script to run commands on the project \e[3msuperfast\e[0m"
     echo "Usage:"
@@ -58,5 +62,6 @@ case $1 in
     echo -e "\t kill \t\t\t Kills all screens"
     echo -e "\t install|i \t\t Runs backend and frontend install commands"
     echo -e "\t -i {back|front} \t Inspects respective screen"
+    echo -e "\t rmdeps \t Removes both projects dependencies folders"
     ;;
 esac
