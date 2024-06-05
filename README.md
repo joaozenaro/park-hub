@@ -1,11 +1,14 @@
-# 🐳 Docker + Yii API + React SPA: App Estacionamento
+# 🐳 Dockerized Yii API + React SPA: Park Hub
 
-> CC 5a Fase. Cada grupo deverá desenvolver uma aplicação para **gerenciamento de um estacionamento** utilizando o Framework definido por sorteio.
+<img src="logo-bgdark.jpg" alt="Park Hub Logo" />
+
+Desenvolvimento de aplicação de **gerenciamento de estacionamento** utilizando o Framework definido por sorteio. 
+**Programação III: CC 2022 Unoesc.**
 
 ## 🎲 Framework Definido
 <p align="center">
     <a href="https://www.yiiframework.com/" target="_blank">
-        <img src="https://www.yiiframework.com/image/yii_logo_light.svg" width="400" alt="Yii Framework" />
+        <img src="https://www.yiiframework.com/image/yii_logo_light.svg" width="300" alt="Yii Framework" />
     </a>
 </p>
 
