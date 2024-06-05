@@ -27,11 +27,14 @@ $config = [
             'errorAction' => 'site/error',
         ],
         'mailer' => [
-            'class' => 'yii\swiftmailer\Mailer',
+            'class' => \yii\symfonymailer\Mailer::class,            
             // send all mails to a file by default. You have to set
             // 'useFileTransport' to false and configure a transport
             // for the mailer to send real emails.
-            'useFileTransport' => true,
+            // 'useFileTransport' => true,
+            'transport' => [
+                'dsn' => 'smtp://mailhog:1025', // DSN string for MailHog
+            ],
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,

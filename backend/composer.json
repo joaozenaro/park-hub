@@ -7,7 +7,7 @@
         "php": ">=8.0.7",
         "yiisoft/yii2": "~2.0.14",
         "yiisoft/yii2-bootstrap": "~2.0.0",
-        "yiisoft/yii2-swiftmailer": "~2.0.0",
+        "yiisoft/yii2-symfonymailer": "^4.0",
         "firebase/php-jwt": "^4.0",
         "guzzlehttp/guzzle": "^6.3",
         "ext-json": "*"
