@@ -32,11 +32,25 @@
 </summary>
 <br>
 
-## Base do projeto
-* Backend: [Yii2 Rest API Template](https://github.com/hoaaah/yii2-rest-api-template)
-* Frontend: [Vite](https://vitejs.dev/guide/#scaffolding-your-first-vite-project)
+# O que é Yii
+Yii é um framework PHP de alto desempenho, baseado em componentes, para o rápido desenvolvimento de aplicações Web modernas. O nome Yii (pronunciado "Yi" ou [ji:]) significa "simples e evolutivo" em chinês. Também pode ser visto como um acrônimo para "Yes It Is!" (Sim, é isso!).
 
-## Estrutura
+## Para que o Yii é melhor?
+Yii é um framework genérico de programação Web, o que significa que pode ser usado para desenvolver todos os tipos de aplicações Web usando PHP. Devido à sua arquitetura baseada em componentes e suporte sofisticado de cache, ele é especialmente adequado para desenvolver aplicações em larga escala, como portais, fóruns, sistemas de gerenciamento de conteúdo (CMS), projetos de e-commerce, serviços Web RESTful, e assim por diante.
+
+## Como o Yii se compara a outros frameworks?
+Se você já está familiarizado com outro framework, pode achar útil saber como o Yii se compara:
+
+Como a maioria dos frameworks PHP, o Yii implementa o padrão arquitetural MVC (Model-View-Controller) e promove a organização do código com base nesse padrão.
+O Yii adota a filosofia de que o código deve ser escrito de forma simples, mas elegante. O Yii nunca tenta superprojetar as coisas apenas com o propósito de seguir estritamente algum padrão de design.
+O Yii é um framework completo, fornecendo muitos recursos comprovados e prontos para uso: construtores de consultas e ActiveRecord para bancos de dados relacionais e NoSQL; suporte ao desenvolvimento de APIs RESTful; suporte a cache em vários níveis; e muito mais.
+O Yii é extremamente extensível. Você pode personalizar ou substituir quase todas as partes do código central. Também pode tirar proveito da sólida arquitetura de extensões do Yii para usar ou desenvolver extensões redistribuíveis.
+Alto desempenho é sempre um objetivo principal do Yii.
+O Yii não é um show de um homem só; é apoiado por uma forte equipe de desenvolvedores principais, bem como por uma grande comunidade de profissionais que constantemente contribuem para o desenvolvimento do Yii. A equipe de desenvolvedores do Yii mantém um olhar atento às últimas tendências de desenvolvimento Web e às melhores práticas e recursos encontrados em outros frameworks e projetos. As práticas e recursos mais relevantes encontrados em outros lugares são regularmente incorporados ao núcleo do framework e expostos através de interfaces simples e elegantes.
+
+[What is Yii?](https://www.yiiframework.com/doc/guide/2.0/en/intro-yii)
+
+# Estrutura
 
 |Arquivo/Diretório|Definição|
 |-|-|
@@ -49,6 +63,8 @@
 |frontend/ |SPA Vite utilizando React (Typescript)|
 
 ## Visão geral
+
+⚠️ ATENÇÃO: O projeto inicialmente não será publicado, portanto somente configurações de desenvolvimento estão presentes, o que pode não funcionar da maneira desejada em produção. ⚠️
 
 O projeto foi visto como uma oportunidade de aplicar praticas modernas de programação, o combo
 
@@ -63,22 +79,33 @@ $$
 
 ou seja, websites totalmente divididos e especializados em suas responsabilidades. Aplicativos de "única página" fazem requisições de transferência de estado representacional (*REST*) através de interfaces de programação de aplicativos (*APIs*), isso permite uma grande separação e uma aproximação maior dos princípios *SOLID*, de que cada componente do sistema é focado em uma única responsabilidade, promovendo a independência e a modularidade.
 
-# Nomenclatura (A ser definido)
+## Nomenclatura sugerida *git*
 
+### Branches
 Sigla|Significado
 -|-
 Feat|*Feature*, ou seja, funcionalidade ou recurso novo
 Fix|Correção de algum bug, erro de gramatica, formatação
 WIP|*Work in Progress*, ou seja, trabalho em andamento em algo não bem definido, que pode ou não ser uma *feature*
 
-## Exemplos
-### Branch:
 ```bash
 $ git checkout -b feat/jwt-implementation
 
 $ git checkout -b fix/customer-form-bugfix
 
 $ git checkout -b wip/new-nginx-config
+
+# Obs.: Fazer push da branch para remote pela primeira vez
+$ git push --set-upstream origin branch-name
+```
+
+### Commits:
+```bash
+$ git commit -m "feat: Added Unit tests"
+
+$ git commit -m "feat: Organized project structure"
+
+$ git commit -m "fix: Fixed bug where customer form was sending 404"
 ```
 
 </details>
@@ -90,7 +117,7 @@ $ git checkout -b wip/new-nginx-config
 </summary>
 <br>
 
-## 🪟 Instalação para Windows
+# 🪟 Instalação para Windows
 
 Irei detalhar o ambiente de desenvolvimento em [Dev Containers](https://containers.dev/) utilizando docker para um ambiente totalmente isolado e reproduzível.
 
@@ -100,7 +127,7 @@ Caso prefira se encorajar a instalar o PHP, Composer, MySQL, Node e NPM, ou mesm
 
 > Obs.: O guia a seguir é para executar a instação do [WSL](https://aka.ms/wsl), que recomendo altamente para desenvolvedores em Windows.
 
-### 🐧 Instalar [WSL](https://aka.ms/wsl): Debian
+## 🐧 Instalar [WSL](https://aka.ms/wsl): Debian
 
 Powershell (Admin):
 ```console
@@ -109,7 +136,7 @@ PS> wsl --install -d debian
 Após instalado, execute as etapas de instalação e configure seu usuário linux. Então, em sua nova máquina Debian, continue:
 > Obs.: Recomendo que utilize um aplicativo de terminal. Ex.: [Windows Terminal](https://apps.microsoft.com/detail/9n0dx20hk701?rtc=1&hl=en-us&gl=US)
 
-### 🐳 Instalar [Docker Engine](https://docs.docker.com/engine/install/)
+## 🐳 Instalar [Docker Engine](https://docs.docker.com/engine/install/)
 1. Caso seja **sua primeira vez** instalando o docker, é possível executar o script auxiliar **oficial** para facilitar a instalação:
 ```console
 curl https://get.docker.com/ | sh
@@ -169,6 +196,7 @@ $ composer install
 ```
 Criar a primeira migração no banco, caso não exista
 ```bash
+$ ./yii migrate/up --migrationPath=@yii/rbac/migrations
 $ ./yii migrate
 ```
 Executar o servidor
@@ -186,17 +214,6 @@ Executar o servidor
 $ npm run dev
 ```
 
-> Obs.: Fazer push da branch para remote pela **primeira vez**: `git push --set-upstream origin branch-name`
-
-### Commit:
-```bash
-$ git commit -m "feat: Added Unit tests"
-
-$ git commit -m "feat: Organized project structure"
-
-$ git commit -m "fix: Fixed bug where customer form was sending 404"
-```
-
 </details>
 
 # 🚩 Requisitos da aplicação
@@ -209,7 +226,40 @@ $ git commit -m "fix: Fixed bug where customer form was sending 404"
 - [ ] Fluxo de veículos (entrada / saída)
 - [ ] Relatórios sobre movimentação financeira
 
-**Helper script**
+# ⚒️ Documentação (WIP)
+
+https://github.com/chrisleekr/yii2-angular-boilerplate.git
+
+## Helper script
+Execute o comando abaixo dentro do ambiente de desenvolvimento para agilizar os processos. 
 ```console
 $ run [options]
 ```
+
+## Endpoints
+
+Serviço|Endpoint
+-|-
+Frontend|`localhost/`
+API|`localhost/api/`
+MySQL|`localhost:3306`
+PhpMyAdmin|`localhost:9010`
+
+## Rotas API
+- User Controller
+  - GET/POST/PUT/DELETE /v1/user
+  - POST /v1/user/login
+  - POST /v1/user/signup
+  - POST /v1/user/confirm
+  - POST /v1/user/password-reset-request
+  - POST /v1/user/password-reset-token-verification
+  - POST /v1/user/password-reset
+  - GET/POST /v1/me
+  - GET /v1/page/sse
+- Staff Controller
+  - GET/POST/PUT/DELETE /v1/staff
+  - POST /v1/staff/login
+  - GET /v1/staff/get-permissions
+- Setting Controller
+  - GET/POST/PUT/DELETE /v1/setting
+  - GET /v1/setting/public

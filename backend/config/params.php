@@ -1,15 +1,19 @@
 <?php
 
-// Created By @hoaaah * Copyright (c) 2020 belajararief.com
-return [
-    'useHttpBasicAuth' => true,
-    'useHttpBearerAuth' => true,
-    'useQueryParamAuth' => true,
+$paginationParams = [
+    'pageParam',
+    'pageSizeParam',
+    'params',
+    'totalCount',
+    'defaultPageSize',
+    'pageSizeLimit'
+];
 
-    /**
-     * use rate limiter for user
-     * you must modified your UserIdentity class, follow this guidelines for complete guide
-     * https://www.yiiframework.com/doc/guide/2.0/en/rest-rate-limiting
-     */
-    'useRateLimiter' => false,
+return [
+    'frontendURL' => 'http://localhost/',
+    'supportEmail' => 'admin@example.com',
+    'adminEmail' => 'admin@example.com',
+    'jwtSecretCode' => 'someSecretKey',
+    'user.passwordResetTokenExpire' => 3600,
+    'paginationParams' => $paginationParams,
 ];

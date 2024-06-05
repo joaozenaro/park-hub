@@ -1,16 +1,13 @@
+
+SetEnvIf Authorization .+ HTTP_AUTHORIZATION=$0
+
 RewriteEngine on
 
-# hide files and folders
-# RedirectMatch 404 /_protected
-RedirectMatch 404 /\.git
-RedirectMatch 404 /composer\.
-RedirectMatch 404 /.bowerrc
+# Authorization Headers
+#RewriteCond %{HTTP:Authorization} .
+#RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
-# If a directory or a file exists, use the request directly
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-# Otherwise forward the request to index.php
-RewriteRule . index.php
 
-# If your PHP running as Fast-CGI
-SetEnvIf Authorization .+ HTTP_AUTHORIZATION=$0
+RewriteRule . index.php

@@ -7,61 +7,73 @@ inspectWait() {
   sleep 3s
 }
 
-case $1 in
-  dev)
-    # Start the backend server in a new screen session
-    screen -dmS back bash -c '(cd backend && ./yii serve 0.0.0.0)'
+# Check if the command matches the migrate pattern
+if [[ "$1" =~ migrate\/?\w* ]]; then
+  case $2 in
+    rbac)
+      # Run migration commands
+      (cd backend && ./yii migrate/up --migrationPath=@yii/rbac/migrations)
+      ;;
 
-    # Start the frontend server in a new screen session
-    screen -dmS front bash -c '(cd frontend && npm run dev)'
-    ;;
+    *)
+      # Run migration commands
+      (cd backend && ./yii $1)
+      ;;
+  esac
+else
+  case $1 in
+    dev)
+      # Start the backend server in a new screen session
+      screen -dmS back bash -c '(cd backend && ./yii serve 0.0.0.0)'
 
-  kill)
-    killall screen
-    ;;
+      # Start the frontend server in a new screen session
+      screen -dmS front bash -c '(cd frontend && npm run dev)'
+      ;;
 
-  -i)
-    case $2 in
-      back)
-        inspectWait
-        screen -r back
-        ;;
+    kill)
+      killall screen
+      ;;
 
-      front)
-        inspectWait
-        screen -r front
-        ;;
-      *)
-        echo "Screen unavailable"
-        ;;
-    esac
-    ;;
+    -i)
+      case $2 in
+        back)
+          inspectWait
+          screen -r back
+          ;;
 
-  migrate)
-    # Run migration commands
-    (cd backend && ./yii migrate)
-    ;;
+        front)
+          inspectWait
+          screen -r front
+          ;;
+        *)
+          echo "Screen unavailable"
+          ;;
+      esac
+      ;;
 
-  install|i)
-    # Install backend dependencies
-    (cd backend && composer install)
+    install|i)
+      # Install backend dependencies
+      (cd backend && composer install)
 
-    # Install frontend dependencies
-    (cd frontend && npm install)
-    ;;
+      # Install frontend dependencies
+      (cd frontend && npm install)
+      ;;
 
-  rmdeps)
-    rm backend/vendor/ frontend/node_modules/ -rf
-    ;;
+    rmdeps)
+      rm -rf backend/vendor/ frontend/node_modules/
+      ;;
 
-  *)
-    echo -e "Helper Script. Use this script to run commands on the project \e[3msuperfast\e[0m"
-    echo "Usage:"
-    echo -e "run\t dev \t\t\t Runs backend and frontend in their own screens"
-    echo -e "\t migrate \t\t Runs the command \"migrate\" in the backend"
-    echo -e "\t kill \t\t\t Kills all screens"
-    echo -e "\t install|i \t\t Runs backend and frontend install commands"
-    echo -e "\t -i {back|front} \t Inspects respective screen"
-    echo -e "\t rmdeps \t Removes both projects dependencies folders"
-    ;;
-esac
+    *)
+      echo -e "Helper Script."
+      echo -e "\nUsage: run [-i inspect] [command]...\n"
+      echo -e "Use this script to run commands on the project \e[3msuperfast\e[0m\n"
+      echo -e "run\t dev \t\t\t Runs backend and frontend in their own screens"
+      echo -e "\t migrate {rbac} \t Run the \"migrate\" passthrough. Use the command rbac to run rbac/migrations"
+      echo -e "\t kill \t\t\t Kills all screens"
+      echo -e "\t install|i \t\t Runs backend and frontend install commands"
+      echo -e "\t -i {back|front} \t Inspects respective screen"
+      echo -e "\t rmdeps \t\t Removes project dependencies \n"
+      echo -e "First time setup: > Install dependencies > Migrate rbac > Migrate all > Run"
+      ;;
+  esac
+fi
