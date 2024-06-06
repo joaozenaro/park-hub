@@ -179,11 +179,11 @@ $ docker run hello-world # Se esse comando funcionar corretamente sem 'sudo', pa
 ### 🐉 VS Code (Certifique-se que os passos de instalação e extensões estão corretos)
 Clone o repositório do github
 ```bash
-git clone git@github.com:JoaoZenaro/yii-estacionamento.git
+git clone git@github.com:JoaoZenaro/park-hub.git
 ```
 Abra o diretório clonado com o vscode
 ```bash
-code yii-estacionamento/
+code park-hub/
 ```
 Abra o container
 
@@ -191,6 +191,7 @@ $Ctrl + Shift + P \longrightarrow \textrm{Dev Containers: Rebuild and Reopen in 
 
 [Docs](https://code.visualstudio.com/remote/advancedcontainers/develop-remote-host#_connect-using-the-remote-ssh-extension)
 ## 2. Execução do projeto
+Executar os comandos dentro do bash WSL. Tanto nos codespaces como localmente.
 ### Backend
 Instalar pacotes
 ```sh
@@ -247,6 +248,7 @@ Frontend|`localhost/`
 API|`localhost/api/`
 MySQL|`localhost:3306`
 PhpMyAdmin|`localhost:9010`
+Mailhog|`localhost:8025`
 
 ## Rotas API
 - User Controller
