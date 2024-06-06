@@ -2,12 +2,19 @@ import { useState, useEffect } from 'react';
 
 export default function Home() {
     const [count, setCount] = useState(0)
-    const [backendResponse, setBackendResponse] = useState(null);
+    const [backendResponse, setBackendResponse] = useState("");
     
+    let status: number, resBody: string;
     useEffect(() => {
-      fetch('/api')
-        .then(response => response.json())
-        .then(json => setBackendResponse(json.message))
+      fetch('/api/ping')
+        .then(response => {
+          status = response.status;
+          return response.json();
+        })
+        .then(body => resBody = body)
+        .finally(() => {
+          setBackendResponse(`{ status: ${status}, body: \"${resBody}\" }`)
+        })
         .catch(error => console.error(error));
     }, []);
   
@@ -15,7 +22,7 @@ export default function Home() {
       <div className="grid place-items-center h-full w-full">
         <div>
           <h1 className="text-xl">
-            Home Page! Fetched from /api: {backendResponse}
+            /api/ping: {backendResponse}
           </h1>
           <button onClick={() => setCount((count) => count + 1)}>
             count is {count}

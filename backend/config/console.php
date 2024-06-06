@@ -1,31 +1,16 @@
 <?php
 
-$params = require(__DIR__ . '/params.php');
-$db = require(__DIR__ . '/db.php');
+$params = require __DIR__ . '/params.php';
+$db = require __DIR__ . '/db.php';
 
 $config = [
     'id' => 'basic-console',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
-    'controllerNamespace' => 'app\console\controllers',
-    'controllerMap' => [
-        'migrate' => [
-            'class' => 'yii\console\controllers\MigrateController',
-            'migrationPath' => '@app/migrations',
-        ],
-    ],
+    'controllerNamespace' => 'app\commands',
     'components' => [
-        'authManager' => [
-            'class' => 'yii\rbac\DbManager',
-        ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
-        ],
-        'user' => [
-            'class' => 'app\models\UserIdentity',
-            'enableAutoLogin' => false,
-            'enableSession' => false,
-            'loginUrl' => null,
         ],
         'log' => [
             'targets' => [
@@ -36,9 +21,26 @@ $config = [
             ],
         ],
         'db' => $db,
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
+        ],
     ],
     'params' => $params,
+    /*
+    'controllerMap' => [
+        'fixture' => [ // Fixture generation command line.
+            'class' => 'yii\faker\FixtureController',
+        ],
+    ],
+    */
 ];
 
+if (YII_ENV_DEV) {
+    // configuration adjustments for 'dev' environment
+    $config['bootstrap'][] = 'gii';
+    $config['modules']['gii'] = [
+        'class' => 'yii\gii\Module',
+    ];
+}
 
 return $config;
