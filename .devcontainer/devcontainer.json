@@ -17,7 +17,8 @@
                 "bradlc.vscode-tailwindcss",
                 "xdebug.php-debug",
                 "bmewburn.vscode-intelephense-client",
-                "zobo.php-intellisense"
+                "zobo.php-intellisense",
+                "EditorConfig.EditorConfig"
             ]
         }
     },
