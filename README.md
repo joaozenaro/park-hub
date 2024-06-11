@@ -142,7 +142,7 @@ Após instalado, execute as etapas de instalação e configure seu usuário linu
 ## 🐳 Instalar [Docker Engine](https://docs.docker.com/engine/install/)
 1. Caso seja **sua primeira vez** instalando o docker, é possível executar o script auxiliar **oficial** para facilitar a instalação:
 ```console
-curl https://get.docker.com/ | sh
+$ curl https://get.docker.com/ | sh
 ```
 2. Após instalado, talvez seja necessário permitir que o Docker possa executar seus serviços, tradicionalmente através do *systemd*. 
   * [O que é o systemd?](https://learn.microsoft.com/pt-br/windows/wsl/systemd#what-is-systemd-in-linux)
@@ -220,17 +220,83 @@ $ npm run dev
 
 </details>
 
-# 🚩 Requisitos da aplicação
+<details>
+<summary>
+
+# 🚩 Regra de Negócio
+</summary>
+<br>
+
+## Diagrama de classes
+```mermaid
+classDiagram
+    direction TB
+    Spot "1" -- "1..*" SpotTicket
+    Spot "1" -- "1" SpotType
+
+    class Spot {
+        - Id: int Primary Key
+        - Code: string -> A1, A2..
+        - SpotType: int Foreign Key : SpotType
+    }
+
+    class SpotType {
+        - Id: int Primary Key
+        - Name: string -> Carro, Moto, Cadeirante, Eletrico..
+        - DefaultPrice: decimal -> Valor padrão do tipo da vaga
+    }
+
+    class SpotTicket {
+        - Id: int Primary Key
+        - ClientLicensePlate: string
+        - SpotId: int Foreign Key : Vaga  
+        - Price: decimal
+        - WasPaid: bool
+        - CheckIn: DateTime: DataHora de entrada do veiculo
+        - CheckOut: DateTime: DataHora de saida do veiculo
+        - WardenUserId: int Foreign Key : User
+        + GetFinalPrice() -> Calcula valor a ser pago:\n[`horario de saida > entrada + tolerancia` -> 10 * 1.5/hora]
+    }
+
+```
+
+## Requisitos gerais
 - [ ] Níveis de acesso (Admin / User)
+    - Cadastro feito por outro admin:
+        - Admin: Edição todos perfis
+        - User: Edição próprio perfil
+
 - [ ] Login
+    1. Admin primeiro cria um usuario basico
+    1. Usuario recebe email com senha temporaria
+    1. Usuario entra na aplicação e muda a sua senha
+
 - [ ] Planos (pré-pago / pós-pago)
-- [ ] Cadastro de vagas
-- [ ] Utilização de vagas (permanência para cobrança)
-- [ ] Consulta de vagas disponíveis no momento
+    - A ser definido
+
+- [ ] Vagas
+    - Cadastro de novas vagas
+    - Utilização de vagas (permanência para cobrança)
+    - Consulta de vagas disponíveis no momento
+     
 - [ ] Fluxo de veículos (entrada / saída)
+    - Listagem filtrada para saber:
+        - Número de vagas utilizadas por tempo (1 hr, 1 dia, 1 semana, mes...)
+        - Utilizadas no momento (Tem data de entrada, mas sem saída)
+
 - [ ] Relatórios sobre movimentação financeira
+    - Igual o fluxo de veículo, mas com os valores pagos
+
+[Figma](https://www.figma.com/design/0dlX5PUwTy1rC8o75kMUlf/UNOESC?node-id=11-3&t=kFh40tNdcUobpXaS-0)
+
+</details>
+
+<details>
+<summary>
 
 # ⚒️ Documentação (WIP)
+</summary>
+<br>
 
 https://github.com/chrisleekr/yii2-angular-boilerplate.git
 
@@ -268,3 +334,5 @@ Mailhog|`localhost:8025`
 - Setting Controller
   - GET/POST/PUT/DELETE /v1/setting
   - GET /v1/setting/public
+ 
+</details>
