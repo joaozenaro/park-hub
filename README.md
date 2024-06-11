@@ -179,7 +179,7 @@ $ docker run hello-world # Se esse comando funcionar corretamente sem 'sudo', pa
 ### 🐉 VS Code (Certifique-se que os passos de instalação e extensões estão corretos)
 Clone o repositório do github
 ```bash
-git clone git@github.com:JoaoZenaro/park-hub.git
+git clone https://github.com/joaozenaro/park-hub.git
 ```
 Abra o diretório clonado com o vscode
 ```bash
