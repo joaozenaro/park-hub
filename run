@@ -63,6 +63,21 @@ else
       rm -rf backend/vendor/ frontend/node_modules/
       ;;
 
+    lazy)
+      # Runs "run install", runs "run migrate rbac", runs "run migrate" and runs "run dev". All in sequence.
+      # Install dependencies
+      (cd backend && composer install)
+      (cd frontend && npm install)
+
+      # Run migrations
+      (cd backend && ./yii migrate/up --migrationPath=@yii/rbac/migrations --interactive=0)
+      (cd backend && ./yii migrate/up --interactive=0)
+
+      # Start development servers
+      screen -dmS back bash -c '(cd backend && ./yii serve 0.0.0.0)'
+      screen -dmS front bash -c '(cd frontend && npm run dev)'
+      ;;
+
     *)
       echo -e "Helper Script."
       echo -e "\nUsage: run [-i inspect] [command]...\n"
@@ -73,7 +88,7 @@ else
       echo -e "\t install|i \t\t Runs backend and frontend install commands"
       echo -e "\t -i {back|front} \t Inspects respective screen"
       echo -e "\t rmdeps \t\t Removes project dependencies \n"
-      echo -e "First time setup: > Install dependencies > Migrate rbac > Migrate all > Run"
+      echo -e "First time setup (\e[3mrun lazy\e[0m): > Install dependencies > Migrate rbac > Migrate all > Run"
       ;;
   esac
 fi
