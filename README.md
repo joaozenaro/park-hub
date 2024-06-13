@@ -237,6 +237,7 @@ classDiagram
     class Spot {
         - Id: int Primary Key
         - Code: string -> A1, A2..
+        - Floor: string -> "SUB1", "SUB2"..
         - SpotType: int Foreign Key : SpotType
     }
 
