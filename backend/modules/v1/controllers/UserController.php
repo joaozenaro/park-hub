@@ -58,6 +58,7 @@ class UserController extends ActiveController
                 'delete' => ['delete'],
                 'login' => ['post'],
                 'me' => ['get', 'post'],
+                'validatetoken' => ['get']
             ],
         ];
 
@@ -80,6 +81,7 @@ class UserController extends ActiveController
         // avoid authentication on CORS-pre-flight requests (HTTP OPTIONS method)
         $behaviors['authenticator']['except'] = [
             'options',
+            'validatetoken',
             'login',
             'signup',
             'confirm',
@@ -234,6 +236,18 @@ class UserController extends ActiveController
         $response = \Yii::$app->getResponse();
         $response->setStatusCode(204);
         return 'ok';
+    }
+
+    // TODO: Use this GET route to send a success or failed status to see if the token is valid
+    public function actionValidatetoken()
+    {
+        $authHeader = Yii::$app->request->getHeaders()->get('Authorization');
+
+        if (isset($authHeader) && preg_match('/^Bearer\s+(.*?)$/', $authHeader, $matches)) {
+            $userIdentity = User::findIdentityByAccessToken($matches[1]);
+
+            return $userIdentity;
+        }
     }
 
     /**
