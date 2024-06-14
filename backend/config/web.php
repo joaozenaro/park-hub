@@ -63,7 +63,6 @@ $config = [
                     ],
                     'extraPatterns' => [
                         'OPTIONS {id}' => 'options',
-                        'GET validatetoken' => 'validatetoken',
                         'POST login' => 'login',
                         'OPTIONS login' => 'options',
                         'POST signup' => 'signup',
