@@ -2,15 +2,12 @@
 
 use yii\db\Migration;
 
-/**
- * Handles the creation of table `user`.
- */
 class m170125_082006_create_user_table extends Migration
 {
     /**
      * {@inheritdoc}
      */
-    public function up()
+    public function safeUp()
     {
         $this->createTable(
             'user',
@@ -35,95 +32,12 @@ class m170125_082006_create_user_table extends Migration
             ]
         );
 
-        // creates index for table
         $this->createIndex(
             'idx-user',
             'user',
             ['username', 'auth_key', 'password_hash', 'status']
         );
 
-        $users = [
-            [
-                1,
-                'admin',
-                'dVN8fzR_KzJ_lBrymfXI6qyH2QzyXYUU',
-                time(),
-                '$2y$13$9Gouh1ZbewVEh4bQIGsifOs8/RWW/7RIs0CAGNd7tapXFm9.WxiXS',
-                null,
-                'admin@demo.com',
-                'admin@demo.com',
-                time(),
-                '127.0.0.1',
-                time(),
-                '127.0.0.1',
-                null,
-                10,
-                99,
-                time(),
-                time()
-            ],
-            [
-                2,
-                'staff',
-                'Xm-zZRREtAIKsFlINVRLSw3U7llbx_5a',
-                time(),
-                '$2y$13$TKh5pEy0RFTmkC9Kjvb9A.WR/I1QVzYHdfYDw0m7MnHnN0bsv96Jq',
-                null,
-                'staff@demo.com',
-                'staff@demo.com',
-                time(),
-                '127.0.0.1',
-                time(),
-                '127.0.0.1',
-                null,
-                10,
-                50,
-                time(),
-                time()
-            ],
-            [
-                3,
-                'user',
-                'rNXSqIas_43RdpG0e5_7d1W06iK8pXJ8',
-                time(),
-                '$2y$13$nd/F3g6jjIa1/Sk6JZxZ5uVq0OpsbOmW1OdnbDG6BpFqgkFbQotjm',
-                null,
-                'user@demo.com',
-                'user@demo.com',
-                time(),
-                '127.0.0.1',
-                time(),
-                '127.0.0.1',
-                null,
-                10,
-                10,
-                time(),
-                time(),
-            ]
-        ];
-
-        $userId = 4;
-        for ($i = 1; $i <= 100; ++$i) {
-            $users[] = [
-                $userId + $i,
-                'user' . $i,
-                'rNXSqIas_43RdpG0e5_7d1W06iK8pXJ8',
-                time(),
-                '$2y$13$nd/F3g6jjIa1/Sk6JZxZ5uVq0OpsbOmW1OdnbDG6BpFqgkFbQotjm',
-                null,
-                'user' . $i . '@demo.com',
-                'user' . $i . '@demo.com',
-                time(),
-                '127.0.0.1',
-                time(),
-                '127.0.0.1',
-                null,
-                10,
-                10,
-                time(),
-                time()
-            ];
-        }
         $this->batchInsert(
             'user',
             [
@@ -145,14 +59,53 @@ class m170125_082006_create_user_table extends Migration
                 'created_at',
                 'updated_at'
             ],
-            $users
+            [
+                [
+                    1,
+                    'admin',
+                    Yii::$app->security->generateRandomString(),
+                    time(),
+                    Yii::$app->security->generatePasswordHash("test123"),
+                    null,
+                    'admin@demo.com',
+                    'admin@demo.com',
+                    time(),
+                    '127.0.0.1',
+                    time(),
+                    '127.0.0.1',
+                    null,
+                    10,
+                    99,
+                    time(),
+                    time()
+                ],
+                [
+                    2,
+                    'user',
+                    Yii::$app->security->generateRandomString(),
+                    time(),
+                    Yii::$app->security->generatePasswordHash("test123"),
+                    null,
+                    'user@demo.com',
+                    'user@demo.com',
+                    time(),
+                    '127.0.0.1',
+                    time(),
+                    '127.0.0.1',
+                    null,
+                    10,
+                    10,
+                    time(),
+                    time(),
+                ]
+            ]
         );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function down()
+    public function safeDown()
     {
         $this->dropIndex('idx-user', 'user');
 

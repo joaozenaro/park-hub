@@ -4,19 +4,12 @@ namespace app\models;
 
 use yii\base\Model;
 
-/**
- * Signup Confirm form
- */
 class SignupConfirmForm extends Model
 {
     public $id;
     public $auth_key;
-    /** @var User */
-    private $_user = false;
+    private ?User $_user = null;
 
-    /**
-     * @inheritdoc
-     */
     public function rules()
     {
         return [
@@ -80,7 +73,7 @@ class SignupConfirmForm extends Model
      */
     public function getUserByID()
     {
-        if ($this->_user === false) {
+        if ($this->_user === null) {
             $this->_user = User::findOne($this->id);
         }
 

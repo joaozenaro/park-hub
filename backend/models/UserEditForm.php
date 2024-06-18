@@ -5,16 +5,12 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 
-/**
- * User Edit form
- */
 class UserEditForm extends Model
 {
     public $id;
     public $password;
     public $email;
-    /** @var User */
-    private $_user = false;
+    private User $_user;
 
     /**
      * @inheritdoc
@@ -99,7 +95,7 @@ class UserEditForm extends Model
      */
     public function getUserByID()
     {
-        if ($this->_user === false) {
+        if (!isset($this->_user)) {
             $this->_user = User::findOne($this->id);
         }
 

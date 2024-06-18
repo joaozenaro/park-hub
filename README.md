@@ -332,8 +332,5 @@ Mailhog|`localhost:8025`
   - GET/POST/PUT/DELETE /v1/staff
   - POST /v1/staff/login
   - GET /v1/staff/get-permissions
-- Setting Controller
-  - GET/POST/PUT/DELETE /v1/setting
-  - GET /v1/setting/public
  
 </details>

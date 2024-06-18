@@ -4,21 +4,12 @@ namespace app\models;
 
 use yii\base\Model;
 
-/**
- * Password reset form
- */
 class PasswordResetForm extends Model
 {
+    private User $_user;
     public $token;
     public $password;
-    /**
-     * @var \app\models\User
-     */
-    private $_user;
 
-    /**
-     * @inheritdoc
-     */
     public function rules()
     {
         return [
@@ -30,13 +21,6 @@ class PasswordResetForm extends Model
         ];
     }
 
-    /**
-     * Validates the password reset token.
-     * This method serves as the inline validation for password reset token.
-     *
-     * @param string $attribute the attribute currently being validated
-     * @param array $params the additional name-value pairs given in the rule
-     */
     public function validatePasswordResetToken($attribute, $params)
     {
         $this->_user = User::findByPasswordResetToken($this->$attribute);
@@ -46,16 +30,11 @@ class PasswordResetForm extends Model
         }
     }
 
-    /**
-     * Resets password.
-     *
-     * @return bool if password was reset.
-     */
     public function resetPassword()
     {
         $user = $this->_user;
         $user->setPassword($this->password);
-        $user->removePasswordResetToken();
+        $user->password_reset_token = null;
 
         return $user->save(false);
     }

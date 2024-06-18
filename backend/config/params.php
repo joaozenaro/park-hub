@@ -13,7 +13,7 @@ return [
     'frontendURL' => 'http://localhost/',
     'supportEmail' => 'admin@example.com',
     'adminEmail' => 'admin@example.com',
-    'jwtSecretCode' => 'someSecretKey',
+    'jwt.secret' => 'secretchambres',
     'user.passwordResetTokenExpire' => 3600,
     'paginationParams' => $paginationParams,
 ];

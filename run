@@ -17,7 +17,7 @@ if [[ "$1" =~ migrate\/?\w* ]]; then
 
     *)
       # Run migration commands
-      (cd backend && ./yii $1)
+      (cd backend && ./yii $@)
       ;;
   esac
 else

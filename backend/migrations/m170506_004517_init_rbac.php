@@ -8,7 +8,7 @@ class m170506_004517_init_rbac extends Migration
     public $staffId = 2;
     public $userId = 3;
 
-    public function up()
+    public function safeUp()
     {
         $auth = Yii::$app->authManager;
 
@@ -48,7 +48,6 @@ class m170506_004517_init_rbac extends Migration
         $auth->assign($staff, $this->staffId);
 
         // Assign permissions to staff
-
         if (!empty($staffPermissions)) {
             foreach ($staffPermissions as $key => $permission) {
                 $auth->assign($permission, $this->staffId);
@@ -59,18 +58,8 @@ class m170506_004517_init_rbac extends Migration
         $auth->assign($user, $this->userId);
     }
 
-    public function down()
+    public function safeDown()
     {
         Yii::$app->authManager->removeAll();
     }
-    /*
-    // Use safeUp/safeDown to run migration code within a transaction
-    public function safeUp()
-    {
-    }
-
-    public function safeDown()
-    {
-    }
-    */
 }

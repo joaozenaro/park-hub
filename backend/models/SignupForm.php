@@ -5,20 +5,13 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 
-/**
- * Signup form
- */
 class SignupForm extends Model
 {
     public $username;
     public $email;
     public $password;
-    /** @var User */
-    private $_user = false;
+    private ?User $_user = null;
 
-    /**
-     * @inheritdoc
-     */
     public function rules()
     {
         return [
@@ -56,11 +49,6 @@ class SignupForm extends Model
         ];
     }
 
-    /**
-     * Signs user up.
-     *
-     * @return boolean the saved model or null if saving fails
-     */
     public function signup()
     {
         if ($this->validate()) {
@@ -85,24 +73,9 @@ class SignupForm extends Model
         return false;
     }
 
-    /**
-     * Return User object
-     *
-     * @return User
-     */
-    public function getUser()
-    {
-        return $this->_user;
-    }
-
-    /**
-     * Send confirmation email
-     *
-     * @return bool
-     */
     public function sendConfirmationEmail()
     {
-        $confirmURL = 'http://localhost/confirm?id=' . $this->_user->id . '&auth_key=' . $this->_user->auth_key;
+        $confirmURL = 'http://localhost/api/v1/user/confirm?id=' . $this->_user->id . '&auth_key=' . $this->_user->auth_key;
 
         $email = \Yii::$app->mailer
             ->compose(
