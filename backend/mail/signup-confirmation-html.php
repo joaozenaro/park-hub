@@ -17,13 +17,12 @@ use yii\helpers\Html;
                 </div>
                 <div style="text-align: left; word-wrap: break-word;">Thank you for joining <?= $appName; ?>! To finish signing up, you just need to confirm that we got your email right.
                     <br />
-                    <br />To confirm your email, please click this link:
                     <br /><br />
-                    <a href="<?= Html::encode($confirmURL); ?>"><?= $confirmURL; ?></a>
+                    <a href="<?= Html::encode($confirmURL); ?>">Clique aqui para confirmar seu email</a>
                     <br />
-                    <br />Welcome and thanks!
-                    <br />The Team
-                    <div class="footer" style="font-size: 0.7em; padding: 0px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right; color: #777777; line-height: 14px; margin-top: 36px;">© <?= date("Y"); ?> Company
+                    <br />Bem-vindo e muito Obrigado!
+                    <br />Park Hub
+                    <div class="footer" style="font-size: 0.7em; padding: 0px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: right; color: #777777; line-height: 14px; margin-top: 36px;">© <?= date("Y"); ?> PH
                         <br>
                     </div>
                 </div>

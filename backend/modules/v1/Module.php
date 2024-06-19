@@ -12,24 +12,9 @@ class Module extends \yii\base\Module implements BootstrapInterface
     {
         $app->getUrlManager()->addRules([
             'GET ping' => 'site/ping',
-            'POST v1/user/login' => 'v1/user/login',
-            'OPTIONS v1/user/login' => 'v1/user/options',
-            'POST v1/user/signup' => 'v1/user/signup',
-            'OPTIONS v1/user/signup' => 'v1/user/options',
-            'GET v1/user/confirm' => 'v1/user/confirm',
-            'OPTIONS v1/user/confirm' => 'v1/user/options',
-            'POST v1/user/password-reset-request' => 'v1/user/password-reset-request',
-            'OPTIONS v1/user/password-reset-request' => 'v1/user/options',
-            'POST v1/user/password-reset-token-verification' => 'v1/user/password-reset-token-verification',
-            'OPTIONS v1/user/password-reset-token-verification' => 'v1/user/options',
-            'POST v1/user/password-reset' => 'v1/user/password-reset',
-            'OPTIONS v1/user/password-reset' => 'v1/user/options',
-            'GET v1/user/me' => 'v1/user/me',
-            'POST v1/user/me' => 'v1/user/me-update',
-            'OPTIONS v1/user/me' => 'v1/user/options',
-            'GET v1/user/validate-token' => 'v1/user/validate-token',
-            'GET v1/user/<id:\d+>' => 'v1/user/view',
-            'POST v1/user/create' => 'v1/user/create',
+            'GET <module>/user/view/<id:\d+>' => '<module>/user/view',
+            'GET <module>/user/confirm' => '<module>/user/confirm',
+            'POST <module>/<alias:login|join|refresh-token>' => '<module>/user/<alias>',
         ], false);
     }
 
@@ -37,10 +22,10 @@ class Module extends \yii\base\Module implements BootstrapInterface
     {
         $behaviors = parent::behaviors();
 
-        // remove rateLimiter which requires an authenticated user to work
+        // Remove rateLimiter which requires an authenticated user to work
         unset($behaviors['rateLimiter']);
 
-        // remove authentication filter
+        // Remove authentication filter
         unset($behaviors['authenticator']);
 
         $behaviors['corsFilter'] = [
@@ -64,12 +49,9 @@ class Module extends \yii\base\Module implements BootstrapInterface
         $behaviors['authenticator'] = [
             'class' => HttpBearerAuth::class,
             'except' => [
-                'user/view',
                 'user/login',
-                'user/signup',
-                'user/validate-token',
+                'user/join',
                 'user/confirm',
-                'user/create'
             ]
         ];
 

@@ -60,7 +60,7 @@ else
       ;;
 
     rmdeps)
-      rm -rf backend/vendor/ frontend/node_modules/
+      rm -rf backend/vendor/ backend/runtime/ frontend/node_modules/
       ;;
 
     lazy)
@@ -70,7 +70,7 @@ else
       (cd frontend && npm install)
 
       # Run migrations
-      (cd backend && ./yii migrate/up --migrationPath=@yii/rbac/migrations --interactive=0)
+      # (cd backend && ./yii migrate/up --migrationPath=@yii/rbac/migrations --interactive=0)
       (cd backend && ./yii migrate/up --interactive=0)
 
       # Start development servers

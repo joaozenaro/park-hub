@@ -7,7 +7,7 @@ interface ILoginResponse {
   access_token: string
 }
 function login(data: ILoginForm) {
-  return api.post<IApiResponse<ILoginResponse>>("/user/login", {
+  return api.post<IApiResponse<ILoginResponse>>("/login", {
     LoginForm: data
   })
 }

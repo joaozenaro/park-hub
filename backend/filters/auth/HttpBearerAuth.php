@@ -2,6 +2,8 @@
 
 namespace app\filters\auth;
 
+use Exception;
+
 class HttpBearerAuth extends \yii\filters\auth\AuthMethod
 {
     public $realm = 'api';
@@ -15,21 +17,20 @@ class HttpBearerAuth extends \yii\filters\auth\AuthMethod
         }
 
         if ($authHeader !== null && preg_match('/^Bearer\s+(.*?)$/', $authHeader, $matches)) {
+            try {
+                $identity = $user->loginByAccessToken($matches[1], get_class($this));
 
-            $identity = $user->loginByAccessToken($matches[1], get_class($this));
+                if ($identity === null) {
+                    $this->handleFailure($response);
+                }
+    
+                return $identity;
 
-            if ($identity === null) {
-                $this->handleFailure($response);
+            } catch (Exception $e) {
+                return null;
             }
-
-            return $identity;
         }
 
         return null;
-    }
-
-    public function challenge($response)
-    {
-        $response->getHeaders()->set('WWW-Authenticate', "Bearer realm=\"{$this->realm}\"");
     }
 }

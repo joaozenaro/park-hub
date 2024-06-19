@@ -1,10 +1,14 @@
 <?php
 
+use app\core\interfaces\IUserService;
+use app\core\services\UserService;
+
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
 return [
     'id' => 'rest.api',
+    'name' => 'Park Hub',
     'language' => 'pt-br',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'app\controllers',
@@ -17,6 +21,11 @@ return [
         'v1' => [
             'class' => 'app\modules\v1\Module',
         ]
+    ],
+    'container' => [
+        'definitions' => [
+            IUserService::class => UserService::class,
+        ],
     ],
     'components' => [
         'authManager' => [
@@ -55,7 +64,7 @@ return [
             'showScriptName' => false,
         ],
         'user' => [
-            'identityClass' => 'app\models\User',
+            'identityClass' => 'app\core\models\User',
             'enableAutoLogin' => false,
             'enableSession' => false
         ],

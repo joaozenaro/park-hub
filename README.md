@@ -200,7 +200,7 @@ $ composer install
 ```
 Criar a primeira migração no banco, caso não exista
 ```bash
-$ ./yii migrate/up --migrationPath=@yii/rbac/migrations
+$ ./yii migrate/up --migrationPath=@yii/rbac/migrations # Work in progress
 $ ./yii migrate
 ```
 Executar o servidor
@@ -299,8 +299,6 @@ classDiagram
 </summary>
 <br>
 
-https://github.com/chrisleekr/yii2-angular-boilerplate.git
-
 ## Helper script
 Execute o comando abaixo dentro do ambiente de desenvolvimento para agilizar os processos. 
 ```console
@@ -317,20 +315,4 @@ MySQL|`localhost:3306`
 PhpMyAdmin|`localhost:9010`
 Mailhog|`localhost:8025`
 
-## Rotas API
-- User Controller
-  - GET/POST/PUT/DELETE /v1/user
-  - POST /v1/user/login
-  - POST /v1/user/signup
-  - POST /v1/user/confirm
-  - POST /v1/user/password-reset-request
-  - POST /v1/user/password-reset-token-verification
-  - POST /v1/user/password-reset
-  - GET/POST /v1/me
-  - GET /v1/page/sse
-- Staff Controller
-  - GET/POST/PUT/DELETE /v1/staff
-  - POST /v1/staff/login
-  - GET /v1/staff/get-permissions
- 
 </details>
