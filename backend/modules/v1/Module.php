@@ -16,7 +16,9 @@ class Module extends \yii\base\Module implements BootstrapInterface
             'GET <module>/user/view/<id:\d+>' => '<module>/user/view',
             'GET <module>/user/confirm' => '<module>/user/confirm',
             'GET <module>/user/admin-action' => '<module>/user/admin-action',
-            'POST <module>/<alias:login|join|refresh-token>' => '<module>/user/<alias>',
+            'GET <module>/user/validate-token' => '<module>/user/validate-token',
+            // 'GET <module>/user/<alias:confirm|admin-action|validate-token>' => '<module>/user/<alias>',
+            'POST <module>/<alias:login|signup|refresh-token>' => '<module>/user/<alias>',
         ], false);
     }
 
@@ -50,10 +52,10 @@ class Module extends \yii\base\Module implements BootstrapInterface
 
         $behaviors['access'] = [
             'class' => AccessControl::class,
-            'only' => ['view', 'join', 'login', 'refresh-token', 'confirm'],
+            'only' => ['view', 'signup', 'login', 'refresh-token', 'confirm'],
             'rules' => [
                 [
-                    'actions' => ['join', 'login', 'confirm'],
+                    'actions' => ['signup', 'login', 'confirm'],
                     'allow' => true,
                     'roles' => ['?'],
                 ],
@@ -74,7 +76,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
             'class' => HttpBearerAuth::class,
             'except' => [
                 'user/login',
-                'user/join',
+                'user/signup',
                 'user/confirm',
             ]
         ];

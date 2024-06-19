@@ -11,7 +11,7 @@ use yii\rest\ActiveController;
 class UserController extends ActiveController
 {
     public $modelClass = User::class;
-    public $noAuthActions = ['join', 'login'];
+    public $noAuthActions = ['signup', 'login'];
 
     public $userService;
 
@@ -31,12 +31,12 @@ class UserController extends ActiveController
         return $actions;
     }
 
-    public function actionView($id)
+    public function actionValidateToken()
     {
         return "ok";
     }
 
-    public function actionJoin()
+    public function actionSignup()
     {
         $model = new SignupForm();
         $model->load(Yii::$app->request->post());
@@ -78,12 +78,17 @@ class UserController extends ActiveController
 
     public function actionConfirm()
     {
-        $id = Yii::$app->getRequest()->getQueryParam('id');
-        $auth_key = Yii::$app->getRequest()->getQueryParam('auth_key');
+        if (!empty(Yii::$app->request->get())) {
+            $id = Yii::$app->getRequest()->getQueryParam('id');
+            $auth_key = Yii::$app->getRequest()->getQueryParam('auth_key');
 
-        if ($this->userService->confirmUser($id, $auth_key)) {
-            Yii::$app->getResponse()->setStatusCode(200);
-            return $this->redirect(['/confirm?status=confirmado']);
+            try {
+                if ($this->userService->confirmUser($id, $auth_key)) {
+                    Yii::$app->getResponse()->setStatusCode(200);
+                    return $this->redirect(['/confirm?status=confirmado']);
+                }
+
+            } catch (\Throwable $th) {}
         }
 
         return $this->redirect(['/confirm']);

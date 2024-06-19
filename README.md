@@ -261,6 +261,79 @@ classDiagram
 
 ```
 
+Sugestão
+```mermaid
+classDiagram
+    direction TB
+    class User {
+        +int id
+        +string name
+        +string email
+        +string password
+        +string userType
+    }
+
+    class ParkingSpot {
+        -int id Primary Key
+        -string code -> A1, A2..
+        -string floor -> "SUB1", "SUB2"..
+        -int parkingSpotType -> Foreign Key : ParkingSpotType
+    }
+
+    class ParkingSpotType {
+        -int id Primary Key
+        -string name -> Carro, Moto, Cadeirante, Eletrico..
+        -decimal defaultPrice -> Valor padrão do tipo da vaga
+    }
+
+    class Reservation {
+        -int id Primary Key
+        -dateTime checkIn -> DataHora de entrada do veiculo 
+        -dateTime checkOut -> DataHora de saida do veiculo 
+        -int vehicleId Foreign Key : Vehicle
+        -int parkingSpotId Foreign Key : Vaga
+        -int userId -> Foreign Key : User
+    }
+
+    class Vehicle {
+        +int id
+        +string plate
+        +string model
+        +string color
+        +string type
+        +int ownerId
+    }
+
+    class Payment {
+        +int id
+        +int userId
+        +int reservationId
+        +float amount
+        +string paymentMethod
+        +datetime paymentDate
+        + GetFinalPrice() -> Calcula valor a ser pago:\n[`horario de saida > entrada + tolerancia` -> 10 * 1.5/hora]
+    }
+    
+    class ParkingHistory {
+        +int id
+        +int vehicleId
+        +int parkingSpotId
+        +datetime checkIn
+        +datetime checkOut
+        +int paymentId
+    }
+
+    User "1" -- "*" Reservation : makes
+    Vehicle "1" -- "*" Payment : makes
+    Vehicle "1" -- "*" Reservation : is part of
+    Vehicle "1" -- "*" ParkingHistory : has history
+    Reservation "1" -- "1" Payment : is paid by
+    ParkingSpot "1" -- "*" Reservation : is reserved
+    ParkingSpot "1" -- "*" ParkingHistory : has history
+    ParkingSpot "1" -- "1" ParkingSpotType : has type
+    Payment "1" -- "*" ParkingHistory : records
+```
+
 ## Requisitos gerais
 - [ ] Níveis de acesso (Admin / User)
     - Cadastro feito por outro admin:

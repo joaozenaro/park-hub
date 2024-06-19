@@ -43,7 +43,7 @@ export default function LoginForm() {
     <form onSubmit={handleSubmit}>
       {loading && <p>Loading...</p>}
       <div>
-        <label>Username</label>
+        <label>Username or Email</label>
         <input id="username" className="border p-3" type="text" value={data.username} onChange={e => handleChangeValue("username", e.target.value)} />
         <FieldError id="username" errors={errors} />
       </div>
