@@ -88,4 +88,16 @@ class UserController extends ActiveController
 
         return $this->redirect(['/confirm']);
     }
+
+    public function actionAdminAction()
+    {
+        $usr = Yii::$app->user;
+        $temp = Yii::$app->user->can('manageUsers');
+        if (!$temp) {
+            throw new \yii\web\ForbiddenHttpException('You are not allowed to perform this action.');
+        }
+        
+        return "AdminOnly";
+    }
+
 }

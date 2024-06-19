@@ -4,6 +4,7 @@ namespace app\modules\v1;
 
 use app\filters\auth\HttpBearerAuth;
 use yii\base\BootstrapInterface;
+use yii\filters\AccessControl;
 use yii\filters\Cors;
 
 class Module extends \yii\base\Module implements BootstrapInterface
@@ -14,6 +15,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
             'GET ping' => 'site/ping',
             'GET <module>/user/view/<id:\d+>' => '<module>/user/view',
             'GET <module>/user/confirm' => '<module>/user/confirm',
+            'GET <module>/user/admin-action' => '<module>/user/admin-action',
             'POST <module>/<alias:login|join|refresh-token>' => '<module>/user/<alias>',
         ], false);
     }
@@ -44,6 +46,28 @@ class Module extends \yii\base\Module implements BootstrapInterface
                     'X-Pagination-Total-Count'
                 ],
             ]
+        ];
+
+        $behaviors['access'] = [
+            'class' => AccessControl::class,
+            'only' => ['view', 'join', 'login', 'refresh-token', 'confirm'],
+            'rules' => [
+                [
+                    'actions' => ['join', 'login', 'confirm'],
+                    'allow' => true,
+                    'roles' => ['?'],
+                ],
+                [
+                    'actions' => ['view', 'refresh-token'],
+                    'allow' => true,
+                    'roles' => ['@'],
+                ],
+                [
+                    'actions' => ['admin-action'],
+                    'allow' => true,
+                    'roles' => ['admin'],
+                ],
+            ],
         ];
 
         $behaviors['authenticator'] = [

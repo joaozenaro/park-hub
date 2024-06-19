@@ -22,6 +22,11 @@ if [[ "$1" =~ migrate\/?\w* ]]; then
   esac
 else
   case $1 in
+    rbac/init)
+      # Run rbac controller commands
+      (cd backend && ./yii rbac/init)
+      ;;
+
     dev)
       # Start the backend server in a new screen session
       screen -dmS back bash -c '(cd backend && ./yii serve 0.0.0.0)'
@@ -70,8 +75,9 @@ else
       (cd frontend && npm install)
 
       # Run migrations
-      # (cd backend && ./yii migrate/up --migrationPath=@yii/rbac/migrations --interactive=0)
+      (cd backend && ./yii migrate/up --migrationPath=@yii/rbac/migrations --interactive=0)
       (cd backend && ./yii migrate/up --interactive=0)
+      (cd backend && ./yii rbac/init)
 
       # Start development servers
       screen -dmS back bash -c '(cd backend && ./yii serve 0.0.0.0)'
@@ -84,11 +90,12 @@ else
       echo -e "Use this script to run commands on the project \e[3msuperfast\e[0m\n"
       echo -e "run\t dev \t\t\t Runs backend and frontend in their own screens"
       echo -e "\t migrate {rbac} \t Run the \"migrate\" passthrough. Use the command rbac to run rbac/migrations"
+      echo -e "\t rbac/init \t\t Run the commands of RbacController to initialize rbac"
       echo -e "\t kill \t\t\t Kills all screens"
       echo -e "\t install|i \t\t Runs backend and frontend install commands"
       echo -e "\t -i {back|front} \t Inspects respective screen"
       echo -e "\t rmdeps \t\t Removes project dependencies \n"
-      echo -e "First time setup (\e[3mrun lazy\e[0m): > Install dependencies > Migrate rbac > Migrate all > Run"
+      echo -e "First time setup (\e[3mrun lazy\e[0m): > Install dependencies > Migrate rbac > Migrate all > Init RBAC > Run"
       ;;
   esac
 fi
