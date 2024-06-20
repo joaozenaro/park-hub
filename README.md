@@ -261,7 +261,7 @@ classDiagram
 
 ```
 
-Sugestão
+<!-- Sugestão
 ```mermaid
 classDiagram
     direction TB
@@ -333,7 +333,7 @@ classDiagram
     ParkingSpot "1" -- "1" ParkingSpotType : has type
     Payment "1" -- "*" ParkingHistory : records
 ```
-
+-->
 ## Requisitos gerais
 - [ ] Níveis de acesso (Admin / User)
     - Cadastro feito por outro admin:
