@@ -1,13 +1,26 @@
+import { IconType } from "react-icons";
 import { MdOutlineAttachMoney, MdOutlineDirectionsCar, MdOutlineHome, MdOutlineLocalParking, MdOutlinePerson } from "react-icons/md"
+import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
-export default function SideBar() {
-  const menus = [
-    { Icon: MdOutlineHome, label: "Home", path: "/" },
-    { Icon: MdOutlineDirectionsCar, label: "Fluxo de veículos", path: "/" },
-    { Icon: MdOutlineAttachMoney, label: "Financeiro", path: "/" },
-    { Icon: MdOutlinePerson, label: "Usuários", path: "/" },
-    { Icon: MdOutlineLocalParking, label: "Vagas", path: "/" },
-  ]
+interface MenuItem {
+  Icon: IconType;
+  label: string;
+  path: string;
+}
+interface Props {
+  menus?: MenuItem[];
+}
+
+const defaultMenus: MenuItem[] = [
+  { Icon: MdOutlineHome, label: "Home", path: "/" },
+  { Icon: MdOutlineDirectionsCar, label: "Fluxo de veículos", path: "/fluxo-de-veiculos" },
+  { Icon: MdOutlineAttachMoney, label: "Financeiro", path: "/financeiro" },
+  { Icon: MdOutlinePerson, label: "Usuários", path: "/usuarios" },
+  { Icon: MdOutlineLocalParking, label: "Vagas", path: "/vagas" },
+]
+export default function SideBar({ menus = defaultMenus }: Props) {
+  const location = useLocation();
   return (
     <><div className="relative flex flex-col space-y-6 bg-clip-border  bg-zinc-900 text-white h-full w-full max-w-[18rem] px-4 shadow-xl shadow-blue-gray-900/5">
 
@@ -27,16 +40,16 @@ export default function SideBar() {
       </div>
 
       <nav className="flex flex-col gap-1 w-full font-sans text-base font-normal text-white ">
-        {menus.map((menuIten) => (
-          <button key={menuIten.label} tabIndex={0} className="flex items-center h-10  w-full p-2 rounded-lg text-start leading-tight  hover:bg-zinc-800 hover:bg-opacity-80 focus:bg-zinc-800 focus:bg-opacity-80 active:bg-zinc-800 active:bg-opacity-80 focus:text-amber-500 active:text-amber-500 outline-none">
-            <div className="grid place-items-center mr-4">
-              <menuIten.Icon className="w-6 h-6"/>
-            </div>
-            {menuIten.label}
-          </button>
+        {menus.map((menuItem) => (
+          <Link key={menuItem.label} to={menuItem.path}>
+            <button tabIndex={0} className={"flex items-center h-10 w-full p-2 rounded-md text-start leading-tight  hover:bg-zinc-800 outline-none " + (location.pathname == menuItem.path? "text-amber-500 bg-zinc-800 font-bold":"") }>
+              <div className="grid place-items-center mr-4">
+                <menuItem.Icon className="w-6 h-6" />
+              </div>
+              {menuItem.label}
+            </button>
+          </Link>
         ))}
-
-
       </nav>
     </div></>
   )
