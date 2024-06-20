@@ -7,6 +7,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { authService } from "../../services/authService";
 import axios, { AxiosError } from "axios";
 import { IApiErrorResponse } from "../../models/IApiResponse";
+import { Button } from "../../components/ui/Button";
 
 const defaultData = {
   username: "",
@@ -52,7 +53,9 @@ export default function LoginForm() {
         <input id="password" className="border p-3" type="password" value={data.password} onChange={e => handleChangeValue("password", e.target.value)} />
         <FieldError id="password" errors={errors} />
       </div>
-      <input type="submit" value="Entrar" />
+      <Button>
+        Entrar
+      </Button>
     </form>
   )
 }
