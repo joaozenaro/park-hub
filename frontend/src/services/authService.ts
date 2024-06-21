@@ -1,8 +1,9 @@
 import { ILoginForm } from "../models/ILoginForm";
+import { IUser } from "../models/IUser";
 import api from "./api";
 
 interface ILoginResponse {
-  user: any;
+  user: IUser;
   token: string;
 }
 

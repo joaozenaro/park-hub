@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 
 export default function Header() {
-  const { handleLogout } = useAuth();
+  const { user, handleLogout } = useAuth();
   return (
     <div className="h-16 shrink-0 border-b border-slate-300 bg-white sticky top-0 z-10 flex items-center px-8">
       <div className="ml-auto">
@@ -14,7 +14,7 @@ export default function Header() {
               <div className="rounded-full bg-amber-500 h-10 w-10" />
               <div className="flex flex-col items-start">
                 <p className="text-zinc-900 font-bold text-sm">
-                  Caboblo da Silva
+                  {user?.email}
                 </p>
                 <p className="text-slate-500 text-xs">Admin</p>
               </div>

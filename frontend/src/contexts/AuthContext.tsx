@@ -11,11 +11,13 @@ import { authService } from "../services/authService";
 import { ILoginForm } from "../models/ILoginForm";
 import axios, { AxiosError } from "axios";
 import { IApiErrorResponse } from "../models/IApiResponse";
+import { IUser } from "../models/IUser";
 
 interface AuthProviderProps {
   authenticated: boolean;
   token: string;
   setToken: (token: string) => void;
+  user: IUser | null;
   handleLogout: () => void;
   handleLogin: (data: ILoginForm) => Promise<void>;
 }
@@ -23,6 +25,7 @@ interface AuthProviderProps {
 const AuthContext = createContext<AuthProviderProps>({
   authenticated: false,
   token: "",
+  user: null,
   setToken: () => {},
   handleLogout: () => {},
   handleLogin: () => Promise.resolve(),
@@ -30,7 +33,16 @@ const AuthContext = createContext<AuthProviderProps>({
 
 const AuthProvider = ({ children }: PropsWithChildren) => {
   const [authenticated, setAuthenticated] = useState(false);
-  const [token, setToken_] = useState(localStorage.getItem("token") || "");
+  const [token, setToken_] = useState(localStorage.getItem("token") || '');
+  const storedUser = localStorage.getItem("user");
+  const [user, setUser_] = useState(
+    storedUser ? JSON.parse(storedUser) as IUser : null
+  );
+
+  const setUser = (newUser: IUser) => {
+    localStorage.setItem("user", JSON.stringify(newUser));
+    setUser_(newUser);
+  };
 
   const setToken = (newToken: string) => {
     setToken_(newToken);
@@ -42,6 +54,7 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
       .then((res) => {
         if (res.data.token) {
           setToken(res.data.token);
+          setUser(res.data.user);
         }
       })
       .catch((err: AxiosError<IApiErrorResponse>) => {
@@ -90,9 +103,10 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
       setToken,
       authenticated,
       handleLogin,
+      user,
       handleLogout,
     }),
-    [token, authenticated]
+    [token, authenticated, user]
   );
 
   return (
