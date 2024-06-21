@@ -59,9 +59,11 @@ class UserController extends ActiveController
 
         $user = Yii::$app->user->identity;
         $token = $this->userService->getToken($user->getId(), $user->username);
+        $userRole = Yii::$app->authManager->getRolesByUser($user->getId());
 
         return [
             'user' => $user,
+            'role' => $userRole,
             'token' => (string) $token,
         ];
     }
