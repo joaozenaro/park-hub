@@ -200,7 +200,7 @@ $ composer install
 ```
 Criar a primeira migração no banco, caso não exista
 ```bash
-$ ./yii migrate/up --migrationPath=@yii/rbac/migrations
+$ ./yii migrate/up --migrationPath=@yii/rbac/migrations # Work in progress
 $ ./yii migrate
 ```
 Executar o servidor
@@ -261,6 +261,79 @@ classDiagram
 
 ```
 
+<!-- Sugestão
+```mermaid
+classDiagram
+    direction TB
+    class User {
+        +int id
+        +string name
+        +string email
+        +string password
+        +string userType
+    }
+
+    class ParkingSpot {
+        -int id Primary Key
+        -string code -> A1, A2..
+        -string floor -> "SUB1", "SUB2"..
+        -int parkingSpotType -> Foreign Key : ParkingSpotType
+    }
+
+    class ParkingSpotType {
+        -int id Primary Key
+        -string name -> Carro, Moto, Cadeirante, Eletrico..
+        -decimal defaultPrice -> Valor padrão do tipo da vaga
+    }
+
+    class Reservation {
+        -int id Primary Key
+        -dateTime checkIn -> DataHora de entrada do veiculo 
+        -dateTime checkOut -> DataHora de saida do veiculo 
+        -int vehicleId Foreign Key : Vehicle
+        -int parkingSpotId Foreign Key : Vaga
+        -int userId -> Foreign Key : User
+    }
+
+    class Vehicle {
+        +int id
+        +string plate
+        +string model
+        +string color
+        +string type
+        +int ownerId
+    }
+
+    class Payment {
+        +int id
+        +int userId
+        +int reservationId
+        +float amount
+        +string paymentMethod
+        +datetime paymentDate
+        + GetFinalPrice() -> Calcula valor a ser pago:\n[`horario de saida > entrada + tolerancia` -> 10 * 1.5/hora]
+    }
+    
+    class ParkingHistory {
+        +int id
+        +int vehicleId
+        +int parkingSpotId
+        +datetime checkIn
+        +datetime checkOut
+        +int paymentId
+    }
+
+    User "1" -- "*" Reservation : makes
+    Vehicle "1" -- "*" Payment : makes
+    Vehicle "1" -- "*" Reservation : is part of
+    Vehicle "1" -- "*" ParkingHistory : has history
+    Reservation "1" -- "1" Payment : is paid by
+    ParkingSpot "1" -- "*" Reservation : is reserved
+    ParkingSpot "1" -- "*" ParkingHistory : has history
+    ParkingSpot "1" -- "1" ParkingSpotType : has type
+    Payment "1" -- "*" ParkingHistory : records
+```
+-->
 ## Requisitos gerais
 - [ ] Níveis de acesso (Admin / User)
     - Cadastro feito por outro admin:
@@ -299,8 +372,6 @@ classDiagram
 </summary>
 <br>
 
-https://github.com/chrisleekr/yii2-angular-boilerplate.git
-
 ## Helper script
 Execute o comando abaixo dentro do ambiente de desenvolvimento para agilizar os processos. 
 ```console
@@ -317,23 +388,4 @@ MySQL|`localhost:3306`
 PhpMyAdmin|`localhost:9010`
 Mailhog|`localhost:8025`
 
-## Rotas API
-- User Controller
-  - GET/POST/PUT/DELETE /v1/user
-  - POST /v1/user/login
-  - POST /v1/user/signup
-  - POST /v1/user/confirm
-  - POST /v1/user/password-reset-request
-  - POST /v1/user/password-reset-token-verification
-  - POST /v1/user/password-reset
-  - GET/POST /v1/me
-  - GET /v1/page/sse
-- Staff Controller
-  - GET/POST/PUT/DELETE /v1/staff
-  - POST /v1/staff/login
-  - GET /v1/staff/get-permissions
-- Setting Controller
-  - GET/POST/PUT/DELETE /v1/setting
-  - GET /v1/setting/public
- 
 </details>
