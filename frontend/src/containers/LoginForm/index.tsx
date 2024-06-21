@@ -23,8 +23,8 @@ export default function LoginForm() {
     await authService
       .login(data)
       .then((res) => {
-        if (res.data.success) {
-          setToken(res.data.data.access_token);
+        if (res.data.token) {
+          setToken(res.data.token);
           navigate("/");
         }
       })

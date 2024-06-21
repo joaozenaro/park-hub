@@ -1,13 +1,12 @@
-import { IApiResponse } from "../models/IApiResponse";
 import { ILoginForm } from "../models/ILoginForm";
 import api from "./api";
 
 interface ILoginResponse {
-  id: number,
-  access_token: string
+  user: any,
+  token: string
 }
 function login(data: ILoginForm) {
-  return api.post<IApiResponse<ILoginResponse>>("/login", {
+  return api.post<ILoginResponse>("/login", {
     LoginForm: data
   })
 }
