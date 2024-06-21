@@ -1,10 +1,10 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
-const ProtectedRoutes = () => {
+const PublicOnlyRoutes = () => {
   const { authenticated } = useAuth();
 
-	return authenticated  ? <Outlet /> : <Navigate to="/login"  replace />;
+  return authenticated ? <Navigate to="/" replace /> : <Outlet />;
 };
 
-export default ProtectedRoutes;
+export default PublicOnlyRoutes;

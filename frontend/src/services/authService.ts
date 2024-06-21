@@ -1,16 +1,23 @@
 import { ILoginForm } from "../models/ILoginForm";
+import { IUser } from "../models/IUser";
 import api from "./api";
 
 interface ILoginResponse {
-  user: any,
-  token: string
+  user: IUser;
+  token: string;
 }
+
 function login(data: ILoginForm) {
   return api.post<ILoginResponse>("/login", {
-    LoginForm: data
-  })
+    LoginForm: data,
+  });
+}
+
+function validateToken() {
+  return api.get<string>("/user/validate-token");
 }
 
 export const authService = {
-  login
-}
+  login,
+  validateToken,
+};
