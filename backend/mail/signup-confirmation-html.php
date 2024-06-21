@@ -15,10 +15,10 @@ use yii\helpers\Html;
                 <div style="text-align: center; margin-bottom: 36px">
                     <?= $appName; ?>
                 </div>
-                <div style="text-align: left; word-wrap: break-word;">Thank you for joining <?= $appName; ?>! To finish signing up, you just need to confirm that we got your email right.
+                <div style="text-align: left; word-wrap: break-word;">Você foi convidado para cadastrar-se no <?= $appName; ?>! Para confirmar o seu cadastro, siga o endereço abaixo e preencha suas informações
                     <br />
                     <br /><br />
-                    <a href="<?= Html::encode($confirmURL); ?>">Clique aqui para confirmar seu email</a>
+                    <a href="<?= Html::encode($confirmURL); ?>">Clique aqui para confirmar seu cadastro</a>
                     <br />
                     <br />Bem-vindo e muito Obrigado!
                     <br />Park Hub
