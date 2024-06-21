@@ -4,7 +4,7 @@ interface Props {
   id: string;
   errors: IValidationError[];
 }
-export function FieldError({ id, errors }: Props) {
+export default function FieldError({ id, errors }: Props) {
   const currentError = errors.find(error => error.field === id);
   if(!currentError) return null;
 
