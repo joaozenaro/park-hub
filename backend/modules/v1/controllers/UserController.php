@@ -55,6 +55,7 @@ class UserController extends ActiveController
         $model->load(Yii::$app->request->post());
         if (!$model->validate()) {
             $errors = $model->getErrors();
+            Yii::$app->response->statusCode = 422;
             return $errors;
         }
 
@@ -100,16 +101,25 @@ class UserController extends ActiveController
      */
     public function actionRequestPasswordReset()
     {
-        $authHeader = Yii::$app->request->getHeaders()->get("Authorization");
-        preg_match('/^Bearer\s+(.*?)$/', $authHeader, $matches);
-        $token = $matches[1];
+        $email = Yii::$app->request->post("email");
 
-        if ($this->userService->requestPasswordReset($token)) {
-            return "ok";
+        if (!isset($email)) {
+            Yii::$app->response->statusCode = 422;
+            return $this->asJson([
+                "message" => "Parametro email invalido."
+            ]);
+        }
+        
+        if ($this->userService->requestPasswordReset($email)) {
+            return $this->asJson([
+                "message" => "sucesso"
+            ]);
         }
 
         Yii::$app->response->statusCode = 500;
-        return "failed";
+        return $this->asJson([
+            "message" => "Server was unable to process the request."
+        ]);
     }
 
     /**
@@ -121,15 +131,20 @@ class UserController extends ActiveController
         $model->load(Yii::$app->request->post());
         if (!$model->validate()) {
             $errors = $model->getErrors();
+            Yii::$app->response->statusCode = 422;
             return $errors;
         }
 
         if ($this->userService->resetPassword($model)) {
-            return "ok";
+            return $this->asJson([
+                "message" => "sucesso"
+            ]);
         }
 
-        Yii::$app->response->statusCode = 500;
-        return "failed";
+        Yii::$app->response->statusCode = 400;
+        return $this->asJson([
+            "message" => "Server was unable to process the request."
+        ]);
     }
 
     public function actionAdminAction()
@@ -142,5 +157,4 @@ class UserController extends ActiveController
         
         return "AdminOnly";
     }
-
 }

@@ -1,5 +1,6 @@
 import { ILoginForm } from "../models/ILoginForm";
 import { IUser } from "../models/IUser";
+import { IPasswordResetPayload } from "../models/IPasswordResetPayload";
 import api from "./api";
 
 interface ILoginResponse {
@@ -17,7 +18,19 @@ function validateToken() {
   return api.get<string>("/user/validate-token");
 }
 
+interface IPasswordResetResponse {
+  user: any,
+  token: string
+}
+
+function resetPassword(data: IPasswordResetPayload) {
+  return api.post<IPasswordResetResponse>("/password-reset", {
+    PasswordResetForm: data
+  })
+}
+
 export const authService = {
   login,
   validateToken,
+  resetPassword
 };

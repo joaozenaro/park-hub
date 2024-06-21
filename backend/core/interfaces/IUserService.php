@@ -16,7 +16,7 @@ interface IUserService
 
     function confirmUser(int $id, string $auth_key): bool;
 
-    function requestPasswordReset(string $token): bool;
+    function requestPasswordReset(string $email): bool;
     
     function resetPassword(PasswordResetForm $form): bool;
 }

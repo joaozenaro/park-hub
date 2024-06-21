@@ -10,17 +10,18 @@ return [
     'id' => 'rest.api',
     'name' => 'Park Hub',
     'language' => 'pt-br',
+    'timeZone' => 'America/Sao_Paulo',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'app\controllers',
     'aliases' => [],
     'bootstrap' => [
         'log',
-        'v1'
+        'v1',
     ],
     'modules' => [
         'v1' => [
             'class' => 'app\modules\v1\Module',
-        ]
+        ],
     ],
     'container' => [
         'definitions' => [
@@ -32,7 +33,7 @@ return [
             'class' => 'yii\rbac\DbManager',
         ],
         'mailer' => [
-            'class' => \yii\symfonymailer\Mailer::class,            
+            'class' => \yii\symfonymailer\Mailer::class,
             'transport' => [
                 'dsn' => 'smtp://mailhog:1025', // DSN string for MailHog
             ],
@@ -43,7 +44,7 @@ return [
                 [
                     'class' => 'yii\log\FileTarget',
                     'levels' => ['error', 'warning'],
-                ]
+                ],
             ],
         ],
         'db' => $db,
@@ -52,11 +53,11 @@ return [
         ],
         'request' => [
             'parsers' => [
-                'application/json' => 'yii\web\JsonParser'
+                'application/json' => 'yii\web\JsonParser',
             ],
             'enableCookieValidation' => false,
             'enableCsrfCookie' => false,
-            'enableCsrfValidation' => false
+            'enableCsrfValidation' => false,
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,
@@ -66,8 +67,8 @@ return [
         'user' => [
             'identityClass' => 'app\core\models\User',
             'enableAutoLogin' => false,
-            'enableSession' => false
+            'enableSession' => false,
         ],
     ],
-    'params' => $params
+    'params' => $params,
 ];

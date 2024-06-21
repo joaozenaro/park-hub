@@ -16,7 +16,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
             'GET <module>/user/confirm' => '<module>/user/confirm',
             'GET <module>/user/admin-action' => '<module>/user/admin-action',
             'GET <module>/user/validate-token' => '<module>/user/validate-token',
-            'GET <module>/request-password-reset' => '<module>/user/request-password-reset',
+            'POST <module>/request-password-reset' => '<module>/user/request-password-reset',
             'POST <module>/password-reset' => '<module>/user/password-reset',
             // 'GET <module>/user/<alias:confirm|admin-action|validate-token>' => '<module>/user/<alias>',
             'POST <module>/<alias:login|signup|refresh-token>' => '<module>/user/<alias>',
@@ -56,7 +56,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
             'only' => ['view', 'signup', 'login', 'refresh-token', 'confirm'],
             'rules' => [
                 [
-                    'actions' => ['signup', 'login', 'confirm', 'password-reset'],
+                    'actions' => ['signup', 'login', 'confirm', 'request-password-reset', 'password-reset'],
                     'allow' => true,
                     'roles' => ['?'], // Guest users
                 ],
@@ -79,7 +79,8 @@ class Module extends \yii\base\Module implements BootstrapInterface
                 'user/login',
                 'user/signup',
                 'user/confirm',
-                'user/password-reset'
+                'user/password-reset',
+                'user/request-password-reset'
             ]
         ];
 

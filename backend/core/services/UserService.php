@@ -7,6 +7,8 @@ use app\core\models\auth\SignupForm;
 use app\core\models\PasswordResetForm;
 use app\core\models\User;
 use app\core\types\UserStatus;
+use DateTime;
+use DateTimeZone;
 use Exception;
 use Firebase\JWT\JWT;
 use Yii;
@@ -63,10 +65,10 @@ class UserService implements IUserService
             ->one();
     }
 
-    public function requestPasswordReset(string $token): bool
+    public function requestPasswordReset(string $email): bool
     {
         /** @var User */
-        $user = User::findIdentityByAccessToken($token);
+        $user = $this->getUserByUsernameOrEmail($email);
 
         if (isset($user)) {
             $user->generatePasswordResetToken();
@@ -86,15 +88,26 @@ class UserService implements IUserService
         $user = User::findIdentity($form->id);
         
         if (isset($user) && $user->password_reset_token === $form->token) {
-            $user->password_reset_token = null;
-            $user->setPassword($form->password);
-            $user->generateAuthKey();
-
-            if (!$user->save()) {
-                throw new \yii\db\Exception($user->firstErrors);
+            preg_match('/\_(.*)$/', $user->password_reset_token, $matches);
+            if (!isset($matches[1])) {
+                return false;
             }
-            
-            return true;
+    
+            $tokenDateTime = new DateTime('@' . $matches[1]);
+            $tokenDateTime->setTimezone(new DateTimeZone(Yii::$app->formatter->timeZone));
+
+            // Checks if now is within the token expiration
+            if (new DateTime() <= $tokenDateTime) {
+                $user->password_reset_token = null;
+                $user->setPassword($form->password);
+                $user->generateAuthKey();
+
+                if (!$user->save()) {
+                    throw new \yii\db\Exception($user->firstErrors);
+                }
+
+                return true;
+            }
         }
 
         return false;

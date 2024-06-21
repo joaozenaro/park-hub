@@ -57,10 +57,10 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
           setUser(res.data.user);
         }
       })
-      .catch((err: AxiosError<IApiErrorResponse>) => {
+      .catch((err: AxiosError<any>) => {
         if (axios.isAxiosError(err) && err.response) {
           // TO DO: show error somewhere
-          console.log(JSON.parse(err.response.data.data.message));
+          console.log(JSON.parse(err.response.data.message));
         } else {
           console.error(err);
         }
