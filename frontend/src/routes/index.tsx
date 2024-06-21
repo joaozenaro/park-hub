@@ -7,6 +7,8 @@ import ProtectedRoutes from "./ProtectedRoutes";
 import Login from "../pages/Login";
 import PasswordReset from "../pages/PasswordReset";
 import SidebarPageLayout from "../components/layout/SidebarPageLayout";
+import Profile from "../pages/Profile";
+import PublicOnlyRoutes from "./PublicOnlyRoutes";
 
 const router = createBrowserRouter([
   {
@@ -23,14 +25,20 @@ const router = createBrowserRouter([
       },
       {
         path: "/profile",
-        element: <p>Profile</p>,
+        element: <Profile />,
       }, 
     ]
   },
   {
-    path: '/login',
-    element: <Login />,
+    element: <PublicOnlyRoutes />,
+    children: [
+      {
+        path: '/login',
+        element: <Login />,
+      },
+    ]
   },
+  
   {
     path: '/about',
     element: <About />,
