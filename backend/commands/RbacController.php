@@ -1,35 +1,30 @@
 <?php
-/**
- * RBAC Controller
- *
- * Assigning a role to specific user
- *
- * $ ./yii rbac/assign {role} {username}
- * $ ./yii rbac/assign admin chris
- * $ ./yii rbac/assign staff alex
- */
 
 namespace app\commands;
 
-use app\models\User;
-use yii\base\InvalidParamException;
+use Yii;
 use yii\console\Controller;
 
 class RbacController extends Controller
 {
-    public function actionAssign($role, $username)
+    public function actionInit()
     {
-        $user = User::find()->where(['username' => $username])->one();
-        if (!$user) {
-            throw new InvalidParamException("There is no user \"$username\".");
-        }
+        $auth = Yii::$app->authManager;
+        $auth->removeAll();
 
-        $auth = \Yii::$app->authManager;
-        $roleObject = $auth->getRole($role);
-        if (!$roleObject) {
-            throw new InvalidParamException("There is no role \"$role\".");
-        }
+        $adminRole = $auth->createRole('admin');
+        $userRole = $auth->createRole('user');
+        $auth->add($adminRole);
+        $auth->add($userRole);
 
-        $auth->assign($roleObject, $user->id);
+        $manageUsers = $auth->createPermission('manageUsers');
+        $manageUsers->description = 'Manage users';
+        $auth->add($manageUsers);
+
+        // Assign permissions to roles
+        $auth->addChild($adminRole, $manageUsers);
+
+        $auth->assign($adminRole, 1); // Fixed admin id
+        $auth->assign($userRole, 2); // Fixed user id
     }
 }

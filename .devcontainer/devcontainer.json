@@ -9,7 +9,10 @@
     "customizations": {
         "vscode": {
             "settings": {
-                "terminal.integrated.defaultProfile.linux": "bash"
+                "terminal.integrated.defaultProfile.linux": "bash",
+                "[php]": {
+                    "editor.defaultFormatter": "kokororin.vscode-phpfmt"
+                }
             },
             "extensions": [
                 "csstools.postcss",
@@ -17,8 +20,9 @@
                 "bradlc.vscode-tailwindcss",
                 "xdebug.php-debug",
                 "bmewburn.vscode-intelephense-client",
-                "zobo.php-intellisense",
-                "EditorConfig.EditorConfig"
+                "EditorConfig.EditorConfig",
+                "MehediDracula.php-namespace-resolver",
+                "kokororin.vscode-phpfmt"
             ]
         }
     },

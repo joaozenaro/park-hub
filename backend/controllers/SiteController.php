@@ -20,18 +20,13 @@ class SiteController extends Controller
 
     public function actionError()
     {
-        $response = new Response();
-        $response->statusCode = 400;
-        $response->data = json_encode(
-            [
-                'name' => 'Bad Request',
-                'message' => Yii::t('app', 'The system could not process your request. Please check and try again.'),
-                'code' => 0,
-                'status' => 400,
-                'type' => 'yii\\web\\BadRequestHttpException'
-            ]
-        );
-
-        return $response;
+        $exception = \Yii::$app->errorHandler->exception;
+        return $this->asJson([
+            'name' => 'Error Action',
+            'message' => $exception->getMessage(),
+            'code' => $exception->getCode(),
+            'status' => $exception->statusCode,
+            'type' => get_class($exception),
+        ]);
     }
 }
