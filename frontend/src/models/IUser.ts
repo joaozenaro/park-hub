@@ -1,6 +1,7 @@
 export interface IUser {
   id: number;
   username: string;
+  name: string;
   access_token_expired_at: string | null;
   email: string;
   unconfirmed_email: string | null;
