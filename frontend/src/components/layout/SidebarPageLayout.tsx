@@ -1,12 +1,11 @@
 import { PropsWithChildren } from "react";
+import SideBar from "./SideBar";
 
 export default function SidebarPageLayout({ children }: PropsWithChildren) {
   return (
-    <div className="bg-red-500 flex flex-1">
-      <div className="bg-zinc-900">
-        <p>Sidebar</p>
-      </div>
-      <div>
+    <div className="flex flex-1">
+      <SideBar />
+      <div className="flex flex-1 flex-col overflow-auto">
         {children}
       </div>
     </div>
