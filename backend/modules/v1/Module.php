@@ -13,10 +13,11 @@ class Module extends \yii\base\Module implements BootstrapInterface
     {
         $app->getUrlManager()->addRules([
             'GET ping' => 'site/ping',
-            'GET <module>/user/view/<id:\d+>' => '<module>/user/view',
             'GET <module>/user/confirm' => '<module>/user/confirm',
             'GET <module>/user/admin-action' => '<module>/user/admin-action',
             'GET <module>/user/validate-token' => '<module>/user/validate-token',
+            'GET <module>/request-password-reset' => '<module>/user/request-password-reset',
+            'POST <module>/password-reset' => '<module>/user/password-reset',
             // 'GET <module>/user/<alias:confirm|admin-action|validate-token>' => '<module>/user/<alias>',
             'POST <module>/<alias:login|signup|refresh-token>' => '<module>/user/<alias>',
         ], false);
@@ -55,19 +56,19 @@ class Module extends \yii\base\Module implements BootstrapInterface
             'only' => ['view', 'signup', 'login', 'refresh-token', 'confirm'],
             'rules' => [
                 [
-                    'actions' => ['signup', 'login', 'confirm'],
+                    'actions' => ['signup', 'login', 'confirm', 'password-reset'],
                     'allow' => true,
-                    'roles' => ['?'],
+                    'roles' => ['?'], // Guest users
                 ],
                 [
-                    'actions' => ['view', 'refresh-token'],
+                    'actions' => ['refresh-token'],
                     'allow' => true,
-                    'roles' => ['@'],
+                    'roles' => ['@'], // Authenticated users
                 ],
                 [
                     'actions' => ['admin-action'],
                     'allow' => true,
-                    'roles' => ['admin'],
+                    'roles' => ['admin'], // Specific roles
                 ],
             ],
         ];
@@ -78,6 +79,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
                 'user/login',
                 'user/signup',
                 'user/confirm',
+                'user/password-reset'
             ]
         ];
 

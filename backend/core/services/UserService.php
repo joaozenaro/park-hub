@@ -4,6 +4,7 @@ namespace app\core\services;
 
 use app\core\interfaces\IUserService;
 use app\core\models\auth\SignupForm;
+use app\core\models\PasswordResetForm;
 use app\core\models\User;
 use app\core\types\UserStatus;
 use Exception;
@@ -62,24 +63,41 @@ class UserService implements IUserService
             ->one();
     }
 
-    private function sendConfirmationEmail(int $id, string $auth_key, string $email)
+    public function requestPasswordReset(string $token): bool
     {
-        $confirmURL = 'http://localhost/api/v1/user/confirm?id=' . $id . '&auth_key=' . $auth_key;
+        /** @var User */
+        $user = User::findIdentityByAccessToken($token);
 
-        $email = \Yii::$app->mailer
-            ->compose(
-                ['html' => 'signup-confirmation-html'],
-                [
-                    'appName' => \Yii::$app->name,
-                    'confirmURL' => $confirmURL,
-                ]
-            )
-            ->setTo($email)
-            ->setFrom(['support@parkhub.com' => \Yii::$app->name])
-            ->setSubject('Signup confirmation')
-            ->send();
+        if (isset($user)) {
+            $user->generatePasswordResetToken();
+            if (!$user->save()) {
+                throw new \yii\db\Exception($user->firstErrors);
+            }
 
-        return $email;
+            return $this->sendRequestPasswordResetEmail($user->getPrimaryKey(), $user->password_reset_token, $user->email);
+        }
+
+        return false;
+    }
+
+    public function resetPassword(PasswordResetForm $form): bool
+    {
+        /** @var User */
+        $user = User::findIdentity($form->id);
+        
+        if (isset($user) && $user->password_reset_token === $form->token) {
+            $user->password_reset_token = null;
+            $user->setPassword($form->password);
+            $user->generateAuthKey();
+
+            if (!$user->save()) {
+                throw new \yii\db\Exception($user->firstErrors);
+            }
+            
+            return true;
+        }
+
+        return false;
     }
 
     public function confirmUser(int $id, string $auth_key): bool
@@ -107,5 +125,45 @@ class UserService implements IUserService
         }
 
         return false;
+    }
+
+    private function sendRequestPasswordResetEmail(int $id, string $token, string $email)
+    {
+        $confirmURL = 'http://localhost/password-reset?id=' . $id . '&token=' . $token;
+        
+        $email = \Yii::$app->mailer
+            ->compose(
+                ['html' => 'request-password-reset-html'],
+                [
+                    'appName' => \Yii::$app->name,
+                    'confirmURL' => $confirmURL,
+                ]
+                )
+                ->setTo($email)
+                ->setFrom(['support@parkhub.com' => \Yii::$app->name])
+                ->setSubject('Redefinição de senha')
+                ->send();
+    
+        return $email;
+    }
+            
+    private function sendConfirmationEmail(int $id, string $auth_key, string $email)
+    {
+        $confirmURL = 'http://localhost/api/v1/user/confirm?id=' . $id . '&auth_key=' . $auth_key;
+                
+        $email = \Yii::$app->mailer
+            ->compose(
+                ['html' => 'signup-confirmation-html'],
+                [
+                    'appName' => \Yii::$app->name,
+                    'confirmURL' => $confirmURL,
+                ]
+            )
+            ->setTo($email)
+            ->setFrom(['support@parkhub.com' => \Yii::$app->name])
+            ->setSubject('Confirmação de cadastro')
+            ->send();
+
+        return $email;
     }
 }

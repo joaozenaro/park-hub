@@ -5,6 +5,7 @@ import Confirm from "../pages/Confirm";
 import NotFound from "../pages/NotFound";
 import ProtectedRoutes from "./ProtectedRoutes";
 import Login from "../pages/Login";
+import PasswordReset from "../pages/PasswordReset";
 import SidebarPageLayout from "../components/layout/SidebarPageLayout";
 
 const router = createBrowserRouter([
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
   {
     path: '/confirm',
     element: <Confirm />
+  },
+  {
+    path: '/password-reset',
+    element: <PasswordReset />
   },
   {
     path: '*',
