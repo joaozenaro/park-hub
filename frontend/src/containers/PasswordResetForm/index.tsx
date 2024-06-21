@@ -50,7 +50,7 @@ export default function PasswordResetForm() {
         if (res) {
           handleLogout();
 
-          navigate("/login?redo-login=true");
+          navigate("/login");
         }
       })
       .catch((err: AxiosError<any>) => {
