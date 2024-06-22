@@ -5,6 +5,7 @@ namespace app\modules\v1\controllers;
 use app\core\interfaces\IUserService;
 use app\core\models\User;
 use app\core\models\auth\{LoginForm, SignupForm};
+use app\core\models\PasswordResetForm;
 use Yii;
 use yii\rest\ActiveController;
 
@@ -54,6 +55,7 @@ class UserController extends ActiveController
         $model->load(Yii::$app->request->post());
         if (!$model->validate()) {
             $errors = $model->getErrors();
+            Yii::$app->response->statusCode = 422;
             return $errors;
         }
 
@@ -96,6 +98,57 @@ class UserController extends ActiveController
         return $this->redirect(['/confirm']);
     }
 
+    /**
+     * Action to handle the user request of changing their password
+     */
+    public function actionRequestPasswordReset()
+    {
+        $email = Yii::$app->request->post("email");
+
+        if (!isset($email)) {
+            Yii::$app->response->statusCode = 422;
+            return $this->asJson([
+                "message" => "Parametro email invalido."
+            ]);
+        }
+        
+        if ($this->userService->requestPasswordReset($email)) {
+            return $this->asJson([
+                "message" => "sucesso"
+            ]);
+        }
+
+        Yii::$app->response->statusCode = 500;
+        return $this->asJson([
+            "message" => "Server was unable to process the request."
+        ]);
+    }
+
+    /**
+     * Action to effectively change the user's password
+     */
+    public function actionPasswordReset()
+    {
+        $model = new PasswordResetForm();
+        $model->load(Yii::$app->request->post());
+        if (!$model->validate()) {
+            $errors = $model->getErrors();
+            Yii::$app->response->statusCode = 422;
+            return $errors;
+        }
+
+        if ($this->userService->resetPassword($model)) {
+            return $this->asJson([
+                "message" => "sucesso"
+            ]);
+        }
+
+        Yii::$app->response->statusCode = 400;
+        return $this->asJson([
+            "message" => "\"id\" ou \"token\" inválido."
+        ]);
+    }
+
     public function actionAdminAction()
     {
         $usr = Yii::$app->user;
@@ -106,5 +159,4 @@ class UserController extends ActiveController
         
         return "AdminOnly";
     }
-
 }

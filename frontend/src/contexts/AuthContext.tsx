@@ -9,9 +9,9 @@ import {
 import api from "../services/api";
 import { authService } from "../services/authService";
 import { ILoginForm } from "../models/ILoginForm";
-import axios, { AxiosError } from "axios";
-import { IApiErrorResponse } from "../models/IApiResponse";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import { IUser } from "../models/IUser";
+import { IPasswordResetPayload } from "../models/IPasswordResetPayload";
 
 interface AuthProviderProps {
   authenticated: boolean;
@@ -20,14 +20,16 @@ interface AuthProviderProps {
   user: IUser | null;
   handleLogout: () => void;
   handleLogin: (data: ILoginForm) => Promise<void>;
+  handlePasswordReset: (data: IPasswordResetPayload) => Promise<AxiosResponse<any>>;
 }
 
 const AuthContext = createContext<AuthProviderProps>({
   authenticated: false,
   token: "",
   user: null,
-  setToken: () => {},
-  handleLogout: () => {},
+  setToken: () => { },
+  handleLogout: () => { },
+  handlePasswordReset: (data: IPasswordResetPayload) => Promise.resolve() as any,
   handleLogin: () => Promise.resolve(),
 });
 
@@ -57,10 +59,10 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
           setUser(res.data.user);
         }
       })
-      .catch((err: AxiosError<IApiErrorResponse>) => {
+      .catch((err: AxiosError<any>) => {
         if (axios.isAxiosError(err) && err.response) {
           // TO DO: show error somewhere
-          console.log(JSON.parse(err.response.data.data.message));
+          console.log(JSON.parse(err.response.data.message));
         } else {
           console.error(err);
         }
@@ -73,6 +75,12 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
     localStorage.clear();
     setAuthenticated(false);
   };
+
+  const handlePasswordReset = (data: IPasswordResetPayload) => {
+    handleLogout();
+    return authService
+      .resetPassword(data)
+  }
 
   useEffect(() => {
     if (token) {
@@ -105,6 +113,7 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
       handleLogin,
       user,
       handleLogout,
+      handlePasswordReset,
     }),
     [token, authenticated, user]
   );

@@ -10,23 +10,6 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 
-/**
- * This is the model class for table "user".
- *
- * @property int $id
- * @property string $username
- * @property string|null $avatar
- * @property string $auth_key
- * @property string $password_hash
- * @property string|null $password_reset_token
- * @property string|null $email
- * @property int|null $status
- * @property int|null $created_at
- * @property int|null $updated_at
- *
- * @property-write string $password
- * @property-read string $authKey
- */
 class User extends ActiveRecord implements IdentityInterface
 {
     public static function tableName()
@@ -48,7 +31,6 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             ['status', 'default', 'value' => UserStatus::PENDING],
-            ['status', 'in', 'range' => [UserStatus::ACTIVE, UserStatus::PENDING]],
             [['username'], 'string', 'max' => 60],
         ];
     }
@@ -101,7 +83,10 @@ class User extends ActiveRecord implements IdentityInterface
 
     public function generatePasswordResetToken()
     {
-        $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
+        $passResetToken = str_replace("_", "-", Yii::$app->security->generateRandomString());
+        $expiration = new DateTime();
+        $expiration->modify('+1 hour');
+        $this->password_reset_token = $passResetToken . '_' . $expiration->getTimestamp();
     }
 
     public function fields()

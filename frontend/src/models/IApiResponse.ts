@@ -1,13 +1,9 @@
 export interface IApiErrorResponse {
-  success: false;
+  name: string;
+  message: string;
+  code: number;
   status: number;
-  data: {
-    name: string;
-    message: string;
-    code: number;
-    status: number;
-    type: string;
-  };
+  type: string;
 }
 
 export interface IApiResponse<T> {
