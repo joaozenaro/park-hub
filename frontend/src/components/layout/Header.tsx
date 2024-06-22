@@ -14,9 +14,9 @@ export default function Header() {
               <div className="rounded-full bg-amber-500 h-10 w-10" />
               <div className="flex flex-col items-start">
                 <p className="text-zinc-900 font-bold text-sm">
-                  {user?.email}
+                  {user?.name}
                 </p>
-                <p className="text-slate-500 text-xs">Admin</p>
+                <p className="text-slate-500 text-xs">{user?.email}</p>
               </div>
               <MdKeyboardArrowDown className="h-6 w-6 text-slate-500" />
             </button>
