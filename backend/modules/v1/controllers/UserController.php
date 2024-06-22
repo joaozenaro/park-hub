@@ -118,9 +118,9 @@ class UserController extends ActiveController
             ]);
         }
 
-        Yii::$app->response->statusCode = 500;
+        Yii::$app->response->statusCode = 400;
         return $this->asJson([
-            "message" => "Server was unable to process the request."
+            "message" => "Não foi possível enviar o email."
         ]);
     }
 
