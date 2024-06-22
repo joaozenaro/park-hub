@@ -11,9 +11,11 @@ import { Text } from "../components/ui/Text";
 import _ from "lodash";
 import { Select } from "../components/form/Select";
 import { useState } from "react";
+import { Dialog } from "../components/ui/Dialog";
 
 export default function Home() {
   const [floor, setFloor] = useState("");
+  const [openModal, setOpenModal] = useState(false);
   const SPOTS_COLUMNS = 12;
   const spots = [
     { id: 1, code: "A1" },
@@ -63,6 +65,12 @@ export default function Home() {
 
   return (
     <div className="flex flex-1">
+      <Dialog.Root open={openModal} onOpenChange={setOpenModal}>
+        <Dialog.Content title="Nova reserva">
+          <Text>Eia eia eia</Text>
+        </Dialog.Content>
+      </Dialog.Root>
+
       <div className="flex flex-1 flex-col bg-slate-200 p-10 space-y-10">
         <div>
           <div className="flex mb-6">
@@ -141,7 +149,7 @@ export default function Home() {
             <h3>Ações</h3>
           </Heading>
           
-          <Button className="w-full items-start">Nova reserva</Button>
+          <Button className="w-full items-start" onClick={() => setOpenModal(true)}>Nova reserva</Button>
           <Button type="secondary" className="w-full">Registrar saída</Button>
         </div>
       </div>
