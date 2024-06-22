@@ -10,6 +10,7 @@ import SidebarPageLayout from "../components/layout/SidebarPageLayout";
 import Profile from "../pages/Profile";
 import PublicOnlyRoutes from "./PublicOnlyRoutes";
 import ForgotPassword from "../pages/ForgotPassword";
+import Users from "../pages/Users";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
           {
             path: "/",
             element: <Home />,
+          },
+          {
+            path: "/usuarios",
+            element: <Users />,
           },
         ]
       },
