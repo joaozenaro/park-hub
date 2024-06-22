@@ -13,7 +13,7 @@ class RbacController extends Controller
         $auth->removeAll();
 
         $adminRole = $auth->createRole('admin');
-        $userRole = $auth->createRole('user');
+        $userRole = $auth->createRole('employee');
         $auth->add($adminRole);
         $auth->add($userRole);
 
