@@ -6,6 +6,10 @@ import { Button } from "../../components/ui/Button";
 import { FormControl } from "../../components/form/FormControl";
 import { TextInput } from "../../components/form/TextInput";
 import { Loading } from "../../components/ui/Loading";
+import { MdOutlineEmail } from "react-icons/md";
+import { AiOutlineLock } from "react-icons/ai";
+import { Link } from "react-router-dom";
+import Logo from "../../components/ui/Logo";
 
 const defaultData = {
   username: "",
@@ -21,18 +25,18 @@ export default function LoginForm() {
       validator: isValidLogin,
     });
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="p-8">
+    <div>
+      <h1 className="text-4xl font-medium flex items-center justify-center mb-2 mt-8">Login</h1>
+      <form onSubmit={handleSubmit}>
         <FormControl id="username" label="Username" errors={errors}>
           <TextInput.Root>
             <TextInput.Icon>
-              {/* <AiOutlineUser /> */}
-              <p>:0</p>
+              <MdOutlineEmail />
             </TextInput.Icon>
             <TextInput.Input
               value={data.username}
               onChange={(e) => handleChangeValue("username", e.target.value)}
-              placeholder="Digite o username..."
+              placeholder="Digite o seu email"
               required
             />
           </TextInput.Root>
@@ -40,23 +44,27 @@ export default function LoginForm() {
         <FormControl id="password" label="Senha" errors={errors}>
           <TextInput.Root>
             <TextInput.Icon>
-              {/* <AiOutlineLock /> */}
-              <p>:D</p>
+              <AiOutlineLock />
+
             </TextInput.Icon>
             <TextInput.Input
               type="password"
               value={data.password}
               onChange={(e) => handleChangeValue("password", e.target.value)}
-              placeholder="******"
+              placeholder="*******"
               required
             />
           </TextInput.Root>
         </FormControl>
+        <Button type="brand" className="w-full justify-center mt-6">
+          {loading && <Loading size="sm" />}
+          Entrar
+        </Button>
+      </form>
+      <Link to="/esqueceu-sua-senha" className="group flex justify-center text-slate-500 hover:underline outline-none pt-5">Esqueceu a senha?</Link>
+      <div className="flex justify-center mt-10">
+        <Logo />
       </div>
-      <Button>
-        {loading && <Loading size="sm" />}
-        Entrar
-      </Button>
-    </form>
+    </div>
   );
 }
