@@ -13,10 +13,15 @@ class Module extends \yii\base\Module implements BootstrapInterface
     {
         $app->getUrlManager()->addRules([
             'GET ping' => 'site/ping',
-            'POST <module>/<alias:signup|complete-signup>' => '<module>/user/<alias>',
+            'POST <module>/<alias:login|refresh-token|signup|complete-signup>' => '<module>/user/<alias>',
             'POST <module>/<alias:request-password-reset|password-reset>' => '<module>/user/<alias>',
-            'POST <module>/<alias:login|refresh-token>' => '<module>/user/<alias>',
             'GET <module>/user/validate-token' => '<module>/user/validate-token',
+
+            'GET <module>/spot/<id:\d+>' => '<module>/spot/view',
+            'POST <module>/spot/<alias>/<id:\d+>' => '<module>/spot/<alias>',
+
+            'GET <module>/spot-type/<id:\d+>' => '<module>/spot-type/view',
+            'POST <module>/spot-type/<alias>/<id:\d+>' => '<module>/spot-type/<alias>',
         ], false);
     }
 
