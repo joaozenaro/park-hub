@@ -24,8 +24,11 @@ function resetPassword(data: IPasswordResetPayload) {
     PasswordResetForm: data
   })
 }
+interface IRequestPasswordChangeResponse {
+  message: string;
+}
 function requestPasswordChange(email: String) {
-  return api.post<IApiResponse<any>>("/request-password-reset", {
+  return api.post<IApiResponse<IRequestPasswordChangeResponse>>("/request-password-reset", {
     email
   })
 }
