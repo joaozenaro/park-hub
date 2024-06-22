@@ -143,7 +143,7 @@ class UserController extends ActiveController
 
         Yii::$app->response->statusCode = 400;
         return $this->asJson([
-            "message" => "Server was unable to process the request."
+            "message" => "\"id\" ou \"token\" inválido."
         ]);
     }
 
