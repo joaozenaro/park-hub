@@ -61,7 +61,7 @@ export default function LoginForm() {
           Entrar
         </Button>
       </form>
-      <Link to="../esqueceu-sua-senha" className="group flex justify-center text-slate-500 hover:underline outline-none pt-5">Esqueceu a senha?</Link>
+      <Link to="/esqueceu-sua-senha" className="group flex justify-center text-slate-500 hover:underline outline-none pt-5">Esqueceu a senha?</Link>
       <div className="flex justify-center mt-10">
         <Logo />
       </div>
