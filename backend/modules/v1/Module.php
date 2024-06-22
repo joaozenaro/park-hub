@@ -13,12 +13,10 @@ class Module extends \yii\base\Module implements BootstrapInterface
     {
         $app->getUrlManager()->addRules([
             'GET ping' => 'site/ping',
-            'GET <module>/user/confirm' => '<module>/user/confirm',
-            'GET <module>/user/admin-action' => '<module>/user/admin-action',
+            'POST <module>/<alias:signup|complete-signup>' => '<module>/user/<alias>',
+            'POST <module>/<alias:request-password-reset|password-reset>' => '<module>/user/<alias>',
+            'POST <module>/<alias:login|refresh-token>' => '<module>/user/<alias>',
             'GET <module>/user/validate-token' => '<module>/user/validate-token',
-            'POST <module>/request-password-reset' => '<module>/user/request-password-reset',
-            'POST <module>/password-reset' => '<module>/user/password-reset',
-            'POST <module>/<alias:login|signup|refresh-token>' => '<module>/user/<alias>',
         ], false);
     }
 
@@ -36,10 +34,8 @@ class Module extends \yii\base\Module implements BootstrapInterface
             'class' => Cors::class,
             'cors' => [
                 'Origin' => ['*'],
-                #'Access-Control-Allow-Origin' => ['*'],
                 'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
                 'Access-Control-Request-Headers' => ['*'],
-                #'Access-Control-Allow-Credentials' => null,
                 'Access-Control-Max-Age' => 86400,
                 'Access-Control-Expose-Headers' => [
                     'X-Pagination-Current-Page',
@@ -52,20 +48,20 @@ class Module extends \yii\base\Module implements BootstrapInterface
 
         $behaviors['access'] = [
             'class' => AccessControl::class,
-            'only' => ['view', 'signup', 'login', 'refresh-token', 'confirm'],
+            'only' => ['view', 'login', 'refresh-token'],
             'rules' => [
                 [
-                    'actions' => ['signup', 'login', 'confirm', 'request-password-reset', 'password-reset'],
+                    'actions' => ['login', 'request-password-reset', 'password-reset'],
                     'allow' => true,
                     'roles' => ['?'], // Guest users
                 ],
                 [
-                    'actions' => ['refresh-token'],
+                    'actions' => [],
                     'allow' => true,
                     'roles' => ['@'], // Authenticated users
                 ],
                 [
-                    'actions' => ['admin-action'],
+                    'actions' => ['signup'],
                     'allow' => true,
                     'roles' => ['admin'], // Specific roles
                 ],
@@ -76,8 +72,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
             'class' => HttpBearerAuth::class,
             'except' => [
                 'user/login',
-                'user/signup',
-                'user/confirm',
+                'user/complete-signup',
                 'user/password-reset',
                 'user/request-password-reset'
             ]
