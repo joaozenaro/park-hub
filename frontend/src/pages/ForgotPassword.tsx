@@ -32,7 +32,6 @@ export default function ForgotPassword() {
       })
   }
 
-  // if (!message) 
   return (
     <div className="flex flex-1 bg-zinc-900">
       {!message && (
@@ -45,7 +44,6 @@ export default function ForgotPassword() {
                 <TextInput.Root>
                   <TextInput.Icon>
                     <MdOutlineEmail />
-
                   </TextInput.Icon>
                   <TextInput.Input
                     value={email}
@@ -59,16 +57,16 @@ export default function ForgotPassword() {
                 Enviar
               </Button>
               <div className="flex min-w-0 max-w-45 justify-center">
-                <Link to="/Login" className="group flex justify-center pt-1 text-slate-500 hover:underline outline-none "> <MdArrowBack className="h-6 w-6 mr-1 text-zinc-900 group-hover:text-amber-500 " />  Voltar para o Login </Link>
+                <Link to="/login" className="group flex justify-center pt-1 text-slate-500 hover:underline outline-none "> <MdArrowBack className="h-6 w-6 mr-1 text-zinc-900 group-hover:text-amber-500 " />  Voltar para o Login </Link>
               </div>
             </div>
           </form>
-          <div className="bg-black flex justify-center">
+          <div className="flex justify-center">
             <Logo />
           </div>
         </div>
       )}
-      {message && <VerifyEmail />}
+      {message && <VerifyEmail onGoBack={() => setMessage('')} email={email} />}
     </div>
   )
 
