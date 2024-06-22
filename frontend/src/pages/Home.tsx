@@ -9,8 +9,11 @@ import { Button } from "../components/ui/Button";
 import Heading from "../components/ui/Heading";
 import { Text } from "../components/ui/Text";
 import _ from "lodash";
+import { Select } from "../components/form/Select";
+import { useState } from "react";
 
 export default function Home() {
+  const [floor, setFloor] = useState("");
   const SPOTS_COLUMNS = 12;
   const spots = [
     { id: 1, code: "A1" },
@@ -37,16 +40,23 @@ export default function Home() {
     { id: 22, code: "A22" },
     { id: 23, code: "A23" },
     { id: 24, code: "A24" },
-    { id: 25, code: 'A25'},
-    { id: 26, code: 'A26'},
-    { id: 27, code: 'A27'},
-    { id: 29, code: 'A29'},
-    { id: 30, code: 'A30'},
-    { id: 31, code: 'A31'},
-    { id: 32, code: 'A32'},
-    { id: 33, code: 'A33'},
-    { id: 34, code: 'A34'},
-    { id: 35, code: 'A35'},
+    { id: 25, code: "A25" },
+    { id: 26, code: "A26" },
+    { id: 27, code: "A27" },
+    { id: 29, code: "A29" },
+    { id: 30, code: "A30" },
+    { id: 31, code: "A31" },
+    { id: 32, code: "A32" },
+    { id: 33, code: "A33" },
+    { id: 34, code: "A34" },
+    { id: 35, code: "A35" },
+  ];
+
+  const selectItems = [
+    { value: "1", label: "SUB1" },
+    { value: "2", label: "SUB2" },
+    { value: "3", label: "SUB3" },
+    { value: "4", label: "SUB4" },
   ];
 
   const parkingLots = _.chunk(spots, SPOTS_COLUMNS * 2);
@@ -109,6 +119,20 @@ export default function Home() {
                 required
               />
             </TextInput.Root>
+          </FormControl>
+          <FormControl id="pass" label="Andar" errors={[]}>
+            <Select.Root
+              value={floor}
+              onChange={setFloor}
+              placeholder="Selecione o andar"
+            >
+              <Select.Item value={null}>Selecione o andar</Select.Item>
+              {selectItems.map((item) => (
+                <Select.Item value={item.value} key={item.value}>
+                  {item.label}
+                </Select.Item>
+              ))}
+            </Select.Root>
           </FormControl>
           <Button type="tertiary">Limpar filtros</Button>
         </div>
