@@ -9,9 +9,9 @@ import {
 import api from "../services/api";
 import { authService } from "../services/authService";
 import { ILoginForm } from "../models/ILoginForm";
-import axios, { AxiosError } from "axios";
-import { IApiErrorResponse } from "../models/IApiResponse";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import { IUser } from "../models/IUser";
+import { IPasswordResetPayload } from "../models/IPasswordResetPayload";
 
 interface AuthProviderProps {
   authenticated: boolean;
@@ -20,14 +20,16 @@ interface AuthProviderProps {
   user: IUser | null;
   handleLogout: () => void;
   handleLogin: (data: ILoginForm) => Promise<void>;
+  handlePasswordReset: (data: IPasswordResetPayload) => Promise<AxiosResponse<any>>;
 }
 
 const AuthContext = createContext<AuthProviderProps>({
   authenticated: false,
   token: "",
   user: null,
-  setToken: () => {},
-  handleLogout: () => {},
+  setToken: () => { },
+  handleLogout: () => { },
+  handlePasswordReset: (data: IPasswordResetPayload) => Promise.resolve() as any,
   handleLogin: () => Promise.resolve(),
 });
 
@@ -74,6 +76,12 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
     setAuthenticated(false);
   };
 
+  const handlePasswordReset = (data: IPasswordResetPayload) => {
+    handleLogout();
+    return authService
+      .resetPassword(data)
+  }
+
   useEffect(() => {
     if (token) {
       api.defaults.headers.Authorization = "Bearer " + token;
@@ -105,6 +113,7 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
       handleLogin,
       user,
       handleLogout,
+      handlePasswordReset,
     }),
     [token, authenticated, user]
   );

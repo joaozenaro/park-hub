@@ -5,14 +5,14 @@ import { FormControl } from "../../components/form/FormControl";
 import { TextInput } from "../../components/form/TextInput";
 import { FormEvent, useState } from "react";
 import { IPasswordResetPayload } from "../../models/IPasswordResetPayload";
-import { authService } from "../../services/authService";
 import axios, { AxiosError } from "axios";
 import { IValidationError } from "../../models/IValidationReturn";
 import { useAuth } from "../../contexts/AuthContext";
+import { MdOutlineKey, MdOutlineLock } from "react-icons/md";
 
 export default function PasswordResetForm() {
   const navigate = useNavigate();
-  const { handleLogout } = useAuth();
+  const { handlePasswordReset } = useAuth();
   const [searchParams] = useSearchParams();
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<IValidationError[]>([]);
@@ -44,12 +44,9 @@ export default function PasswordResetForm() {
 
     setLoading(true);
 
-    await authService
-      .resetPassword(data)
+    await handlePasswordReset(data)
       .then((res) => {
-        if (res) {
-          handleLogout();
-
+        if (res.data) {
           navigate("/login");
         }
       })
@@ -60,6 +57,7 @@ export default function PasswordResetForm() {
             message: err.response?.data?.password
           }])
         } else {
+          // TO DO: toast
           console.error(err);
         }
       })
@@ -73,8 +71,7 @@ export default function PasswordResetForm() {
       <FormControl id="password" label="Senha" errors={errors}>
         <TextInput.Root>
           <TextInput.Icon>
-            {/* <AiOutlineLock /> */}
-            <p>:D</p>
+            <MdOutlineKey />
           </TextInput.Icon>
           <TextInput.Input
             type="password"
@@ -88,8 +85,7 @@ export default function PasswordResetForm() {
       <FormControl id="passwordConfirm" label="Confirmar senha" errors={errors}>
         <TextInput.Root>
           <TextInput.Icon>
-            {/* <AiOutlineLock /> */}
-            <p>:D</p>
+            <MdOutlineLock />
           </TextInput.Icon>
           <TextInput.Input
             type="password"
