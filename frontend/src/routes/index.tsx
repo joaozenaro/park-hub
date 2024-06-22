@@ -9,6 +9,7 @@ import PasswordReset from "../pages/PasswordReset";
 import SidebarPageLayout from "../components/layout/SidebarPageLayout";
 import Profile from "../pages/Profile";
 import PublicOnlyRoutes from "./PublicOnlyRoutes";
+import ForgotPassword from "../pages/ForgotPassword";
 
 const router = createBrowserRouter([
   {
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
   {
     path: '*',
     element: <NotFound />
+  },
+  {
+    path: '/esqueceu-sua-senha',
+    element: <ForgotPassword />
   },
 ]);
 

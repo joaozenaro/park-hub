@@ -2,6 +2,7 @@ import { ILoginForm } from "../models/ILoginForm";
 import { IUser } from "../models/IUser";
 import { IPasswordResetPayload } from "../models/IPasswordResetPayload";
 import api from "./api";
+import { IApiResponse } from "../models/IApiResponse";
 
 interface ILoginResponse {
   user: IUser;
@@ -28,9 +29,16 @@ function resetPassword(data: IPasswordResetPayload) {
     PasswordResetForm: data
   })
 }
+function requestPasswordChange(email: String) {
+  return api.post<IApiResponse<any>>("/request-password-reset", {
+    email
+  })
+}
+
 
 export const authService = {
   login,
+  requestPasswordChange,
   validateToken,
   resetPassword
 };
