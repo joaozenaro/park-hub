@@ -18,7 +18,6 @@ class Module extends \yii\base\Module implements BootstrapInterface
             'GET <module>/user/validate-token' => '<module>/user/validate-token',
             'POST <module>/request-password-reset' => '<module>/user/request-password-reset',
             'POST <module>/password-reset' => '<module>/user/password-reset',
-            // 'GET <module>/user/<alias:confirm|admin-action|validate-token>' => '<module>/user/<alias>',
             'POST <module>/<alias:login|signup|refresh-token>' => '<module>/user/<alias>',
         ], false);
     }
