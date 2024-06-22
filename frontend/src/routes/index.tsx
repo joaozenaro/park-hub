@@ -1,7 +1,7 @@
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import Home from "../pages/Home";
 import About from "../pages/About";
-import Confirm from "../pages/Confirm";
+import Signup from "../pages/Signup";
 import NotFound from "../pages/NotFound";
 import ProtectedRoutes from "./ProtectedRoutes";
 import Login from "../pages/Login";
@@ -45,8 +45,8 @@ const router = createBrowserRouter([
     element: <About />,
   },
   {
-    path: '/confirm',
-    element: <Confirm />
+    path: '/invite',
+    element: <Signup />
   },
   {
     path: '/password-reset',

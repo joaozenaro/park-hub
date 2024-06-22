@@ -19,13 +19,8 @@ function validateToken() {
   return api.get<string>("/user/validate-token");
 }
 
-interface IPasswordResetResponse {
-  user: any,
-  token: string
-}
-
 function resetPassword(data: IPasswordResetPayload) {
-  return api.post<IPasswordResetResponse>("/password-reset", {
+  return api.post<string>("/password-reset", {
     PasswordResetForm: data
   })
 }

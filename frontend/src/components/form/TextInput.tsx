@@ -14,7 +14,7 @@ function TextInputRoot({ children }: TextInputRootProps) {
   return (
     <div
       className={`
-        h-9
+        h-10
         flex items-center space-x-2
         py-4 px-3 rounded-md
         border

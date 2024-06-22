@@ -9,9 +9,10 @@ import {
 import api from "../services/api";
 import { authService } from "../services/authService";
 import { ILoginForm } from "../models/ILoginForm";
-import axios, { AxiosError } from "axios";
-import { IApiErrorResponse } from "../models/IApiResponse";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import { IUser } from "../models/IUser";
+import { IPasswordResetPayload } from "../models/IPasswordResetPayload";
+import { useToast } from "../hooks/useToast";
 
 interface AuthProviderProps {
   authenticated: boolean;
@@ -20,6 +21,9 @@ interface AuthProviderProps {
   user: IUser | null;
   handleLogout: () => void;
   handleLogin: (data: ILoginForm) => Promise<void>;
+  handlePasswordReset: (
+    data: IPasswordResetPayload
+  ) => Promise<AxiosResponse<any>>;
 }
 
 const AuthContext = createContext<AuthProviderProps>({
@@ -28,15 +32,18 @@ const AuthContext = createContext<AuthProviderProps>({
   user: null,
   setToken: () => {},
   handleLogout: () => {},
+  handlePasswordReset: () =>
+    Promise.resolve() as any,
   handleLogin: () => Promise.resolve(),
 });
 
 const AuthProvider = ({ children }: PropsWithChildren) => {
+  const { launchToast } = useToast();
   const [authenticated, setAuthenticated] = useState(false);
-  const [token, setToken_] = useState(localStorage.getItem("token") || '');
+  const [token, setToken_] = useState(localStorage.getItem("token") || "");
   const storedUser = localStorage.getItem("user");
   const [user, setUser_] = useState(
-    storedUser ? JSON.parse(storedUser) as IUser : null
+    storedUser ? (JSON.parse(storedUser) as IUser) : null
   );
 
   const setUser = (newUser: IUser) => {
@@ -59,10 +66,17 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
       })
       .catch((err: AxiosError<any>) => {
         if (axios.isAxiosError(err) && err.response) {
-          // TO DO: show error somewhere
-          console.log(JSON.parse(err.response.data.message));
+          launchToast({
+            title: "Erro ao fazer login",
+            description: err.response.data.password,
+            type: "error",
+          });
         } else {
-          console.error(err);
+          launchToast({
+            title: "Erro inesperado",
+            description: "Verifique sua conexão ou tente novamente mais tarde",
+            type: "error",
+          });
         }
       });
   };
@@ -72,6 +86,11 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
     delete api.defaults.headers.Authorization;
     localStorage.clear();
     setAuthenticated(false);
+  };
+
+  const handlePasswordReset = (data: IPasswordResetPayload) => {
+    handleLogout();
+    return authService.resetPassword(data);
   };
 
   useEffect(() => {
@@ -105,6 +124,7 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
       handleLogin,
       user,
       handleLogout,
+      handlePasswordReset,
     }),
     [token, authenticated, user]
   );

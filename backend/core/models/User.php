@@ -2,6 +2,7 @@
 
 namespace app\core\models;
 
+use app\core\components\SaveModelTrait;
 use app\core\types\UserStatus;
 use DateTime;
 use Firebase\JWT\JWT;
@@ -12,6 +13,8 @@ use yii\web\IdentityInterface;
 
 class User extends ActiveRecord implements IdentityInterface
 {
+    use SaveModelTrait;
+
     public static function tableName()
     {
         return '{{%user}}';
