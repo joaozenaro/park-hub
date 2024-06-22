@@ -136,6 +136,14 @@ export default function Home() {
           </FormControl>
           <Button type="tertiary">Limpar filtros</Button>
         </div>
+        <div className="p-8 pt-0 space-y-4">
+          <Heading size="xs" asChild>
+            <h3>Ações</h3>
+          </Heading>
+          
+          <Button className="w-full items-start">Nova reserva</Button>
+          <Button type="secondary" className="w-full">Registrar saída</Button>
+        </div>
       </div>
     </div>
   );
