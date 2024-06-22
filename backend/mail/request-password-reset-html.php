@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $user app\models\User */
 /* @var $appName string */
-/* @var $confirmURL string */
+/* @var $linkUrl string */
 
 ?>
 <table border="0" cellpadding="18" cellspacing="0" class="mcnTextContentContainer" width="100%" style="background-color: #FFFFFF;">
@@ -18,7 +18,7 @@ use yii\helpers\Html;
                 <div style="text-align: left; word-wrap: break-word;">Acesse o endereço abaixo para redefinir sua senha
                     <br />
                     <br /><br />
-                    <a href="<?= Html::encode($confirmURL); ?>">Clique aqui para redefinir sua senha</a>
+                    <a href="<?= Html::encode($linkUrl); ?>">Clique aqui para redefinir sua senha</a>
                     <br />
                     <br />
                     <br />Park Hub

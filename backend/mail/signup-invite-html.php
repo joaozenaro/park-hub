@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $user app\models\User */
 /* @var $appName string */
-/* @var $confirmURL string */
+/* @var $linkUrl string */
 
 ?>
 <table border="0" cellpadding="18" cellspacing="0" class="mcnTextContentContainer" width="100%" style="background-color: #FFFFFF;">
@@ -15,10 +15,10 @@ use yii\helpers\Html;
                 <div style="text-align: center; margin-bottom: 36px">
                     <?= $appName; ?>
                 </div>
-                <div style="text-align: left; word-wrap: break-word;">Você foi convidado para cadastrar-se no <?= $appName; ?>! Para confirmar o seu cadastro, siga o endereço abaixo e preencha suas informações
+                <div style="text-align: left; word-wrap: break-word;">Você foi convidado para cadastrar-se no <?= $appName; ?>! Para completar o seu cadastro, siga o endereço abaixo e preencha suas informações
                     <br />
                     <br /><br />
-                    <a href="<?= Html::encode($confirmURL); ?>">Clique aqui para confirmar seu cadastro</a>
+                    <a href="<?= Html::encode($linkUrl); ?>">Clique aqui para completar seu cadastro</a>
                     <br />
                     <br />Bem-vindo e muito Obrigado!
                     <br />Park Hub

@@ -1,7 +1,7 @@
 <?php
 
-use app\core\interfaces\IUserService;
-use app\core\services\UserService;
+use app\core\interfaces\{IAuthService,IUserService};
+use app\core\services\{UserService,AuthService};
 
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
@@ -26,6 +26,7 @@ return [
     'container' => [
         'definitions' => [
             IUserService::class => UserService::class,
+            IAuthService::class => AuthService::class,
         ],
     ],
     'components' => [
@@ -58,6 +59,9 @@ return [
             'enableCookieValidation' => false,
             'enableCsrfCookie' => false,
             'enableCsrfValidation' => false,
+        ],
+        'response' => [
+            'format' => yii\web\Response::FORMAT_JSON,
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,

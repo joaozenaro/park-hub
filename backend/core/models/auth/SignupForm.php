@@ -8,40 +8,36 @@ use yii\base\Model;
 
 class SignupForm extends Model
 {
-    public $username;
     public $email;
-    public $password;
+    public $role;
 
     public function rules()
     {
         return [
-            [['username', 'email'], 'trim'],
-            [['username', 'email'], 'required'],
-
-            [
-                'username',
-                'match',
-                'pattern' => '/^[a-z]\w*$/i',
-                'message' => Yii::t('app', '{attribute} somente deve conter numeros e letras.'),
-            ],
-            ['username', 'unique', 'targetClass' => User::class],
-            ['username', 'string', 'min' => 4, 'max' => 60],
-
+            [['email', 'role'], 'trim'],
+            [['email', 'role'], 'required'],
             ['email', 'string', 'min' => 2, 'max' => 120],
             ['email', 'unique', 'targetClass' => User::class],
             ['email', 'email'],
-
-            ['password', 'required'],
-            ['password', 'string', 'min' => 6],
+            ['role', 'validateRole'],
         ];
     }
 
     public function attributeLabels()
     {
         return [
-            'username' => Yii::t('app', 'Username'),
-            'password' => Yii::t('app', 'Password'),
             'email' => Yii::t('app', 'Email'),
+            'role' => Yii::t('app', 'Role'),
         ];
+    }
+
+    public function validateRole($attribute, $params)
+    {
+        $auth = Yii::$app->authManager;
+        $role = $auth->getRole($this->$attribute);
+
+        if ($role === null) {
+            $this->addError($attribute, Yii::t('app', 'Cargo invalido.'));
+        }
     }
 }

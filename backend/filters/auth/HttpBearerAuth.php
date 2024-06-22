@@ -2,7 +2,8 @@
 
 namespace app\filters\auth;
 
-use Exception;
+use app\core\components\ResponseHelper;
+use Throwable;
 
 class HttpBearerAuth extends \yii\filters\auth\AuthMethod
 {
@@ -16,21 +17,21 @@ class HttpBearerAuth extends \yii\filters\auth\AuthMethod
             $authHeader = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
         }
 
-        if ($authHeader !== null && preg_match('/^Bearer\s+(.*?)$/', $authHeader, $matches)) {
-            try {
-                $identity = $user->loginByAccessToken($matches[1], get_class($this));
+        if (!isset($authHeader)) return ResponseHelper::Unauthorized();
 
-                if ($identity === null) {
-                    $this->handleFailure($response);
-                }
-    
-                return $identity;
+        preg_match('/^Bearer\s+(.*?)$/', $authHeader, $matches);
 
-            } catch (Exception $e) {
-                return null;
+        try {
+            $identity = $user->loginByAccessToken($matches[1], get_class($this));
+
+            if ($identity === null) {
+                return ResponseHelper::Unauthorized();
             }
-        }
 
-        return null;
+            return $identity;
+
+        } catch (Throwable $e) {
+            return ResponseHelper::Unauthorized();
+        }
     }
 }

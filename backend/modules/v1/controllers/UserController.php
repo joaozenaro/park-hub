@@ -2,26 +2,29 @@
 
 namespace app\modules\v1\controllers;
 
-use app\core\interfaces\IUserService;
-use app\core\models\User;
-use app\core\models\auth\{LoginForm, SignupForm};
-use app\core\models\PasswordResetForm;
+use app\core\components\ResponseHelper;
+use app\core\interfaces\{IAuthService,IUserService};
+use app\core\models\{User,PasswordResetForm};
+use app\core\models\auth\{CompleteSignupForm, LoginForm, SignupForm};
 use Yii;
 use yii\rest\ActiveController;
 
 class UserController extends ActiveController
 {
     public $modelClass = User::class;
-    public $noAuthActions = ['signup', 'login'];
 
-    public $userService;
+    private $userService;
+    private $authService;
 
     public function __construct(
         $id,
         $module,
         IUserService $userService,
-        $config = []) {
+        IAuthService $authService,
+        $config = []
+    ) {
         $this->userService = $userService;
+        $this->authService = $authService;
         parent::__construct($id, $module, $config);
     }
 
@@ -39,14 +42,36 @@ class UserController extends ActiveController
 
     public function actionSignup()
     {
+        if (!Yii::$app->user->can("manageUsers")) {
+            throw new \yii\web\ForbiddenHttpException("Você não possui permissão para efetuar essa ação.");
+        }
+
         $model = new SignupForm();
         $model->load(Yii::$app->request->post());
         if (!$model->validate()) {
-            $errors = $model->getErrors();
-            return $errors;
+            return ResponseHelper::UnprocessableEntity("Modelo invalido", $model->getErrors());
         }
 
-        return $this->userService->createUser($model);
+        if ($this->userService->preRegisterUser($model)) {
+            return ResponseHelper::Created("Usuario criado com sucesso.");
+        }
+
+        return ResponseHelper::BadRequest("Houve um problema ao criar o usuario.");
+    }
+
+    public function actionCompleteSignup()
+    {
+        $model = new CompleteSignupForm();
+        $model->load(Yii::$app->request->post());
+        if (!$model->validate()) {
+            return ResponseHelper::UnprocessableEntity("Modelo invalido", $model->getErrors());
+        }
+
+        if ($this->userService->completeUserSignup($model)) {
+            return ResponseHelper::Success("Usuario atualizado com sucesso.");
+        }
+
+        return ResponseHelper::BadRequest("Houve um problema ao atualizar o usuario.");
     }
 
     public function actionLogin()
@@ -60,7 +85,7 @@ class UserController extends ActiveController
         }
 
         $user = Yii::$app->user->identity;
-        $token = $this->userService->getToken($user->getId(), $user->username);
+        $token = $this->authService->getToken($user->getId(), $user->username);
         $userRole = Yii::$app->authManager->getRolesByUser($user->getId());
 
         return [
@@ -73,29 +98,11 @@ class UserController extends ActiveController
     public function actionRefreshToken()
     {
         $user = Yii::$app->user->identity;
-        $token = $this->userService->getToken($user->getId(), $user->username);
+        $token = $this->authService->getToken($user->getId(), $user->username);
         return [
             'user' => $user,
             'token' => (string) $token,
         ];
-    }
-
-    public function actionConfirm()
-    {
-        if (!empty(Yii::$app->request->get())) {
-            $id = Yii::$app->getRequest()->getQueryParam('id');
-            $auth_key = Yii::$app->getRequest()->getQueryParam('auth_key');
-
-            try {
-                if ($this->userService->confirmUser($id, $auth_key)) {
-                    Yii::$app->getResponse()->setStatusCode(200);
-                    return $this->redirect(['/confirm?status=confirmado']);
-                }
-
-            } catch (\Throwable $th) {}
-        }
-
-        return $this->redirect(['/confirm']);
     }
 
     /**
@@ -105,23 +112,13 @@ class UserController extends ActiveController
     {
         $email = Yii::$app->request->post("email");
 
-        if (!isset($email)) {
-            Yii::$app->response->statusCode = 422;
-            return $this->asJson([
-                "message" => "Parametro email invalido."
-            ]);
-        }
+        if (!isset($email)) return ResponseHelper::UnprocessableEntity("Parametro email invalido.");
         
         if ($this->userService->requestPasswordReset($email)) {
-            return $this->asJson([
-                "message" => "sucesso"
-            ]);
+            return ResponseHelper::Success("Email enviado com sucesso.");
         }
 
-        Yii::$app->response->statusCode = 500;
-        return $this->asJson([
-            "message" => "Server was unable to process the request."
-        ]);
+        return ResponseHelper::BadRequest("Não foi possível enviar o email.");
     }
 
     /**
@@ -132,31 +129,13 @@ class UserController extends ActiveController
         $model = new PasswordResetForm();
         $model->load(Yii::$app->request->post());
         if (!$model->validate()) {
-            $errors = $model->getErrors();
-            Yii::$app->response->statusCode = 422;
-            return $errors;
+            return ResponseHelper::UnprocessableEntity("Modelo invalido", $model->getErrors());
         }
 
         if ($this->userService->resetPassword($model)) {
-            return $this->asJson([
-                "message" => "sucesso"
-            ]);
+            return ResponseHelper::Success("Senha redefinida com sucesso.");
         }
 
-        Yii::$app->response->statusCode = 400;
-        return $this->asJson([
-            "message" => "\"id\" ou \"token\" inválido."
-        ]);
-    }
-
-    public function actionAdminAction()
-    {
-        $usr = Yii::$app->user;
-        $temp = Yii::$app->user->can('manageUsers');
-        if (!$temp) {
-            throw new \yii\web\ForbiddenHttpException('You are not allowed to perform this action.');
-        }
-        
-        return "AdminOnly";
+        return ResponseHelper::UnprocessableEntity("\"id\" ou \"token\" inválido.");
     }
 }
