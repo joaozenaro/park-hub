@@ -12,6 +12,7 @@ import _ from "lodash";
 import { Select } from "../components/form/Select";
 import { useState } from "react";
 import { Dialog } from "../components/ui/Dialog";
+import { AlertDialog } from "../components/ui/AlertDialog";
 
 export default function Home() {
   const [floor, setFloor] = useState("");
@@ -148,9 +149,23 @@ export default function Home() {
           <Heading size="xs" asChild>
             <h3>Ações</h3>
           </Heading>
-          
-          <Button className="w-full items-start" onClick={() => setOpenModal(true)}>Nova reserva</Button>
-          <Button type="secondary" className="w-full">Registrar saída</Button>
+
+          <Button
+            className="w-full items-start"
+            onClick={() => setOpenModal(true)}
+          >
+            Nova reserva
+          </Button>
+          <AlertDialog
+            title="Deletar reserva"
+            description="Esta ação não poderá ser desfeita. Você realmente deseja deletar essa reserva?"
+            okText="Sim, deletar"
+            onConfirm={() => {}}
+          >
+            <Button type="secondary" className="w-full">
+              Registrar saída
+            </Button>
+          </AlertDialog>
         </div>
       </div>
     </div>
