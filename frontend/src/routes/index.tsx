@@ -1,7 +1,6 @@
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import Home from "../pages/Home";
 import About from "../pages/About";
-import Signup from "../pages/Signup";
 import NotFound from "../pages/NotFound";
 import ProtectedRoutes from "./ProtectedRoutes";
 import Login from "../pages/Login";
@@ -10,6 +9,9 @@ import SidebarPageLayout from "../components/layout/SidebarPageLayout";
 import Profile from "../pages/Profile";
 import PublicOnlyRoutes from "./PublicOnlyRoutes";
 import ForgotPassword from "../pages/ForgotPassword";
+import Users from "../pages/Users";
+import ParkingSpots from "../pages/ParkingSpots";
+import CompleteSignup from "../pages/CompleteSignup";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +23,22 @@ const router = createBrowserRouter([
           {
             path: "/",
             element: <Home />,
+          },
+          {
+            path: "/usuarios",
+            element: <Users />,
+          },
+          {
+            path: "/vagas",
+            element: <ParkingSpots />,
+          },
+          {
+            path: "/fluxo-de-veiculos",
+            element: <ParkingSpots />,
+          },
+          {
+            path: "/financeiro",
+            element: <ParkingSpots />,
           },
         ]
       },
@@ -46,7 +64,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/invite',
-    element: <Signup />
+    element: <CompleteSignup />
   },
   {
     path: '/password-reset',

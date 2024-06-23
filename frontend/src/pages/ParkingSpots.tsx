@@ -1,6 +1,4 @@
-export default function Signup() {
-  // TO DO: Get id and token from query string, collect user name, username and password with a confirmation input and send a request to /complete-signup
-
+export default function ParkingSpots() {
   return (
     <div className="grid place-items-center h-full w-full">
       <h1>Work in progress</h1>
