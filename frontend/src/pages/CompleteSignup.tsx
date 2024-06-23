@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 export default function CompleteSignup() {
   const navigate = useNavigate();
   return (
-    <CenteredCard className="h-min">
+    <CenteredCard fixedHeight={false}>
       <Heading asChild>
         <h1 className="mb-2">Realize seu cadastro</h1>
       </Heading>

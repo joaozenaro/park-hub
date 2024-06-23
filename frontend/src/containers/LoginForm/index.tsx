@@ -3,11 +3,9 @@ import { ILoginForm } from "../../models/ILoginForm";
 import { isValidLogin } from "./validation";
 import { useAuth } from "../../contexts/AuthContext";
 import { Button } from "../../components/ui/Button";
-import { FormControl } from "../../components/form/FormControl";
-import { TextInput } from "../../components/form/TextInput";
 import { Loading } from "../../components/ui/Loading";
-import { MdOutlineEmail } from "react-icons/md";
-import { AiOutlineLock } from "react-icons/ai";
+import SmartFormFields from "../../components/form/SmartFormFields";
+import { fields } from "./fields";
 
 const defaultData = {
   username: "",
@@ -24,33 +22,12 @@ export default function LoginForm() {
     });
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <FormControl id="username" label="Username" errors={errors}>
-        <TextInput.Root>
-          <TextInput.Icon>
-            <MdOutlineEmail />
-          </TextInput.Icon>
-          <TextInput.Input
-            value={data.username}
-            onChange={(e) => handleChangeValue("username", e.target.value)}
-            placeholder="Digite o seu email"
-            required
-          />
-        </TextInput.Root>
-      </FormControl>
-      <FormControl id="password" label="Senha" errors={errors}>
-        <TextInput.Root>
-          <TextInput.Icon>
-            <AiOutlineLock />
-          </TextInput.Icon>
-          <TextInput.Input
-            type="password"
-            value={data.password}
-            onChange={(e) => handleChangeValue("password", e.target.value)}
-            placeholder="*******"
-            required
-          />
-        </TextInput.Root>
-      </FormControl>
+      <SmartFormFields 
+        fields={fields}
+        data={data}
+        errors={errors}
+        onChangeValue={handleChangeValue}
+      />
       <Button type="brand" className="w-full justify-center mt-6">
         {loading && <Loading size="sm" />}
         Entrar
