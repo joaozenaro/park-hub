@@ -4,13 +4,14 @@ import { ReactNode } from "react";
 
 interface Props {
   type?: 'primary' | 'brand' | 'danger' | 'success' | 'secondary' | 'tertiary'
+  behavior?: "button" | "submit" | "reset";
   children: ReactNode;
   onClick?: any;
   className?: string;
   disabled?: boolean;
 }
 
-export function Button({ type = 'primary', children, onClick, className, ...props }: Props) {
+export function Button({ type = 'primary', children, onClick, className, behavior, ...props }: Props) {
   return (
     <button
       className={clsx("rounded-md flex items-center py-2.5 px-3.5 text-sm leading-5 font-semibold transition disabled:opacity-75 space-x-2.5", className, {
@@ -21,6 +22,7 @@ export function Button({ type = 'primary', children, onClick, className, ...prop
         "bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white": type === "success",
         "bg-red-600 hover:bg-red-700 active:bg-red-800 text-white": type === "danger",
       })}
+      type={behavior}
       onClick={onClick}
       {...props}
     >
