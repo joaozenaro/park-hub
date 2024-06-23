@@ -6,7 +6,7 @@ import { RxCheck, RxChevronDown, RxChevronUp } from "react-icons/rx";
 
 export interface SelectRootProps {
   children: ReactNode;
-  placeholder: string;
+  placeholder?: string;
   defaultValue?: string;
   value: string;
   onChange: (value: string) => void;

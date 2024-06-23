@@ -12,6 +12,7 @@ import axios, { AxiosError } from "axios";
 import { useSearchParams } from "react-router-dom";
 import { AiOutlineLock } from "react-icons/ai";
 import Alert from "../../../components/ui/Alert";
+import SmartField from "../../../components/form/SmartField";
 
 interface Props {
   onSuccess: () => void;
@@ -34,7 +35,7 @@ export default function CompleteSignupForm({ onSuccess }: Props) {
     await userService
       .completeSignup({
         id: Number(searchParams.get("id")),
-        token: searchParams.get("token") || '',
+        token: searchParams.get("token") || "",
         name: data.name,
         username: data.username,
         password: data.password,
@@ -71,67 +72,65 @@ export default function CompleteSignupForm({ onSuccess }: Props) {
     });
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      {disabled && <Alert className="my-4" type="error">Você não pode cadastrar, pois os parâmetros requeridos na URL não foram encontrados.</Alert>}
-      <FormControl id="name" label="Nome" errors={errors}>
-        <TextInput.Root>
-          <TextInput.Icon>
-            <MdOutlinePerson />
-          </TextInput.Icon>
-          <TextInput.Input
-            value={data.name}
-            onChange={(e) => handleChangeValue("name", e.target.value)}
-            placeholder="Digite o seu nome"
-            disabled={disabled}
-            required
-          />
-        </TextInput.Root>
-      </FormControl>
-      <FormControl id="username" label="Username" errors={errors}>
-        <TextInput.Root>
-          <TextInput.Icon>
-            <MdOutlinePerson />
-          </TextInput.Icon>
-          <TextInput.Input
-            value={data.username}
-            onChange={(e) => handleChangeValue("username", e.target.value)}
-            placeholder="Digite o seu username"
-            disabled={disabled}
-            required
-          />
-        </TextInput.Root>
-      </FormControl>
-      <FormControl id="password" label="Senha" errors={errors}>
-        <TextInput.Root>
-          <TextInput.Icon>
-            <AiOutlineLock />
-          </TextInput.Icon>
-          <TextInput.Input
-            type="password"
-            value={data.password}
-            onChange={(e) => handleChangeValue("password", e.target.value)}
-            placeholder="*******"
-            disabled={disabled}
-            required
-          />
-        </TextInput.Root>
-      </FormControl>
-      <FormControl id="passwordConfirm" label="Confirmar senha" errors={errors}>
-        <TextInput.Root>
-          <TextInput.Icon>
-            <AiOutlineLock />
-          </TextInput.Icon>
-          <TextInput.Input
-            type="password"
-            value={data.passwordConfirm}
-            onChange={(e) =>
-              handleChangeValue("passwordConfirm", e.target.value)
-            }
-            placeholder="*******"
-            disabled={disabled}
-            required
-          />
-        </TextInput.Root>
-      </FormControl>
+      {disabled && (
+        <Alert className="my-4" type="error">
+          Você não pode cadastrar, pois os parâmetros requeridos na URL não
+          foram encontrados.
+        </Alert>
+      )}
+
+      <SmartField
+        Icon={MdOutlinePerson}
+        id="name"
+        label="Nome"
+        placeholder="Digite o seu nome"
+        type="text"
+        required={true}
+        data={data}
+        errors={errors}
+        onChangeValue={handleChangeValue}
+        disabled={disabled}
+      />
+
+      <SmartField
+        Icon={MdOutlinePerson}
+        id="username"
+        label="Username"
+        placeholder="Digite o seu username"
+        type="text"
+        required={true}
+        data={data}
+        errors={errors}
+        onChangeValue={handleChangeValue}
+        disabled={disabled}
+      />
+
+      <SmartField
+        Icon={AiOutlineLock}
+        id="password"
+        label="Senha"
+        placeholder="*******"
+        type="password"
+        required={true}
+        data={data}
+        errors={errors}
+        onChangeValue={handleChangeValue}
+        disabled={disabled}
+      />
+
+      <SmartField
+        Icon={AiOutlineLock}
+        id="passwordConfirm"
+        label="Confirmar senha"
+        placeholder="*******"
+        type="password"
+        required={true}
+        data={data}
+        errors={errors}
+        onChangeValue={handleChangeValue}
+        disabled={disabled}
+      />
+
       <Button className="w-full justify-center mt-6" disabled={disabled}>
         {loading && <Loading size="sm" className="mr-2" />}
         Concluir cadastro
