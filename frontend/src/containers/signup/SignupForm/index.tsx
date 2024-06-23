@@ -82,7 +82,7 @@ export default function SignupForm({ onSuccess }: Props) {
         </Select.Root>
       </FormControl>
       <Button className="w-full justify-center mt-6">
-        {loading && <Loading size="sm" />}
+        {loading && <Loading size="sm" className="mr-2" />}
         Enviar convite
       </Button>
     </form>
