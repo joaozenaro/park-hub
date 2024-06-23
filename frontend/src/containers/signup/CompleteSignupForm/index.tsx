@@ -1,18 +1,15 @@
 import { useForm } from "../../../hooks/useForm";
 import { isValidSignup } from "./validation";
 import { Button } from "../../../components/ui/Button";
-import { FormControl } from "../../../components/form/FormControl";
-import { TextInput } from "../../../components/form/TextInput";
 import { Loading } from "../../../components/ui/Loading";
-import { MdOutlinePerson } from "react-icons/md";
 import { ICompleteSignupForm } from "../../../models/ICompleteSignupForm";
 import { userService } from "../../../services/userService";
 import { useToast } from "../../../hooks/useToast";
 import axios, { AxiosError } from "axios";
 import { useSearchParams } from "react-router-dom";
-import { AiOutlineLock } from "react-icons/ai";
 import Alert from "../../../components/ui/Alert";
-import SmartField from "../../../components/form/SmartField";
+import SmartFormFields from "../../../components/form/SmartFormFields";
+import { completeSignupFormFields } from "./completeSignupFormFields";
 
 interface Props {
   onSuccess: () => void;
@@ -78,59 +75,13 @@ export default function CompleteSignupForm({ onSuccess }: Props) {
           foram encontrados.
         </Alert>
       )}
-
-      <SmartField
-        Icon={MdOutlinePerson}
-        id="name"
-        label="Nome"
-        placeholder="Digite o seu nome"
-        type="text"
-        required={true}
+      <SmartFormFields
+        fields={completeSignupFormFields}
         data={data}
         errors={errors}
         onChangeValue={handleChangeValue}
         disabled={disabled}
       />
-
-      <SmartField
-        Icon={MdOutlinePerson}
-        id="username"
-        label="Username"
-        placeholder="Digite o seu username"
-        type="text"
-        required={true}
-        data={data}
-        errors={errors}
-        onChangeValue={handleChangeValue}
-        disabled={disabled}
-      />
-
-      <SmartField
-        Icon={AiOutlineLock}
-        id="password"
-        label="Senha"
-        placeholder="*******"
-        type="password"
-        required={true}
-        data={data}
-        errors={errors}
-        onChangeValue={handleChangeValue}
-        disabled={disabled}
-      />
-
-      <SmartField
-        Icon={AiOutlineLock}
-        id="passwordConfirm"
-        label="Confirmar senha"
-        placeholder="*******"
-        type="password"
-        required={true}
-        data={data}
-        errors={errors}
-        onChangeValue={handleChangeValue}
-        disabled={disabled}
-      />
-
       <Button className="w-full justify-center mt-6" disabled={disabled}>
         {loading && <Loading size="sm" className="mr-2" />}
         Concluir cadastro

@@ -5,20 +5,23 @@ import { TextInput } from "./TextInput";
 import { Select } from "./Select";
 import { ISelectOption } from "../../models/ISelectOption";
 
-interface IFieldHandlersProps {
+export interface IFieldHandlersProps {
   data: any; // Data from form, it's not needed to know its type inside of this component
   onChangeValue: (id: string, value: any) => void; // changes the porperty "id" inside of the data object
   errors: IValidationError[];
   disabled?: boolean;
 }
 
-interface ISmartField extends IFieldHandlersProps {
+export interface IFieldProps {
   id: string;
   label: string;
   placeholder?: string;
   required?: boolean;
   Icon?: IconType;
   type: "text" | "password" | "number" | "select";
+}
+
+interface ISmartField extends IFieldHandlersProps, IFieldProps {
   options?: ISelectOption[];
 }
 
@@ -34,7 +37,7 @@ export default function SmartField({
   required = true,
   Icon,
   type,
-  options=[],
+  options = [],
 }: ISmartField) {
   return (
     <FormControl id={id} label={label} errors={errors}>

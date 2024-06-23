@@ -1,17 +1,14 @@
 import { useForm } from "../../../hooks/useForm";
 import { isValidSignup } from "./validation";
 import { Button } from "../../../components/ui/Button";
-import { FormControl } from "../../../components/form/FormControl";
-import { TextInput } from "../../../components/form/TextInput";
 import { Loading } from "../../../components/ui/Loading";
-import { MdOutlineEmail } from "react-icons/md";
 import { ISignupForm } from "../../../models/ISignupForm";
 import { ROLES_OPTIONS } from "../../../constants";
-import { Select } from "../../../components/form/Select";
 import { userService } from "../../../services/userService";
 import { useToast } from "../../../hooks/useToast";
 import axios, { AxiosError } from "axios";
-import SmartField from "../../../components/form/SmartField";
+import SmartFormFields from "../../../components/form/SmartFormFields";
+import { signupFormFields } from "./signupFormFields";
 
 interface Props {
   onSuccess: () => void;
@@ -56,31 +53,20 @@ export default function SignupForm({ onSuccess }: Props) {
       onSubmit,
       validator: isValidSignup,
     });
+
+  const optionsByField = {
+    role: ROLES_OPTIONS,
+  };
+
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <SmartField
-        Icon={MdOutlineEmail}
-        id="email"
-        label="Email"
-        placeholder="Digite o seu email"
-        type="text"
-        required={true}
+      <SmartFormFields
+        fields={signupFormFields}
         data={data}
         errors={errors}
         onChangeValue={handleChangeValue}
+        optionsByField={optionsByField}
       />
-      <SmartField
-        id="role"
-        label="Função"
-        placeholder="Selecione a função"
-        type="select"
-        required={true}
-        data={data}
-        errors={errors}
-        onChangeValue={handleChangeValue}
-        options={ROLES_OPTIONS}
-      />
-
       <Button className="w-full justify-center mt-6">
         {loading && <Loading size="sm" className="mr-2" />}
         Enviar convite
