@@ -5,7 +5,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { Button } from "../../components/ui/Button";
 import { Loading } from "../../components/ui/Loading";
 import SmartFormFields from "../../components/form/SmartFormFields";
-import { loginFormFields } from "./loginFormFields";
+import { fields } from "./fields";
 
 const defaultData = {
   username: "",
@@ -23,7 +23,7 @@ export default function LoginForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <SmartFormFields 
-        fields={loginFormFields}
+        fields={fields}
         data={data}
         errors={errors}
         onChangeValue={handleChangeValue}

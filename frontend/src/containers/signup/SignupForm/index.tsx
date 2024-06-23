@@ -8,7 +8,7 @@ import { userService } from "../../../services/userService";
 import { useToast } from "../../../hooks/useToast";
 import axios, { AxiosError } from "axios";
 import SmartFormFields from "../../../components/form/SmartFormFields";
-import { signupFormFields } from "./signupFormFields";
+import { fields } from "./fields";
 
 interface Props {
   onSuccess: () => void;
@@ -61,7 +61,7 @@ export default function SignupForm({ onSuccess }: Props) {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <SmartFormFields
-        fields={signupFormFields}
+        fields={fields}
         data={data}
         errors={errors}
         onChangeValue={handleChangeValue}

@@ -1,8 +1,8 @@
 import { MdOutlineEmail } from "react-icons/md";
-import { IFieldProps } from "../../components/form/SmartField";
+import { IFieldProps } from "../../../components/form/SmartField";
 import { AiOutlineLock } from "react-icons/ai";
 
-export const loginFormFields: IFieldProps[] = [
+export const fields: IFieldProps[] = [
   {
     Icon: MdOutlineEmail,
     id: "username",

@@ -1,7 +1,7 @@
 import { MdOutlineEmail } from "react-icons/md";
-import { IFieldProps } from "../../../components/form/SmartField";
+import { IFieldProps } from "../../../../components/form/SmartField";
 
-export const signupFormFields: IFieldProps[] = [
+export const fields: IFieldProps[] = [
   {
     id: "email",
     label: "Email",

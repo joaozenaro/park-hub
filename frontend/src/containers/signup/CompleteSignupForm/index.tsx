@@ -9,7 +9,7 @@ import axios, { AxiosError } from "axios";
 import { useSearchParams } from "react-router-dom";
 import Alert from "../../../components/ui/Alert";
 import SmartFormFields from "../../../components/form/SmartFormFields";
-import { completeSignupFormFields } from "./completeSignupFormFields";
+import { fields } from "./fields";
 
 interface Props {
   onSuccess: () => void;
@@ -76,7 +76,7 @@ export default function CompleteSignupForm({ onSuccess }: Props) {
         </Alert>
       )}
       <SmartFormFields
-        fields={completeSignupFormFields}
+        fields={fields}
         data={data}
         errors={errors}
         onChangeValue={handleChangeValue}
