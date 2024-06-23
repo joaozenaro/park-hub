@@ -15,7 +15,7 @@ export default function SignupDialog({ open, onOpenChange }: Props) {
             Nós enviaremos um email com um convite para o usuário completar seu
             cadastro
           </Text>
-          <SignupForm />
+          {open && <SignupForm onSuccess={() => onOpenChange(false)} />}
         </div>
       </Dialog.Content>
     </Dialog.Root>

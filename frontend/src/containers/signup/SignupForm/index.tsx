@@ -12,14 +12,19 @@ import { userService } from "../../../services/userService";
 import { useToast } from "../../../hooks/useToast";
 import axios, { AxiosError } from "axios";
 
+interface Props {
+  onSuccess: () => void
+}
+
 const defaultData = {
   email: "",
   role: "",
 };
-export default function SignupForm() {
+export default function SignupForm({ onSuccess }: Props) {
   const { launchToast } = useToast();
   const onSubmit = async (data: ISignupForm) => {
     await userService.signup(data).then((response) => {
+      onSuccess();
       launchToast({
         title: "Convite enviado!",
         description: response.data.message,
@@ -62,11 +67,11 @@ export default function SignupForm() {
           />
         </TextInput.Root>
       </FormControl>
-      <FormControl id="role" label="Andar" errors={[]}>
+      <FormControl id="role" label="Função" errors={errors}>
         <Select.Root
           value={data.role}
           onChange={(value) => handleChangeValue("role", value)}
-          placeholder="Selecione o andar"
+          placeholder="Selecione a função"
         >
           <Select.Item value={null}>Selecione a função</Select.Item>
           {ROLES_OPTIONS.map((item) => (
