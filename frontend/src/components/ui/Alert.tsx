@@ -23,7 +23,7 @@ export default function Alert({ type = "info", className, children }: Props) {
   return (
     <div
       className={clsx(
-        "flex items-center p-4 justify-center rounded-md font-medium",
+        "flex items-center p-4 justify-center rounded-md font-medium text-sm",
         className,
         {
           "bg-emerald-100 text-emerald-600 shadow-emerald-700 hover:shadow-emerald-700  focus:shadow-emerald-700":
@@ -45,7 +45,7 @@ export default function Alert({ type = "info", className, children }: Props) {
           "text-amber-500": type === "warning",
         })}
       />
-      <div>{children}</div>
+      <p>{children}</p>
     </div>
   );
 }
