@@ -38,6 +38,8 @@ const TableTh = ({ children, className }: TableElementProps) => {
     </th>
   );
 };
+TableTh.displayName = "Table.Th";
+
 const TableTd = ({ children, className }: TableElementProps) => {
   return (
     <td
