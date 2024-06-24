@@ -40,12 +40,13 @@ const router = createBrowserRouter([
             path: "/financeiro",
             element: <ParkingSpots />,
           },
+          {
+            path: "/profile",
+            element: <Profile />,
+          }, 
         ]
       },
-      {
-        path: "/profile",
-        element: <Profile />,
-      }, 
+      
     ]
   },
   {

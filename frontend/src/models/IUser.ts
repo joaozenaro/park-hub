@@ -12,7 +12,7 @@ export interface IUser {
   last_login_ip: string | null;
   blocked_at: string | null;
   status: number;
-  role: string | null;
+  role: any | null;
   created_at: string;
   updated_at: string;
 }

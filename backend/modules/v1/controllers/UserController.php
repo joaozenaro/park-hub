@@ -90,7 +90,7 @@ class UserController extends ActiveController
 
         return [
             'user' => $user,
-            'role' => $userRole,
+            'role' => reset($userRole),
             'token' => (string) $token,
         ];
     }

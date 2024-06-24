@@ -2,7 +2,10 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { MdKeyboardArrowDown, MdLogout, MdOutlinePerson } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
+import * as Avatar from '@radix-ui/react-avatar';
+import { getInitials } from "../../utils/getInitials";
 
+// export default AvatarDemo;
 export default function Header() {
   const { user, handleLogout } = useAuth();
   return (
@@ -11,7 +14,19 @@ export default function Header() {
         <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild>
             <button className="flex outline-0 items-center space-x-3 rounded-md hover:bg-slate-100 p-1">
-              <div className="rounded-full bg-amber-500 h-10 w-10" />
+              <Avatar.Root className="inline-flex h-10 w-10 select-none items-center justify-center overflow-hidden rounded-full align-middle">
+                <Avatar.Image
+                  className="h-full w-full rounded-[inherit] object-cover"
+                  src={user?.avatar}
+                  alt={"Avatar de " + user?.name}
+                />
+                <Avatar.Fallback
+                  className=" text-white leading-1 flex h-full w-full items-center justify-center bg-amber-500 text-[15px] font-semibold"
+                  delayMs={600}
+                >
+                  {getInitials(user?.name || '')}
+                </Avatar.Fallback>
+              </Avatar.Root>
               <div className="flex flex-col items-start">
                 <p className="text-zinc-900 font-bold text-sm">
                   {user?.name}

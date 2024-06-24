@@ -7,6 +7,7 @@ import { IApiResponse } from "../models/IApiResponse";
 interface ILoginResponse {
   user: IUser;
   token: string;
+  role: any;
 }
 
 function login(data: ILoginForm) {

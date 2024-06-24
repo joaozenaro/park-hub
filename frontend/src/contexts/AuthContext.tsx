@@ -62,7 +62,8 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
       .then((res) => {
         if (res.data.token) {
           setToken(res.data.token);
-          setUser(res.data.user);
+          const user = {...res.data.user, role: res.data.role};
+          setUser(user);
         }
       })
       .catch((err: AxiosError<any>) => {
