@@ -3,41 +3,30 @@
 namespace app\modules\v1\controllers;
 
 use app\core\components\ResponseHelper;
-use app\core\interfaces\{IAuthService,IUserService};
-use app\core\models\{User,PasswordResetForm};
-use app\core\models\auth\{CompleteSignupForm, LoginForm, SignupForm};
+use app\core\interfaces\IUserService;
+use app\core\models\auth\CompleteSignupForm;
+use app\core\models\auth\SignupForm;
+use app\core\models\Profile;
+use app\core\models\SearchModel;
+use app\core\models\User;
 use Yii;
-use yii\rest\ActiveController;
+use yii\rest\Controller;
+use yii\web\NotFoundHttpException;
 
-class UserController extends ActiveController
+class UserController extends Controller
 {
     public $modelClass = User::class;
 
     private $userService;
-    private $authService;
 
     public function __construct(
         $id,
         $module,
         IUserService $userService,
-        IAuthService $authService,
         $config = []
     ) {
         $this->userService = $userService;
-        $this->authService = $authService;
         parent::__construct($id, $module, $config);
-    }
-
-    public function actions()
-    {
-        $actions = parent::actions();
-        unset($actions['update'], $actions['index'], $actions['delete'], $actions['create']);
-        return $actions;
-    }
-
-    public function actionValidateToken()
-    {
-        return "ok";
     }
 
     public function actionSignup()
@@ -74,68 +63,65 @@ class UserController extends ActiveController
         return ResponseHelper::BadRequest("Houve um problema ao atualizar o usuario.");
     }
 
-    public function actionLogin()
+    public function actionView(int $id)
     {
-        $model = new LoginForm();
-        $model->load(Yii::$app->request->post());
-        if (!$model->validate()) {
-            $errors = $model->getErrors();
-            Yii::$app->response->statusCode = 422;
-            return $errors;
+        $model = User::find()
+            ->where(['id' => $id])
+            ->one();
+
+        if (!$model) {
+            throw new NotFoundHttpException("Usuario id: $id não foi encontrada");
         }
 
-        $user = Yii::$app->user->identity;
-        $token = $this->authService->getToken($user->getId(), $user->username);
-        $userRole = Yii::$app->authManager->getRolesByUser($user->getId());
-
-        return [
-            'user' => $user,
-            'role' => reset($userRole),
-            'token' => (string) $token,
-        ];
+        return $model;
     }
 
-    public function actionRefreshToken()
+    public function actionUpdate(int $id): User | array | null
     {
-        $user = Yii::$app->user->identity;
-        $token = $this->authService->getToken($user->getId(), $user->username);
-        return [
-            'user' => $user,
-            'token' => (string) $token,
-        ];
-    }
-
-    /**
-     * Action to handle the user request of changing their password
-     */
-    public function actionRequestPasswordReset()
-    {
-        $email = Yii::$app->request->post("email");
-
-        if (!isset($email)) return ResponseHelper::UnprocessableEntity("Parametro email invalido.");
-        
-        if ($this->userService->requestPasswordReset($email)) {
-            return ResponseHelper::Success("Email enviado com sucesso.");
-        }
-
-        return ResponseHelper::BadRequest("Não foi possível enviar o email.");
-    }
-
-    /**
-     * Action to effectively change the user's password
-     */
-    public function actionPasswordReset()
-    {
-        $model = new PasswordResetForm();
+        $model = new Profile();
         $model->load(Yii::$app->request->post());
         if (!$model->validate()) {
             return ResponseHelper::UnprocessableEntity("Modelo invalido", $model->getErrors());
         }
 
-        if ($this->userService->resetPassword($model)) {
-            return ResponseHelper::Success("Senha redefinida com sucesso.");
+        $user = $model->profileSave($id);
+
+        return $user;
+    }
+
+    public function actionSearch()
+    {
+        $searchModel = new SearchModel();
+        $searchModel->load(Yii::$app->request->post());
+
+        $search = User::find();
+
+        if ($searchModel->searchTerm) {
+            $search->where(['like', 'name', '%' . $searchModel->searchTerm . '%', false]);
         }
 
-        return ResponseHelper::UnprocessableEntity("\"id\" ou \"token\" inválido.");
+        if ($searchModel->startDate) {
+            $search->andWhere(['>=', 'created_at', date('Y-m-d', strtotime($searchModel->startDate))]);
+        }
+    
+        if ($searchModel->endDate) {
+            $search->andWhere(['<=', 'created_at', date('Y-m-d', strtotime($searchModel->endDate))]);
+        }
+
+        $take = $searchModel->take ?? 10;
+        $skip = $searchModel->skip ?? 0;
+
+        return $search->limit($take)
+            ->offset($skip)
+            ->all();
+    }
+
+    public function actionDelete(int $id)
+    {
+        if (User::deleteAll(['id' => $id]) > 0) {
+            return ResponseHelper::Success("Usuario id: $id removido com sucessso");
+        }
+
+        return ResponseHelper::BadRequest("Usuario id: $id não foi possivel ser removido");
     }
 }

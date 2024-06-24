@@ -17,7 +17,7 @@ function login(data: ILoginForm) {
 }
 
 function validateToken() {
-  return api.get<string>("/user/validate-token");
+  return api.get<string>("/validate-token");
 }
 
 function resetPassword(data: IPasswordResetPayload) {
