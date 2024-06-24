@@ -6,7 +6,7 @@ import { RxCheck, RxChevronDown, RxChevronUp } from "react-icons/rx";
 
 export interface SelectRootProps {
   children: ReactNode;
-  placeholder: string;
+  placeholder?: string;
   defaultValue?: string;
   value: string;
   onChange: (value: string) => void;
@@ -46,12 +46,12 @@ const SelectRoot = ({
       </SelectPrimitive.Icon>
     </SelectPrimitive.Trigger>
     <SelectPrimitive.Portal>
-      <SelectPrimitive.Content className="overflow-hidden bg-white border rounded shadow-lg">
-        <SelectPrimitive.ScrollUpButton className="flex items-center justify-center h-[25px] bg-white text-violet11 cursor-default">
+      <SelectPrimitive.Content className="z-50 overflow-hidden bg-white border rounded shadow-[0px_10px_38px_-10px_rgba(0,_0,_0,_0.4),_0px_8px_16px_-15px_rgba(22,_23,_24,_0.2)]">
+        <SelectPrimitive.ScrollUpButton className="flex items-center justify-center h-[25px] bg-white text-slate-300 cursor-default">
           <RxChevronUp />
         </SelectPrimitive.ScrollUpButton>
         <SelectPrimitive.Viewport>{children}</SelectPrimitive.Viewport>
-        <SelectPrimitive.ScrollDownButton className="flex items-center justify-center h-[25px] bg-white text-violet11 cursor-default">
+        <SelectPrimitive.ScrollDownButton className="flex items-center justify-center h-[25px] bg-white text-slate-300 cursor-default">
           <RxChevronDown />
         </SelectPrimitive.ScrollDownButton>
       </SelectPrimitive.Content>

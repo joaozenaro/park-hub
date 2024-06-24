@@ -13,6 +13,7 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { IUser } from "../models/IUser";
 import { IPasswordResetPayload } from "../models/IPasswordResetPayload";
 import { useToast } from "../hooks/useToast";
+import SplashScreen from "../components/layout/SplashScreen";
 
 interface AuthProviderProps {
   authenticated: boolean;
@@ -32,13 +33,13 @@ const AuthContext = createContext<AuthProviderProps>({
   user: null,
   setToken: () => {},
   handleLogout: () => {},
-  handlePasswordReset: () =>
-    Promise.resolve() as any,
+  handlePasswordReset: () => Promise.resolve() as any,
   handleLogin: () => Promise.resolve(),
 });
 
 const AuthProvider = ({ children }: PropsWithChildren) => {
   const { launchToast } = useToast();
+  const [loading, setLoading] = useState(true);
   const [authenticated, setAuthenticated] = useState(false);
   const [token, setToken_] = useState(localStorage.getItem("token") || "");
   const storedUser = localStorage.getItem("user");
@@ -110,8 +111,10 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
         .catch(() => {
           // TO DO: Refresh token
           handleLogout();
-        });
+        })
+        .finally(() => setLoading(false));
     } else {
+      setLoading(false);
       handleLogout();
     }
   }, [token]);
@@ -130,7 +133,9 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
   );
 
   return (
-    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={contextValue}>
+      {loading ? <SplashScreen /> : children}
+    </AuthContext.Provider>
   );
 };
 

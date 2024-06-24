@@ -3,9 +3,9 @@ import { ILoginForm } from "../../models/ILoginForm";
 import { isValidLogin } from "./validation";
 import { useAuth } from "../../contexts/AuthContext";
 import { Button } from "../../components/ui/Button";
-import { FormControl } from "../../components/form/FormControl";
-import { TextInput } from "../../components/form/TextInput";
 import { Loading } from "../../components/ui/Loading";
+import SmartFormFields from "../../components/form/SmartFormFields";
+import { fields } from "./fields";
 
 const defaultData = {
   username: "",
@@ -21,39 +21,14 @@ export default function LoginForm() {
       validator: isValidLogin,
     });
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="p-8">
-        <FormControl id="username" label="Username" errors={errors}>
-          <TextInput.Root>
-            <TextInput.Icon>
-              {/* <AiOutlineUser /> */}
-              <p>:0</p>
-            </TextInput.Icon>
-            <TextInput.Input
-              value={data.username}
-              onChange={(e) => handleChangeValue("username", e.target.value)}
-              placeholder="Digite o username..."
-              required
-            />
-          </TextInput.Root>
-        </FormControl>
-        <FormControl id="password" label="Senha" errors={errors}>
-          <TextInput.Root>
-            <TextInput.Icon>
-              {/* <AiOutlineLock /> */}
-              <p>:D</p>
-            </TextInput.Icon>
-            <TextInput.Input
-              type="password"
-              value={data.password}
-              onChange={(e) => handleChangeValue("password", e.target.value)}
-              placeholder="******"
-              required
-            />
-          </TextInput.Root>
-        </FormControl>
-      </div>
-      <Button>
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <SmartFormFields 
+        fields={fields}
+        data={data}
+        errors={errors}
+        onChangeValue={handleChangeValue}
+      />
+      <Button type="brand" className="w-full justify-center mt-6">
         {loading && <Loading size="sm" />}
         Entrar
       </Button>

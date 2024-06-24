@@ -1,50 +1,34 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Loading } from "../../components/ui/Loading";
 import { Button } from "../../components/ui/Button";
-import { FormControl } from "../../components/form/FormControl";
-import { TextInput } from "../../components/form/TextInput";
-import { FormEvent, useState } from "react";
-import { IPasswordResetPayload } from "../../models/IPasswordResetPayload";
 import axios, { AxiosError } from "axios";
-import { IValidationError } from "../../models/IValidationReturn";
 import { useAuth } from "../../contexts/AuthContext";
-import { MdOutlineKey, MdOutlineLock } from "react-icons/md";
+import SmartFormFields from "../../components/form/SmartFormFields";
+import { fields } from "./fields";
+import { useForm } from "../../hooks/useForm";
+import { IPasswordResetForm } from "../../models/IPasswordResetForm";
+import { isValidForm } from "./validation";
+import { useToast } from "../../hooks/useToast";
 
+const defaultData = {
+  password: "",
+  passwordConfirm: "",
+};
 export default function PasswordResetForm() {
   const navigate = useNavigate();
   const { handlePasswordReset } = useAuth();
+  const { launchToast } = useToast();
   const [searchParams] = useSearchParams();
-  const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState<IValidationError[]>([]);
-  const [password, setPassword] = useState("");
-  const [passwordConfirm, setPasswordConfirm] = useState("");
-
-  const onSubmit = async (event: FormEvent) => {
-    event.preventDefault();
-
+  const disabled = !searchParams.get("id") || !searchParams.get("token");
+  const onSubmit = async (data: IPasswordResetForm) => {
     if (!searchParams.get("id") || !searchParams.get("token")) {
-      console.error("Id ou token não podem estar vazios!")
       return;
     }
-
-    const data: IPasswordResetPayload = {
+    await handlePasswordReset({
       id: Number(searchParams.get("id")),
-      token: searchParams.get("token") ?? "",
-      password: password
-    }
-
-    if (password !== passwordConfirm) {
-      setErrors([{
-        field: "passwordConfirm",
-        message: "As senhas são diferentes."
-      }])
-
-      return;
-    }
-
-    setLoading(true);
-
-    await handlePasswordReset(data)
+      token: searchParams.get("token") || "",
+      password: data.password,
+    })
       .then((res) => {
         if (res.data) {
           navigate("/login");
@@ -52,55 +36,41 @@ export default function PasswordResetForm() {
       })
       .catch((err: AxiosError<any>) => {
         if (axios.isAxiosError(err) && err.response) {
-          setErrors([{
-            field: "password",
-            message: err.response?.data?.password
-          }])
+          launchToast({
+            title: "Erro ao recuperar senha",
+            description: err.response.data.message,
+            type: "error",
+          });
         } else {
-          // TO DO: toast
-          console.error(err);
+          launchToast({
+            title: "Erro inesperado",
+            description: "Verifique sua conexão ou tente novamente mais tarde",
+            type: "error",
+          });
         }
-      })
-      .finally(() => {
-        setLoading(false);
       });
   };
 
-  return <>
-    <form onSubmit={onSubmit}>
-      <FormControl id="password" label="Senha" errors={errors}>
-        <TextInput.Root>
-          <TextInput.Icon>
-            <MdOutlineKey />
-          </TextInput.Icon>
-          <TextInput.Input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="******"
-            required
-          />
-        </TextInput.Root>
-      </FormControl>
-      <FormControl id="passwordConfirm" label="Confirmar senha" errors={errors}>
-        <TextInput.Root>
-          <TextInput.Icon>
-            <MdOutlineLock />
-          </TextInput.Icon>
-          <TextInput.Input
-            type="password"
-            value={passwordConfirm}
-            onChange={(e) => setPasswordConfirm(e.target.value)}
-            placeholder="******"
-            required
-          />
-        </TextInput.Root>
-      </FormControl>
-      <Button>
-        {loading && <Loading size="sm" />}
-        Enviar
+  const { data, loading, errors, handleChangeValue, handleSubmit } =
+    useForm<IPasswordResetForm>({
+      defaultData,
+      onSubmit,
+      validator: isValidForm,
+    });
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <SmartFormFields
+        fields={fields}
+        data={data}
+        errors={errors}
+        onChangeValue={handleChangeValue}
+        disabled={disabled}
+      />
+      <Button type="brand"className="w-full justify-center mt-6" disabled={disabled}>
+        {loading && <Loading size="sm" className="mr-2" />}
+        Recuperar senha
       </Button>
     </form>
-  </>
-
+  );
 }
