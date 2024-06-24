@@ -42,7 +42,7 @@ export default function ForgotPassword() {
     <div className="flex flex-1 bg-zinc-900">
       {!message && (
         <CenteredCard>
-          <h1 className="text-4xl font-medium flex items-center justify-center">Esqueceu a senha?</h1>
+          <h1 className="text-4xl font-medium flex items-center justify-center mt-2">Esqueceu a senha?</h1>
           <h4 className="font-normal mt-2 text-gray-400 flex items-center text-center justify-center pt-3">Preencha seu email para enviarmos seu link de recuperação de senha</h4>
           <form action="" className="my-10" onSubmit={onSubmit}>
             <div className="flex flex-col space-y-5">

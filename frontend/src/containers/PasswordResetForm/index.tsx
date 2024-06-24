@@ -59,7 +59,7 @@ export default function PasswordResetForm() {
     });
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="space-y-4">
       <SmartFormFields
         fields={fields}
         data={data}
@@ -67,7 +67,7 @@ export default function PasswordResetForm() {
         onChangeValue={handleChangeValue}
         disabled={disabled}
       />
-      <Button className="w-full justify-center mt-6" disabled={disabled}>
+      <Button type="brand"className="w-full justify-center mt-6" disabled={disabled}>
         {loading && <Loading size="sm" className="mr-2" />}
         Recuperar senha
       </Button>
