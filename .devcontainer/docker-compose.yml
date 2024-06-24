@@ -52,10 +52,12 @@ services:
       - MYSQL_PASSWORD=docker
       - MYSQL_ROOT_PASSWORD=docker
       - MYSQL_ALLOW_EMPTY_PASSWORD=1
+      - TZ=America/Sao_Paulo
     ports:
       - 3306:3306
     volumes:
       - mysql-data:/var/lib/mysql
+      - ./mysql/my.cnf:/etc/mysql/conf.d/my.cnf
     networks:
       - app-network
 
