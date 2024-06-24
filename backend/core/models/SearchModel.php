@@ -18,7 +18,7 @@ class SearchModel extends Model
         return [
             ['searchTerm', 'string'],
             [['skip', 'take'], 'integer'],
-            [['startDate', 'endDate'], 'datetime', 'format' => 'php:Y-m-d H:i:s'],
+            [['startDate', 'endDate'], 'datetime', 'format' => 'php:Y-m-d'],
         ];
     }
 

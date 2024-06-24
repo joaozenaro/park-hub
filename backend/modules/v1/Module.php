@@ -15,9 +15,11 @@ class Module extends \yii\base\Module implements BootstrapInterface
             'GET <module>/validate-token' => '<module>/auth/validate-token',
             'POST <module>/<alias:login|refresh-token|request-password-reset|password-reset>' => '<module>/auth/<alias>',
             'POST <module>/<alias:signup|complete-signup>' => '<module>/user/<alias>',
-
-            'GET <module>/user/<alias>/<id:\d+>' => '<module>/user/<alias>',
-            'POST <module>/user/<alias>' => '<module>/user/<alias>',
+            
+            'GET <module>/user/<id:\d+>' => '<module>/user/view',
+            'POST <module>/user/search' => '<module>/user/search',
+            'PATCH <module>/user/update/<id:\d+>' => '<module>/user/update',
+            'DELETE <module>/user/delete/<id:\d+>' => '<module>/user/delete',
         ], false);
     }
 
@@ -54,7 +56,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
                 'auth/login',
                 'auth/password-reset',
                 'auth/request-password-reset',
-            ], // Public Routes
+            ], // Public actions
         ];
 
         return $behaviors;

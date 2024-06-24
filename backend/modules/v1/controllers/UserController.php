@@ -101,11 +101,11 @@ class UserController extends Controller
         }
 
         if ($searchModel->startDate) {
-            $search->andWhere(['>=', 'created_at', date('Y-m-d H:i:s', strtotime($searchModel->startDate))]);
+            $search->andWhere(['>=', 'created_at', date('Y-m-d', strtotime($searchModel->startDate))]);
         }
     
         if ($searchModel->endDate) {
-            $search->andWhere(['<=', 'created_at', date('Y-m-d H:i:s', strtotime($searchModel->endDate))]);
+            $search->andWhere(['<=', 'created_at', date('Y-m-d', strtotime($searchModel->endDate))]);
         }
 
         $take = $searchModel->take ?? 10;
