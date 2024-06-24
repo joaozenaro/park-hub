@@ -49,7 +49,7 @@ class AuthController extends Controller
 
         return [
             'user' => $user,
-            'role' => $userRole,
+            'role' => reset($userRole),
             'token' => (string) $token,
         ];
     }
