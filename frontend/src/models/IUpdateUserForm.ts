@@ -1,4 +1,4 @@
-export interface IProfileForm {
+export interface IUpdateUserForm {
   username: string,
   name: string,
   avatar: string

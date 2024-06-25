@@ -4,7 +4,7 @@ import { Button } from "../../components/ui/Button";
 import { Loading } from "../../components/ui/Loading";
 import SmartFormFields from "../../components/form/SmartFormFields";
 import { fields } from "./fields";
-import { IProfileForm } from "../../models/IProfileForm";
+import { IUpdateUserForm } from "../../models/IUpdateUserForm";
 import axios, { AxiosError } from "axios";
 import { userService } from "../../services/userService";
 import { useToast } from "../../hooks/useToast";
@@ -16,14 +16,14 @@ const defaultData = {
   avatar: "",
 };
 interface Props {
-  initialData: IProfileForm;
+  initialData: IUpdateUserForm;
   userId: number;
 }
 export default function ProfileForm({ userId, initialData }: Props) {
   const { launchToast } = useToast();
   const { handleProfileUpdate } = useAuth();
-  const onSubmit = async (data: IProfileForm) => {
-    const payload = getChangedProps<IProfileForm>(initialData, data);
+  const onSubmit = async (data: IUpdateUserForm) => {
+    const payload = getChangedProps<IUpdateUserForm>(initialData, data);
     await userService
       .update(userId, payload)
       .then(() => {
@@ -52,7 +52,7 @@ export default function ProfileForm({ userId, initialData }: Props) {
   };
 
   const { data, setData, loading, errors, handleChangeValue, handleSubmit } =
-    useForm<IProfileForm>({
+    useForm<IUpdateUserForm>({
       defaultData,
       initialData,
       onSubmit,

@@ -1,4 +1,4 @@
-import { IProfileForm } from "../models/IProfileForm";
+import { IUpdateUserForm } from "../models/IUpdateUserForm";
 import { ISearchModel } from "../models/ISearchModel";
 import { IUser } from "../models/IUser";
 import api from "./api";
@@ -19,7 +19,7 @@ function completeSignup(data: ICompleteSignupPayload) {
   });
 }
 
-function update(id: number, data: Partial<IProfileForm>) {
+function update(id: number, data: Partial<IUpdateUserForm>) {
   return api.patch<IUser>("/user/update/" + id, {
     Profile: data,
   });
