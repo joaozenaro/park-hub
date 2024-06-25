@@ -1,6 +1,6 @@
 import Content from "../components/layout/Content";
 import { useAuth } from "../contexts/AuthContext";
-import ProfileForm from "../containers/ProfileForm";
+import UpdateUserForm from "../containers/UpdateUserForm";
 import Heading from "../components/ui/Heading";
 import { Text } from "../components/ui/Text";
 import { ROLES_LABEL } from "../constants";
@@ -28,7 +28,8 @@ export default function Profile() {
         </div>
       </div>
       <div className="max-w-[700px]">
-        <ProfileForm
+        <UpdateUserForm
+          isProfile
           userId={Number(user?.id)}
           initialData={{
             username: user?.username || "",

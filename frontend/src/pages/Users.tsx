@@ -18,17 +18,19 @@ import { printDate } from "../utils/date/printDate";
 import Avatar from "../components/ui/Avatar";
 import { debounce } from "lodash";
 import { useToast } from "../hooks/useToast";
+import UpdateUserDialog from "../containers/UpdateUserDialog";
 
 export default function Users() {
   const { launchToast } = useToast();
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [data, setData] = useState<IUser[]>([]);
+  const [userToUpdate, setUserToUpdate] = useState<IUser | null>(null);
 
-  const debouncedSearch = useCallback(
-    debounce((text) => {
+  const getData = useCallback(
+    (text?: string) => {
       userService
-        .search({ searchTerm: text })
+        .search({ searchTerm: text || searchText })
         .then((res) => {
           setData(res.data);
         })
@@ -40,24 +42,19 @@ export default function Users() {
             type: "error",
           });
         });
+    },
+    [searchText]
+  );
+
+  const debouncedSearch = useCallback(
+    debounce((text) => {
+      getData(text);
     }, 700),
     []
   );
 
   useEffect(() => {
-    userService
-      .search()
-      .then((res) => {
-        setData(res.data);
-      })
-      .catch(() => {
-        launchToast({
-          title: "Erro ao buscar dados",
-          description:
-            "Verifique sua conexão com a internet e tente novamente.",
-          type: "error",
-        });
-      });
+    getData();
   }, []);
 
   useEffect(() => {
@@ -66,7 +63,19 @@ export default function Users() {
 
   return (
     <Content>
-      <SignupDialog open={createModalOpen} onOpenChange={setCreateModalOpen} />
+      {userToUpdate && (
+        <UpdateUserDialog
+          user={userToUpdate}
+          open={!!userToUpdate}
+          onClose={() => setUserToUpdate(null)}
+          onSuccess={() => getData()}
+        />
+      )}
+      <SignupDialog
+        open={createModalOpen}
+        onOpenChange={setCreateModalOpen}
+        onSuccess={() => getData()}
+      />
       <Heading>Usuários</Heading>
       <div className="flex mt-8">
         <div className="w-full max-w-[500px] mr-8">
@@ -121,11 +130,12 @@ export default function Users() {
                     <Table.ActionItem>
                       <button
                         onClick={() => {
-                          console.log("setEditModal to true");
+                          setUserToUpdate(user);
                         }}
-                        className="text-slate-500 px-2 text-sm leading-4 rounded-md flex w-full items-center h-8 select-none outline-0 data-[highlighted]:bg-slate-100 data-[highlighted]:text-zinc-900"
+                        disabled={!user.status}
+                        className="text-slate-500 disabled:opacity-50 px-2 text-sm leading-4 rounded-md flex w-full items-center h-8 select-none outline-0 data-[highlighted]:bg-slate-100 data-[highlighted]:text-zinc-900"
                       >
-                        <MdOutlineEdit className="h-5 w-5 mr-2 text-zinc-900" />{" "}
+                        <MdOutlineEdit className="h-5 w-5 mr-2" />{" "}
                         <span>Editar</span>
                       </button>
                     </Table.ActionItem>

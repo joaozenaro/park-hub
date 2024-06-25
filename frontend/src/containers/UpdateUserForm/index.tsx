@@ -18,8 +18,17 @@ const defaultData = {
 interface Props {
   initialData: IUpdateUserForm;
   userId: number;
+  isProfile?: boolean;
+  onSuccess?: () => void;
 }
-export default function ProfileForm({ userId, initialData }: Props) {
+export default function UpdateUserForm({
+  userId,
+  initialData,
+  isProfile = false,
+  onSuccess = () => {},
+}: Props) {
+  const { user } = useAuth();
+  const isUpdatingLoggedUser = user?.id === userId;
   const { launchToast } = useToast();
   const { handleProfileUpdate } = useAuth();
   const onSubmit = async (data: IUpdateUserForm) => {
@@ -27,12 +36,21 @@ export default function ProfileForm({ userId, initialData }: Props) {
     await userService
       .update(userId, payload)
       .then(() => {
-        handleProfileUpdate(data);
-        launchToast({
-          title: "Perfil salvo!",
-          description: "Seus dados foram atualizados com sucesso!",
-          type: "success",
-        });
+        if (isUpdatingLoggedUser) {
+          handleProfileUpdate(data);
+          launchToast({
+            title: "Perfil salvo!",
+            description: "Seus dados foram atualizados com sucesso!",
+            type: "success",
+          });
+        } else {
+          launchToast({
+            title: "Usuário atualizado!",
+            description: "Usuário atualizado com sucesso!",
+            type: "success",
+          });
+        }
+        onSuccess();
       })
       .catch((err: AxiosError<any>) => {
         if (axios.isAxiosError(err) && err.response) {
@@ -71,14 +89,16 @@ export default function ProfileForm({ userId, initialData }: Props) {
           {loading && <Loading size="sm" className="mr-2" />}
           Salvar
         </Button>
-        <Button
-          className="ml-4"
-          type="tertiary"
-          behavior="button"
-          onClick={() => setData(initialData)}
-        >
-          Cancelar
-        </Button>
+        {isProfile && (
+          <Button
+            className="ml-4"
+            type="tertiary"
+            behavior="button"
+            onClick={() => setData(initialData)}
+          >
+            Cancelar
+          </Button>
+        )}
       </div>
     </form>
   );

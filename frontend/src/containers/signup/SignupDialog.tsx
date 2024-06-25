@@ -5,8 +5,9 @@ import SignupForm from "./SignupForm";
 interface Props {
   open: boolean;
   onOpenChange: (state: boolean) => void;
+  onSuccess: () => void;
 }
-export default function SignupDialog({ open, onOpenChange }: Props) {
+export default function SignupDialog({ open, onOpenChange, onSuccess }: Props) {
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Content title="Criar usuário">
@@ -15,7 +16,14 @@ export default function SignupDialog({ open, onOpenChange }: Props) {
             Nós enviaremos um email com um convite para o usuário completar seu
             cadastro
           </Text>
-          {open && <SignupForm onSuccess={() => onOpenChange(false)} />}
+          {open && (
+            <SignupForm
+              onSuccess={() => {
+                onOpenChange(false);
+                onSuccess();
+              }}
+            />
+          )}
         </div>
       </Dialog.Content>
     </Dialog.Root>
