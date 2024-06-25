@@ -22,6 +22,7 @@ import UpdateUserDialog from "../containers/UpdateUserDialog";
 
 export default function Users() {
   const { launchToast } = useToast();
+  const [loading, setLoading] = useState(true);
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [data, setData] = useState<IUser[]>([]);
@@ -41,12 +42,11 @@ export default function Users() {
               "Verifique sua conexão com a internet e tente novamente.",
             type: "error",
           });
-        });
+        }).finally(() => setLoading(false));
     },
     [searchText]
   );
 
-  
   const handleDeleteUser = (id: number) => {
     userService
       .delete(id)
@@ -57,7 +57,6 @@ export default function Users() {
           type: "success",
         });
         getData();
-        
       })
       .catch(() => {
         launchToast({
@@ -77,11 +76,9 @@ export default function Users() {
   );
 
   useEffect(() => {
-    getData();
-  }, []);
+    loading && getData();
+    !loading && debouncedSearch(searchText);
 
-  useEffect(() => {
-    debouncedSearch(searchText);
   }, [searchText]);
 
   return (
