@@ -3,10 +3,12 @@ import { IUser } from "../models/IUser";
 import { IPasswordResetPayload } from "../models/IPasswordResetPayload";
 import api from "./api";
 import { IApiResponse } from "../models/IApiResponse";
+import { IRole } from "../models/IRole";
 
 interface ILoginResponse {
   user: IUser;
   token: string;
+  role: IRole;
 }
 
 function login(data: ILoginForm) {

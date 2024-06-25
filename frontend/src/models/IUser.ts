@@ -1,3 +1,5 @@
+import { IRole } from "./IRole";
+
 export interface IUser {
   id: number;
   username: string;
@@ -12,7 +14,7 @@ export interface IUser {
   last_login_ip: string | null;
   blocked_at: string | null;
   status: number;
-  role: string | null;
+  role: IRole;
   created_at: string;
   updated_at: string;
 }

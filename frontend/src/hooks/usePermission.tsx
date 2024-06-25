@@ -7,9 +7,9 @@ export default function usePermission() {
     if (!user?.role) return false;
 
     if (Array.isArray(requiredRole)) {
-      requiredRole.includes(user.role);
+      requiredRole.includes(user.role.name);
     }
-    return requiredRole === user.role;
+    return requiredRole === user.role.name;
   };
 
   return {
