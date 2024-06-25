@@ -25,6 +25,10 @@ function update(id: number, data: Partial<IUpdateUserForm>) {
   });
 }
 
+function deleteUser(id: number) {
+  return api.delete<IUser>("/user/delete/" + id);
+}
+
 interface ISignupResponse {
   message: string;
 }
@@ -39,15 +43,13 @@ function signup(data: ISignupPayload) {
 }
 
 function search(data?: ISearchModel) {
-  return api.post<IUser[]>(
-    "/user/search",
-    data ? { SearchModel: data } : {}
-  );
+  return api.post<IUser[]>("/user/search", data ? { SearchModel: data } : {});
 }
 
 export const userService = {
   signup,
   completeSignup,
   update,
+  delete: deleteUser,
   search,
 };

@@ -46,6 +46,29 @@ export default function Users() {
     [searchText]
   );
 
+  
+  const handleDeleteUser = (id: number) => {
+    userService
+      .delete(id)
+      .then(() => {
+        launchToast({
+          title: "Usuário deletado com sucesso",
+          description: "Usuário deletado com sucesso",
+          type: "success",
+        });
+        getData();
+        
+      })
+      .catch(() => {
+        launchToast({
+          title: "Erro ao deletar usuário",
+          description:
+            "Verifique sua conexão com a internet e tente novamente.",
+          type: "error",
+        });
+      });
+  };
+
   const debouncedSearch = useCallback(
     debounce((text) => {
       getData(text);
@@ -143,7 +166,7 @@ export default function Users() {
                     <Table.ActionItem>
                       <button
                         onClick={() => {
-                          console.log("deletar");
+                          handleDeleteUser(user.id);
                         }}
                         className="text-red-500 px-2 text-sm leading-4 rounded-md flex w-full items-center h-8 select-none outline-0 data-[highlighted]:bg-slate-100 data-[highlighted]:text-red-700"
                       >
