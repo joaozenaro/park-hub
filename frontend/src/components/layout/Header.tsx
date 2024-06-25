@@ -5,7 +5,6 @@ import { useAuth } from "../../contexts/AuthContext";
 import * as Avatar from '@radix-ui/react-avatar';
 import { getInitials } from "../../utils/getInitials";
 
-// export default AvatarDemo;
 export default function Header() {
   const { user, handleLogout } = useAuth();
   return (

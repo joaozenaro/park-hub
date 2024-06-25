@@ -68,7 +68,7 @@ export default function ProfileForm({ userId, initialData }: Props) {
       />
       <div className="flex mt-6 ">
         <Button className="flex-1 justify-center">
-          {loading && <Loading size="sm" />}
+          {loading && <Loading size="sm" className="mr-2" />}
           Salvar
         </Button>
         <Button
