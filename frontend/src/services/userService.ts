@@ -18,7 +18,7 @@ function completeSignup(data: ICompleteSignupPayload) {
   });
 }
 
-function update(id: number, data: IProfileForm) {
+function update(id: number, data: Partial<IProfileForm>) {
   return api.patch<IUser>("/user/update/"+ id, {
     Profile: data,
   });

@@ -1,10 +1,15 @@
 import { IProfileForm } from "../../../models/IProfileForm";
 import { IValidationError, IValidationReturn } from "../../../models/IValidationReturn";
+import { hasOnlyText } from "../../../utils/hasOnlyText";
 
 export function isValidForm(payload: IProfileForm): IValidationReturn {
   const errors: IValidationError[] = [];
   if (!payload.name.trim()) {
     errors.push({ field: "name", message: "O nome não pode ser vazio "});
+  }
+  
+  if (!hasOnlyText(payload.name)) {
+    errors.push({ field: "name", message: "O nome não pode conter números"});
   }
 
   if (payload.name.length < 5) {

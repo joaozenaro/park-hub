@@ -9,7 +9,7 @@ import axios, { AxiosError } from "axios";
 import { userService } from "../../services/userService";
 import { useToast } from "../../hooks/useToast";
 import { useAuth } from "../../contexts/AuthContext";
-
+import { getChangedProps } from "../../utils/getChangedProps";
 
 const defaultData = {
   name: "",
@@ -21,14 +21,11 @@ interface Props {
 }
 export default function ProfileForm({ userId, initialData }: Props) {
   const { launchToast } = useToast();
-  const {handleProfileUpdate } = useAuth();
+  const { handleProfileUpdate } = useAuth();
   const onSubmit = async (data: IProfileForm) => {
+    const payload = getChangedProps<IProfileForm>(initialData, data);
     await userService
-      .update(userId,{
-        name: data.name,
-        username: data.username,
-        avatar: data.avatar,
-      })
+      .update(userId, payload)
       .then(() => {
         handleProfileUpdate(data);
         launchToast({
@@ -54,7 +51,6 @@ export default function ProfileForm({ userId, initialData }: Props) {
       });
   };
 
-
   const { data, setData, loading, errors, handleChangeValue, handleSubmit } =
     useForm<IProfileForm>({
       defaultData,
@@ -75,7 +71,12 @@ export default function ProfileForm({ userId, initialData }: Props) {
           {loading && <Loading size="sm" />}
           Salvar
         </Button>
-        <Button className="ml-4" type="tertiary" behavior="button" onClick={() => setData(initialData)} >
+        <Button
+          className="ml-4"
+          type="tertiary"
+          behavior="button"
+          onClick={() => setData(initialData)}
+        >
           Cancelar
         </Button>
       </div>
