@@ -1,6 +1,6 @@
 import Content from "../components/layout/Content";
 import { useAuth } from "../contexts/AuthContext";
-import UpdateUserForm from "../containers/UpdateUserForm";
+import UpdateUserForm from "../containers/users/UpdateUserForm";
 import Heading from "../components/ui/Heading";
 import { Text } from "../components/ui/Text";
 import { ROLES_LABEL } from "../constants";

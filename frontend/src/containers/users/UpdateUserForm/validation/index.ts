@@ -1,6 +1,6 @@
-import { IUpdateUserForm } from "../../../models/IUpdateUserForm";
-import { IValidationError, IValidationReturn } from "../../../models/IValidationReturn";
-import { hasOnlyText } from "../../../utils/hasOnlyText";
+import { IUpdateUserForm } from "../../../../models/IUpdateUserForm";
+import { IValidationError, IValidationReturn } from "../../../../models/IValidationReturn";
+import { hasOnlyText } from "../../../../utils/hasOnlyText";
 
 export function isValidForm(payload: IUpdateUserForm): IValidationReturn {
   const errors: IValidationError[] = [];

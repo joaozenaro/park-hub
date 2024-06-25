@@ -18,7 +18,7 @@ import { printDate } from "../utils/date/printDate";
 import Avatar from "../components/ui/Avatar";
 import { debounce } from "lodash";
 import { useToast } from "../hooks/useToast";
-import UpdateUserDialog from "../containers/UpdateUserDialog";
+import UpdateUserDialog from "../containers/users/UpdateUserDialog";
 
 export default function Users() {
   const { launchToast } = useToast();

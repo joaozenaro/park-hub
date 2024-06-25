@@ -1,15 +1,15 @@
-import { useForm } from "../../hooks/useForm";
+import { useForm } from "../../../hooks/useForm";
 import { isValidForm } from "./validation";
-import { Button } from "../../components/ui/Button";
-import { Loading } from "../../components/ui/Loading";
-import SmartFormFields from "../../components/form/SmartFormFields";
+import { Button } from "../../../components/ui/Button";
+import { Loading } from "../../../components/ui/Loading";
+import SmartFormFields from "../../../components/form/SmartFormFields";
 import { fields } from "./fields";
-import { IUpdateUserForm } from "../../models/IUpdateUserForm";
+import { IUpdateUserForm } from "../../../models/IUpdateUserForm";
 import axios, { AxiosError } from "axios";
-import { userService } from "../../services/userService";
-import { useToast } from "../../hooks/useToast";
-import { useAuth } from "../../contexts/AuthContext";
-import { getChangedProps } from "../../utils/getChangedProps";
+import { userService } from "../../../services/userService";
+import { useToast } from "../../../hooks/useToast";
+import { useAuth } from "../../../contexts/AuthContext";
+import { getChangedProps } from "../../../utils/getChangedProps";
 
 const defaultData = {
   name: "",

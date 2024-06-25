@@ -1,6 +1,6 @@
-import { Dialog } from "../components/ui/Dialog";
-import { Text } from "../components/ui/Text";
-import { IUser } from "../models/IUser";
+import { Dialog } from "../../components/ui/Dialog";
+import { Text } from "../../components/ui/Text";
+import { IUser } from "../../models/IUser";
 import UpdateUserForm from "./UpdateUserForm";
 
 interface Props {
