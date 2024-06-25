@@ -1,4 +1,5 @@
 import { IProfileForm } from "../models/IProfileForm";
+import { ISearchModel } from "../models/ISearchModel";
 import { IUser } from "../models/IUser";
 import api from "./api";
 
@@ -19,7 +20,7 @@ function completeSignup(data: ICompleteSignupPayload) {
 }
 
 function update(id: number, data: Partial<IProfileForm>) {
-  return api.patch<IUser>("/user/update/"+ id, {
+  return api.patch<IUser>("/user/update/" + id, {
     Profile: data,
   });
 }
@@ -37,8 +38,16 @@ function signup(data: ISignupPayload) {
   });
 }
 
+function search(data?: ISearchModel) {
+  return api.post<IUser[]>(
+    "/user/search",
+    data ? { SearchModel: data } : {}
+  );
+}
+
 export const userService = {
   signup,
   completeSignup,
-  update
+  update,
+  search,
 };

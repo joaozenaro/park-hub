@@ -1,7 +1,5 @@
 import {
   MdAdd,
-  MdDelete,
-  MdEdit,
   MdOutlineDelete,
   MdOutlineEdit,
   MdOutlineSearch,
@@ -10,39 +8,61 @@ import Content from "../components/layout/Content";
 import { Button } from "../components/ui/Button";
 import Heading from "../components/ui/Heading";
 import { TextInput } from "../components/form/TextInput";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import SignupDialog from "../containers/signup/SignupDialog";
 import { Table } from "../components/ui/Table";
 import Tag from "../components/ui/Tag";
+import { IUser } from "../models/IUser";
+import { userService } from "../services/userService";
+import { printDate } from "../utils/date/printDate";
+import Avatar from "../components/ui/Avatar";
+import { debounce } from "lodash";
+import { useToast } from "../hooks/useToast";
 
-const fakeData = [
-  {
-    id: 1,
-    name: "João Silva",
-    role: "admin",
-    avatar:
-      "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?q=80&w=100&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    created_at: "2024-06-22T23:46:00-03:00",
-  },
-  {
-    id: 2,
-    name: "Pedro Costa",
-    role: "admin",
-    avatar:
-      "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?q=80&w=100&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    created_at: "2024-06-22T23:46:00-03:00",
-  },
-  {
-    id: 3,
-    name: "Neusa Amaral",
-    role: "employee",
-    avatar:
-      "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?q=80&w=100&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    created_at: "2024-06-22T23:46:00-03:00",
-  },
-];
 export default function Users() {
+  const { launchToast } = useToast();
   const [createModalOpen, setCreateModalOpen] = useState(false);
+  const [searchText, setSearchText] = useState("");
+  const [data, setData] = useState<IUser[]>([]);
+
+  const debouncedSearch = useCallback(
+    debounce((text) => {
+      userService
+        .search({ searchTerm: text })
+        .then((res) => {
+          setData(res.data);
+        })
+        .catch(() => {
+          launchToast({
+            title: "Erro ao buscar dados",
+            description:
+              "Verifique sua conexão com a internet e tente novamente.",
+            type: "error",
+          });
+        });
+    }, 700),
+    []
+  );
+
+  useEffect(() => {
+    userService
+      .search()
+      .then((res) => {
+        setData(res.data);
+      })
+      .catch(() => {
+        launchToast({
+          title: "Erro ao buscar dados",
+          description:
+            "Verifique sua conexão com a internet e tente novamente.",
+          type: "error",
+        });
+      });
+  }, []);
+
+  useEffect(() => {
+    debouncedSearch(searchText);
+  }, [searchText]);
 
   return (
     <Content>
@@ -55,8 +75,8 @@ export default function Users() {
               <MdOutlineSearch />
             </TextInput.Icon>
             <TextInput.Input
-              value={""}
-              onChange={() => {}}
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
               placeholder="Pesquisar por nome"
               required
             />
@@ -75,24 +95,26 @@ export default function Users() {
           <thead>
             <tr>
               <Table.Th className="text-start">Nome</Table.Th>
-              <Table.Th className="text-start w-[200px]">Função</Table.Th>
-              <Table.Th className="text-start w-[200px]">
-                Adicionado em
-              </Table.Th>
+              <Table.Th className="text-start w-[200px]">Status</Table.Th>
+              <Table.Th className="text-start w-[200px]">Criado em</Table.Th>
+              <Table.Th className="text-start w-[200px]">Editado em</Table.Th>
               <Table.Th className="text-start w-[100px]">Foto</Table.Th>
               <Table.Th className="text-end w-[40px]">Ações</Table.Th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-200">
-            {fakeData.map((user) => (
+            {data.map((user) => (
               <tr className="hover:bg-slate-100">
-                <Table.Td>{user.name}</Table.Td>
+                <Table.Td>{user.name || "Usuário sem nome"}</Table.Td>
                 <Table.Td>
-                  <Tag>{user.role}</Tag>
+                  <Tag type={user.status ? "success" : "danger"}>
+                    {user.status ? "Ativo" : "Inativo"}
+                  </Tag>
                 </Table.Td>
-                <Table.Td> 18 de junho</Table.Td>
+                <Table.Td>{printDate(user.created_at)}</Table.Td>
+                <Table.Td>{printDate(user.updated_at)}</Table.Td>
                 <Table.Td>
-                  <img src={user.avatar} alt={"Foto de " + user.name} />
+                  <Avatar name={user?.name || "Sem Nome"} url={user?.avatar} />
                 </Table.Td>
                 <Table.Td>
                   <Table.ActionsDropdown>
