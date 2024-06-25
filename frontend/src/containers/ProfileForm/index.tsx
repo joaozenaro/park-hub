@@ -5,6 +5,11 @@ import { Loading } from "../../components/ui/Loading";
 import SmartFormFields from "../../components/form/SmartFormFields";
 import { fields } from "./fields";
 import { IProfileForm } from "../../models/IProfileForm";
+import axios, { AxiosError } from "axios";
+import { userService } from "../../services/userService";
+import { useToast } from "../../hooks/useToast";
+import { useAuth } from "../../contexts/AuthContext";
+
 
 const defaultData = {
   name: "",
@@ -12,11 +17,42 @@ const defaultData = {
 };
 interface Props {
   initialData: IProfileForm;
+  userId: number;
 }
-export default function ProfileForm({ initialData }: Props) {
-
-  const onSubmit = async (data: IProfileForm) => { console.log(data) };
-
+export default function ProfileForm({ userId, initialData }: Props) {
+  const { launchToast } = useToast();
+  const {handleProfileUpdate } = useAuth();
+  const onSubmit = async (data: IProfileForm) => {
+    await userService
+      .update(userId,{
+        name: data.name,
+        username: data.username,
+        avatar: data.avatar,
+      })
+      .then(() => {
+        handleProfileUpdate(data);
+        launchToast({
+          title: "Perfil salvo!",
+          description: "Seus dados foram atualizados com sucesso!",
+          type: "success",
+        });
+      })
+      .catch((err: AxiosError<any>) => {
+        if (axios.isAxiosError(err) && err.response) {
+          launchToast({
+            title: "Erro ao salvar informações",
+            description: err.response.data.message,
+            type: "error",
+          });
+        } else {
+          launchToast({
+            title: "Erro inesperado",
+            description: "Verifique sua conexão ou tente novamente mais tarde",
+            type: "error",
+          });
+        }
+      });
+  };
 
 
   const { data, setData, loading, errors, handleChangeValue, handleSubmit } =

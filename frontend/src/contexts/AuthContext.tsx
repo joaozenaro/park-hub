@@ -14,6 +14,7 @@ import { IUser } from "../models/IUser";
 import { IPasswordResetPayload } from "../models/IPasswordResetPayload";
 import { useToast } from "../hooks/useToast";
 import SplashScreen from "../components/layout/SplashScreen";
+import { IProfileForm } from "../models/IProfileForm";
 
 interface AuthProviderProps {
   authenticated: boolean;
@@ -22,6 +23,7 @@ interface AuthProviderProps {
   user: IUser | null;
   handleLogout: () => void;
   handleLogin: (data: ILoginForm) => Promise<void>;
+  handleProfileUpdate: (data: IProfileForm) => void;
   handlePasswordReset: (
     data: IPasswordResetPayload
   ) => Promise<AxiosResponse<any>>;
@@ -31,8 +33,9 @@ const AuthContext = createContext<AuthProviderProps>({
   authenticated: false,
   token: "",
   user: null,
-  setToken: () => {},
-  handleLogout: () => {},
+  setToken: () => { },
+  handleLogout: () => { },
+  handleProfileUpdate: () => { },
   handlePasswordReset: () => Promise.resolve() as any,
   handleLogin: () => Promise.resolve(),
 });
@@ -56,13 +59,16 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
     setToken_(newToken);
   };
 
+  const handleProfileUpdate = (data: IProfileForm) => {
+    setUser({ ...user, ...data } as IUser)
+  }
   const handleLogin = async (data: ILoginForm) => {
     await authService
       .login(data)
       .then((res) => {
         if (res.data.token) {
           setToken(res.data.token);
-          const user = {...res.data.user, role: res.data.role};
+          const user = { ...res.data.user, role: res.data.role };
           setUser(user);
         }
       })
@@ -129,6 +135,7 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
       user,
       handleLogout,
       handlePasswordReset,
+      handleProfileUpdate,
     }),
     [token, authenticated, user]
   );
