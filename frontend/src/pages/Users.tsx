@@ -140,6 +140,7 @@ export default function Users() {
           <thead>
             <tr>
               <Table.Th className="text-start">Nome</Table.Th>
+              <Table.Th className="text-start">Email</Table.Th>
               <Table.Th className="text-start w-[200px]">Status</Table.Th>
               <Table.Th className="text-start w-[200px]">Criado em</Table.Th>
               <Table.Th className="text-start w-[200px]">Editado em</Table.Th>
@@ -151,6 +152,7 @@ export default function Users() {
             {data.map((user) => (
               <tr className="hover:bg-slate-100">
                 <Table.Td>{user.name || "Usuário sem nome"}</Table.Td>
+                <Table.Td>{user.email}</Table.Td>
                 <Table.Td>
                   <Tag type={user.status ? "success" : "danger"}>
                     {user.status ? "Ativo" : "Inativo"}
@@ -193,6 +195,7 @@ export default function Users() {
             ))}
           </tbody>
         </Table.Root>
+        {!data.length && !loading && <Table.EmptyData />}
         <Pagination
           currentPage={currentPage}
           nextPage={nextPage}

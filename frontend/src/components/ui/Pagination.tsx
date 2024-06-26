@@ -8,6 +8,9 @@ export default function Pagination({
   prevPage,
   nextPage,
 }: IPagination) {
+  if (!totalPages) {
+    return null;
+  }
   const getPageNumbers = () => {
     const pageNumbers = [];
     const startPage = Math.max(currentPage - 5, 1);

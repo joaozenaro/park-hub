@@ -2,6 +2,9 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import clsx from "clsx";
 import React, { ReactNode } from "react";
 import { MdMoreHoriz } from "react-icons/md";
+import Lottie from "lottie-react";
+import emptyDataAnimation from "../../assets/animations/empty-data.json";
+import { Text } from "./Text";
 
 interface TableRootProps {
   children: ReactNode;
@@ -89,10 +92,26 @@ const TableActionItem = React.forwardRef(
 );
 TableActionItem.displayName = "Table.ActionItem";
 
+/**
+ * Needs to be placed out of the Table.Root
+ */
+const TableEmptyData = () => {
+  return (
+    <div className="flex flex-col justify-center items-center">
+      <div className="w-[13rem] h-[13rem]">
+        <Lottie animationData={emptyDataAnimation} loop={false} />
+      </div>
+      <Text>Nenhum resultado encontrado :(</Text>
+    </div>
+  );
+};
+TableEmptyData.displayName = "Table.EmptyData";
+
 export const Table = {
   Root: TableRoot,
   Th: TableTh,
   Td: TableTd,
   ActionsDropdown: TableActionsDropdown,
   ActionItem: TableActionItem,
+  EmptyData: TableEmptyData,
 };

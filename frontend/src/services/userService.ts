@@ -21,7 +21,7 @@ function completeSignup(data: ICompleteSignupPayload) {
 
 function update(id: number, data: Partial<IUpdateUserForm>) {
   return api.patch<IUser>("/user/update/" + id, {
-    Profile: data,
+    ProfileForm: data,
   });
 }
 
