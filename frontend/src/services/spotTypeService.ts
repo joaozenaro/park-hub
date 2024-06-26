@@ -4,14 +4,14 @@ import { ISpotType } from "../models/ISpotType";
 const BASE_PATH = "/spot-type";
 
 function create(data: Partial<ISpotType>) {
-  return api.patch<ISpotType>(BASE_PATH + "/add/", {
-    SpotTypeForm: data,
+  return api.post<ISpotType>(BASE_PATH + "/add", {
+    SpotType: data,
   });
 }
 
 function update(id: number, data: Partial<ISpotType>) {
   return api.patch<ISpotType>(BASE_PATH + "/update/" + id, {
-    SpotTypeForm: data,
+    SpotType: data,
   });
 }
 
