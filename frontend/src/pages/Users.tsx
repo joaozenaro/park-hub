@@ -1,101 +1,28 @@
-import {
-  MdAdd,
-  MdOutlineDelete,
-  MdOutlineEdit,
-  MdOutlineSearch,
-} from "react-icons/md";
+import { MdAdd, MdOutlineSearch } from "react-icons/md";
 import Content from "../components/layout/Content";
 import { Button } from "../components/ui/Button";
 import Heading from "../components/ui/Heading";
 import { TextInput } from "../components/form/TextInput";
-import { useCallback, useEffect, useState } from "react";
 import SignupDialog from "../containers/signup/SignupDialog";
-import { Table } from "../components/ui/Table";
-import Tag from "../components/ui/Tag";
-import { IUser } from "../models/IUser";
-import { userService } from "../services/userService";
-import { printDate } from "../utils/date/printDate";
-import Avatar from "../components/ui/Avatar";
-import { debounce } from "lodash";
-import { useToast } from "../hooks/useToast";
 import UpdateUserDialog from "../containers/users/UpdateUserDialog";
-import { usePagination } from "../hooks/usePagination";
 import Pagination from "../components/ui/Pagination";
+import { useUsersPageData } from "../hooks/users/useUsersPageData";
+import UsersTable from "../containers/users/UsersTable";
 
 export default function Users() {
-  const PAGE_SIZE = 10;
-  const { launchToast } = useToast();
-  const [loading, setLoading] = useState(true);
-  const [createModalOpen, setCreateModalOpen] = useState(false);
-  const [searchText, setSearchText] = useState("");
-  const [data, setData] = useState<IUser[]>([]);
-  const [userToUpdate, setUserToUpdate] = useState<IUser | null>(null);
-  const [totalRecords, setTotalRecords] = useState(0);
-  const { currentPage, nextPage, prevPage, setPage, totalPages } =
-    usePagination(1, Math.ceil(totalRecords / PAGE_SIZE));
-
-  const getData = useCallback(
-    (text?: string) => {
-      userService
-        .search({
-          searchTerm: text || searchText,
-          take: PAGE_SIZE,
-          skip: (currentPage - 1) * PAGE_SIZE,
-        })
-        .then((res) => {
-          setData(res.data.records);
-          setTotalRecords(res.data.total_count);
-        })
-        .catch(() => {
-          launchToast({
-            title: "Erro ao buscar dados",
-            description:
-              "Verifique sua conexão com a internet e tente novamente.",
-            type: "error",
-          });
-        })
-        .finally(() => setLoading(false));
-    },
-    [searchText, currentPage]
-  );
-
-  const handleDeleteUser = (id: number) => {
-    userService
-      .delete(id)
-      .then(() => {
-        launchToast({
-          title: "Usuário deletado com sucesso",
-          description: "Usuário deletado com sucesso",
-          type: "success",
-        });
-        getData();
-      })
-      .catch(() => {
-        launchToast({
-          title: "Erro ao deletar usuário",
-          description:
-            "Verifique sua conexão com a internet e tente novamente.",
-          type: "error",
-        });
-      });
-  };
-
-  const debouncedSearch = useCallback(
-    debounce((text) => {
-      getData(text);
-      setPage(1);
-    }, 700),
-    []
-  );
-
-  useEffect(() => {
-    loading && getData();
-    !loading && debouncedSearch(searchText);
-  }, [searchText]);
-
-  useEffect(() => {
-    !loading && getData();
-  }, [currentPage]);
+  const {
+    userToUpdate,
+    setUserToUpdate,
+    handleDeleteUser,
+    createModalOpen,
+    setCreateModalOpen,
+    data,
+    getData,
+    searchText,
+    setSearchText,
+    pagination,
+    loading,
+  } = useUsersPageData();
 
   return (
     <Content>
@@ -136,73 +63,13 @@ export default function Users() {
         </Button>
       </div>
       <div className="mt-8 space-y-8">
-        <Table.Root>
-          <thead>
-            <tr>
-              <Table.Th className="text-start">Nome</Table.Th>
-              <Table.Th className="text-start">Email</Table.Th>
-              <Table.Th className="text-start w-[200px]">Status</Table.Th>
-              <Table.Th className="text-start w-[200px]">Criado em</Table.Th>
-              <Table.Th className="text-start w-[200px]">Editado em</Table.Th>
-              <Table.Th className="text-start w-[100px]">Foto</Table.Th>
-              <Table.Th className="text-end w-[40px]">Ações</Table.Th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-200">
-            {data.map((user) => (
-              <tr className="hover:bg-slate-100">
-                <Table.Td>{user.name || "Usuário sem nome"}</Table.Td>
-                <Table.Td>{user.email}</Table.Td>
-                <Table.Td>
-                  <Tag type={user.status ? "success" : "danger"}>
-                    {user.status ? "Ativo" : "Inativo"}
-                  </Tag>
-                </Table.Td>
-                <Table.Td>{printDate(user.created_at)}</Table.Td>
-                <Table.Td>{printDate(user.updated_at)}</Table.Td>
-                <Table.Td>
-                  <Avatar name={user?.name || "Sem Nome"} url={user?.avatar} />
-                </Table.Td>
-                <Table.Td>
-                  <Table.ActionsDropdown>
-                    <Table.ActionItem>
-                      <button
-                        onClick={() => {
-                          setUserToUpdate(user);
-                        }}
-                        disabled={!user.status}
-                        className="text-slate-500 disabled:opacity-50 px-2 text-sm leading-4 rounded-md flex w-full items-center h-8 select-none outline-0 data-[highlighted]:bg-slate-100 data-[highlighted]:text-zinc-900"
-                      >
-                        <MdOutlineEdit className="h-5 w-5 mr-2" />{" "}
-                        <span>Editar</span>
-                      </button>
-                    </Table.ActionItem>
-
-                    <Table.ActionItem>
-                      <button
-                        onClick={() => {
-                          handleDeleteUser(user.id);
-                        }}
-                        className="text-red-500 px-2 text-sm leading-4 rounded-md flex w-full items-center h-8 select-none outline-0 data-[highlighted]:bg-slate-100 data-[highlighted]:text-red-700"
-                      >
-                        <MdOutlineDelete className="h-5 w-5 mr-2 text-current" />{" "}
-                        <span>Excluir</span>
-                      </button>
-                    </Table.ActionItem>
-                  </Table.ActionsDropdown>
-                </Table.Td>
-              </tr>
-            ))}
-          </tbody>
-        </Table.Root>
-        {!data.length && !loading && <Table.EmptyData />}
-        <Pagination
-          currentPage={currentPage}
-          nextPage={nextPage}
-          prevPage={prevPage}
-          setPage={setPage}
-          totalPages={totalPages}
+        <UsersTable
+          data={data}
+          onUpdate={setUserToUpdate}
+          onDelete={handleDeleteUser}
+          loading={loading}
         />
+        <Pagination {...pagination} />
       </div>
     </Content>
   );
