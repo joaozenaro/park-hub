@@ -23,28 +23,26 @@ export default function Finances() {
         <Button type="tertiary">Limpar filtros</Button>
       </div>
       <div className="flex space-x-6 pt-16 justify-start h-[190px]">
-        <div className="border p-2 rounded-md w-[500px]">
+        <div className="border p-2 rounded-md flex-[1]">
           <h2 className="font-semibold">Total hoje</h2>
           <Heading>R$</Heading>
         </div>
-        <div className="border p-2 rounded-md w-[470px]">
+        <div className="border p-2 rounded-md flex-[1]">
           <h2 className="font-semibold">Total semanal</h2>
           <Heading>R$</Heading>
         </div>
-        <div className="border p-2 rounded-md w-[500px]">
+        <div className="border p-2 rounded-md flex-[1]">
           <h2 className="font-semibold">Total mensal</h2>
           <Heading>R$</Heading>
         </div>
       </div>
 
-      <div className="flex pt-16 justify-start h-[190px] space-x-6 ">
-        <div className="border p-2 rounded-md w-[1000px] h-[350px]">
+      <div className="flex pt-16 justify-start space-x-6 ">
+        <div className="border p-2 rounded-md h-[350px] flex-[2]">
           <h2 className="font-semibold">Arrecadação</h2>
         </div>
-        <div>
-          <div className="justify-end border p-2 rounded-md w-[500px] h-[350px]">
-            <h2 className="font-semibold">Arrecadação</h2>
-          </div>
+        <div className="justify-end border p-2 rounded-md h-[350px] flex-[1]">
+          <h2 className="font-semibold">Arrecadação</h2>
         </div>
       </div>
     </Content>
