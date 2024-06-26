@@ -2,7 +2,10 @@
 
 namespace app\modules\v1\controllers;
 
+use app\core\components\ResponseHelper;
+use app\core\models\SearchModel;
 use app\core\models\SpotType;
+use Exception;
 use Yii;
 use yii\rest\Controller;
 use yii\web\NotFoundHttpException;
@@ -26,62 +29,76 @@ class SpotTypeController extends Controller
             ->one();
 
         if (!$model) {
-            throw new NotFoundHttpException("Tipo de Vaga id: $id não foi encontrada");
+            throw new NotFoundHttpException("Usuario id: $id não foi encontrada");
         }
 
         return $model;
     }
 
-    public function actionAdd(): SpotType|array|null
+    public function actionAdd(): SpotType | array | null
     {
         $model = new SpotType();
         $model->load(Yii::$app->request->post());
-
         if (!$model->validate()) {
-            return $model->getErrors();
+            return ResponseHelper::UnprocessableEntity("Modelo invalido", $model->getErrors());
         }
 
-        if (!$model->saveModel($model)) {
-            return null;
+        try {
+            if (!$model->saveModel($model)) return null;
+
+        } catch (Exception $e) {
+            return [$e->getMessage()];
         }
 
         return $model;
     }
 
-    public function actionUpdate(int $id): SpotType|array|null
+    public function actionUpdate(int $id): SpotType | array | null
     {
-        $spotType = SpotType::find($id)->one();
-        $spotType->load(Yii::$app->request->post());
-
-        if (!$spotType->validate()) {
-            return $spotType->getErrors();
+        $model = new SpotType();
+        $model->load(Yii::$app->request->post());
+        if (!$model->validate()) {
+            return ResponseHelper::UnprocessableEntity("Modelo invalido", $model->getErrors());
         }
 
-        if (!$spotType->saveModel($spotType)) {
-            return null;
-        }
+        $spotType = $model->saveModel($model);
 
         return $spotType;
     }
 
     public function actionSearch()
     {
-        $spotType = SpotType::find();
-        $spotType->load(Yii::$app->request->post());
+        $searchModel = new SearchModel();
+        $searchModel->load(Yii::$app->request->post());
 
-        if (!$spotType->validate()) {
-            return $spotType->getErrors();
+        $search = SpotType::find();
+
+        if ($searchModel->searchTerm) {
+            $search->where(['like', 'name', '%' . $searchModel->searchTerm . '%', false]);
         }
 
-        if (!$spotType->saveModel($spotType)) {
-            return null;
+        if ($searchModel->startDate) {
+            $search->andWhere(['>=', 'created_at', date('Y-m-d', strtotime($searchModel->startDate))]);
+        }
+    
+        if ($searchModel->endDate) {
+            $search->andWhere(['<=', 'created_at', date('Y-m-d', strtotime($searchModel->endDate))]);
         }
 
-        return $spotType;
+        $take = $searchModel->take ?? 10;
+        $skip = $searchModel->skip ?? 0;
+
+        return $search->limit($take)
+            ->offset($skip)
+            ->all();
     }
 
-    public function actionDelete(int $id): int
+    public function actionDelete(int $id)
     {
-        return SpotType::deleteAll(['id' => $id]);
+        if (SpotType::deleteAll(['id' => $id]) > 0) {
+            return ResponseHelper::Success("Usuario id: $id removido com sucessso");
+        }
+
+        return ResponseHelper::BadRequest("Usuario id: $id não foi possivel ser removido");
     }
 }

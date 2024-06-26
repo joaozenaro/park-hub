@@ -6,7 +6,7 @@ use app\core\components\ResponseHelper;
 use app\core\interfaces\IUserService;
 use app\core\models\auth\CompleteSignupForm;
 use app\core\models\auth\SignupForm;
-use app\core\models\Profile;
+use app\core\models\ProfileForm;
 use app\core\models\SearchModel;
 use app\core\models\User;
 use Yii;
@@ -78,7 +78,7 @@ class UserController extends Controller
 
     public function actionUpdate(int $id): User | array | null
     {
-        $model = new Profile();
+        $model = new ProfileForm();
         $model->load(Yii::$app->request->post());
         if (!$model->validate()) {
             return ResponseHelper::UnprocessableEntity("Modelo invalido", $model->getErrors());
