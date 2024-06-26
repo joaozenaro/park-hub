@@ -37,7 +37,7 @@ export default function SpotTypeForm({ onSuccess }: Props) {
       .catch((err: AxiosError<any>) => {
         if (axios.isAxiosError(err) && err.response) {
           launchToast({
-            title: TOAST_MESSAGES[TOAST_MODULE].ERROR_TITLE,
+            title: TOAST_MESSAGES[TOAST_MODULE].CREATED_ERROR_TITLE,
             description: err.response.data.message,
             type: "error",
           });

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { ISpotType } from "../../models/ISpotType";
 import { spotTypeService } from "../../services/spotTypeService";
 import { useToast } from "../useToast";
+import { TOAST_MESSAGES } from "../../constants/toastMessages";
 
 export default function useSpotTypesData() {
   const { launchToast } = useToast();
@@ -24,6 +25,26 @@ export default function useSpotTypesData() {
       })
       .finally(() => setLoading(false));
   };
+
+  const onDelete = (id: number) => {
+    spotTypeService.delete(id).then(() => {
+      launchToast({
+        title: TOAST_MESSAGES["SpotType"].DELETED_TITLE,
+        description: TOAST_MESSAGES["SpotType"].DELETED_DESCRIPTION,
+        type: "success",
+      });
+      getData();
+    })
+      .catch(() => {
+        launchToast({
+          title: TOAST_MESSAGES["SpotType"].DELETED_ERROR_TITLE,
+          description:
+            TOAST_MESSAGES.COMMON.ERROR_DESCRIPTION,
+          type: "error",
+        });
+      });
+  }
+
   useEffect(() => {
     getData();
   }, []);
@@ -32,5 +53,6 @@ export default function useSpotTypesData() {
     data,
     loading,
     refreshData: getData,
+    onDelete,
   };
 }

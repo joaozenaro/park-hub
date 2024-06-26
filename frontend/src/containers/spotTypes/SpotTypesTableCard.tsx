@@ -8,7 +8,7 @@ import { useState } from "react";
 
 export default function SpotTypesTableCard() {
   const [modalOpen, setModalOpen] = useState(false);
-  const { data, refreshData, loading } = useSpotTypesData();
+  const { data, refreshData, onDelete, loading } = useSpotTypesData();
   return (
     <div className="border rounded-md p-6 space-y-6">
       <div className="flex">
@@ -23,7 +23,7 @@ export default function SpotTypesTableCard() {
       <SpotTypesTable
         data={data}
         loading={loading}
-        onDelete={() => {}}
+        onDelete={onDelete}
         onUpdate={() => {}}
       />
       <SpotTypeDialog
