@@ -148,8 +148,8 @@ const TablePagination = ({ pagination }: TablePaginationProps) => {
   return (
     <div className="mt-8 flex items-center justify-end">
       <p className="mr-4 text-sm text-slate-500">
-        {pagination.skip + 1}-
-        {Math.min(
+        {pagination.skip + 1}
+        {pagination.totalRecords > 1 && "-" + Math.min(
           pagination.skip + pagination.pageSize,
           pagination.totalRecords
         )}{" "}
