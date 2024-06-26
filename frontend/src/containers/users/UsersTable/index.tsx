@@ -4,15 +4,18 @@ import { Table } from "../../../components/ui/Table";
 import { IUser } from "../../../models/IUser";
 import { printDate } from "../../../utils/date/printDate";
 import Tag from "../../../components/ui/Tag";
+import { IPagination } from "../../../hooks/usePagination";
 
 interface Props {
   data: IUser[];
+  pagination: IPagination;
   loading: boolean;
   onUpdate: (user: IUser) => void;
   onDelete: (id: number) => void;
 }
 export default function UsersTable({
   data,
+  pagination,
   loading,
   onDelete,
   onUpdate,
@@ -85,6 +88,7 @@ export default function UsersTable({
         </tbody>
       </Table.Table>
       <Table.EmptyData visible={!data.length && !loading} />
+      <Table.Pagination pagination={pagination}/>
     </Table.Root>
   );
 }

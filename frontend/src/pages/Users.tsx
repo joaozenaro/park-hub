@@ -5,7 +5,6 @@ import Heading from "../components/ui/Heading";
 import { TextInput } from "../components/form/TextInput";
 import SignupDialog from "../containers/signup/SignupDialog";
 import UpdateUserDialog from "../containers/users/UpdateUserDialog";
-import Pagination from "../components/ui/Pagination";
 import { useUsersPageData } from "../hooks/users/useUsersPageData";
 import UsersTable from "../containers/users/UsersTable";
 
@@ -62,14 +61,14 @@ export default function Users() {
           Criar usuário
         </Button>
       </div>
-      <div className="mt-8 space-y-8">
+      <div className="mt-8">
         <UsersTable
           data={data}
           onUpdate={setUserToUpdate}
           onDelete={handleDeleteUser}
           loading={loading}
+          pagination={pagination}
         />
-        <Pagination {...pagination} />
       </div>
     </Content>
   );

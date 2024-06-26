@@ -6,6 +6,8 @@ import Lottie from "lottie-react";
 import emptyDataAnimation from "../../assets/animations/empty-data.json";
 import { Text } from "./Text";
 import { Skeleton } from "./Skeleton";
+import Pagination from "./Pagination";
+import { IPagination } from "../../hooks/usePagination";
 
 interface TableRootProps {
   children: ReactNode;
@@ -98,9 +100,6 @@ const TableActionItem = React.forwardRef(
 );
 TableActionItem.displayName = "Table.ActionItem";
 
-/**
- * Needs to be placed out of the Table.Root
- */
 const TableEmptyData = ({ visible }: { visible: boolean }) => {
   if (!visible) return null;
   return (
@@ -139,6 +138,26 @@ const TableLoadingTd = () => {
 };
 TableLoadingTd.displayName = "Table.LoadingTd";
 
+interface TablePaginationProps {
+  pagination: IPagination;
+}
+const TablePagination = ({ pagination }: TablePaginationProps) => {
+  return (
+    <div className="mt-8 flex items-center justify-end">
+      <p className="mr-4 text-sm text-slate-500">
+        {pagination.skip + 1}-
+        {Math.min(
+          pagination.skip + pagination.pageSize,
+          pagination.totalRecords
+        )}{" "}
+        de {pagination.totalRecords}
+      </p>
+      <Pagination {...pagination} />
+    </div>
+  );
+};
+TablePagination.displayName = "Table.Pagination";
+
 export const Table = {
   Root: TableRoot,
   Table: TableTable,
@@ -149,4 +168,5 @@ export const Table = {
   EmptyData: TableEmptyData,
   LoadingRow: TableLoadingRow,
   LoadingTd: TableLoadingTd,
+  Pagination: TablePagination,
 };
