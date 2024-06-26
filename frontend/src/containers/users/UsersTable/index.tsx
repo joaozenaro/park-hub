@@ -42,7 +42,7 @@ export default function UsersTable({
             <Table.LoadingTd />
           </Table.LoadingRow>
           {data.map((user) => (
-            <tr className="hover:bg-slate-100">
+            <tr key={user.id} className="hover:bg-slate-100">
               <Table.Td>{user.name || "Usuário sem nome"}</Table.Td>
               <Table.Td>{user.email}</Table.Td>
               <Table.Td>
