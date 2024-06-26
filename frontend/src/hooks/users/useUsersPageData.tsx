@@ -22,7 +22,6 @@ export function useUsersPageData() {
     pageSize: PAGE_SIZE,
     totalRecords,
   });
-  const skip = (pagination.currentPage - 1) * PAGE_SIZE;
 
   const getData = useCallback(
     (text?: string) => {
@@ -30,7 +29,7 @@ export function useUsersPageData() {
         .search({
           searchTerm: text || searchText,
           take: PAGE_SIZE,
-          skip,
+          skip: pagination.skip,
         })
         .then((res) => {
           setData(res.data.records);
@@ -46,7 +45,7 @@ export function useUsersPageData() {
         })
         .finally(() => setLoading(false));
     },
-    [searchText, skip]
+    [searchText, pagination.skip]
   );
 
   const handleDeleteUser = (id: number) => {
