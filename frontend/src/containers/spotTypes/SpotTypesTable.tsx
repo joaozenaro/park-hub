@@ -6,7 +6,7 @@ import { toCurrency } from "../../utils/toCurrency";
 interface Props {
   data: ISpotType[];
   loading: boolean;
-  onUpdate: (user: ISpotType) => void;
+  onUpdate: (spotType: ISpotType) => void;
   onDelete: (id: number) => void;
 }
 export default function SpotTypesTable({

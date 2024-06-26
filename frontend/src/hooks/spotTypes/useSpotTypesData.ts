@@ -7,6 +7,7 @@ import { TOAST_MESSAGES } from "../../constants/toastMessages";
 export default function useSpotTypesData() {
   const { launchToast } = useToast();
   const [loading, setLoading] = useState(true);
+  const [spotTypeToUpdate, setSpotTypeToUpdate] = useState<ISpotType | null>(null)
   const [data, setData] = useState<ISpotType[]>([]);
 
   const getData = () => {
@@ -45,6 +46,10 @@ export default function useSpotTypesData() {
       });
   }
 
+  const refreshData = () => {
+    getData();
+    setSpotTypeToUpdate(null);
+  }
   useEffect(() => {
     getData();
   }, []);
@@ -52,7 +57,9 @@ export default function useSpotTypesData() {
   return {
     data,
     loading,
-    refreshData: getData,
+    refreshData,
     onDelete,
+    spotTypeToUpdate,
+    setSpotTypeToUpdate
   };
 }

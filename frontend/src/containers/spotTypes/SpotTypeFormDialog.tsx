@@ -1,13 +1,16 @@
 import { Dialog } from "../../components/ui/Dialog";
 import { Text } from "../../components/ui/Text";
+import { ISpotTypeForm } from "../../models/ISpotTypeForm";
 import SpotTypeForm from "./SpotTypeForm";
 
 interface Props {
   open: boolean;
+  id?: number;
+  initialData?: ISpotTypeForm;
   onOpenChange: (state: boolean) => void;
   onSuccess: () => void;
 }
-export default function SpotTypeDialog({ open, onOpenChange, onSuccess }: Props) {
+export default function SpotTypeDialog({ open, onOpenChange, id, initialData, onSuccess }: Props) {
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Content title="Criar tipo de vaga">
@@ -17,6 +20,8 @@ export default function SpotTypeDialog({ open, onOpenChange, onSuccess }: Props)
           </Text>
           {open && (
             <SpotTypeForm
+              id={id}
+              initialData={initialData}
               onSuccess={() => {
                 onOpenChange(false);
                 onSuccess();
