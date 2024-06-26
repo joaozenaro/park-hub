@@ -18,8 +18,8 @@ export default function UsersTable({
   onUpdate,
 }: Props) {
   return (
-    <>
-      <Table.Root>
+    <Table.Root>
+      <Table.Table>
         <thead>
           <tr>
             <Table.Th className="text-start">Nome</Table.Th>
@@ -32,6 +32,12 @@ export default function UsersTable({
           </tr>
         </thead>
         <tbody className="divide-y divide-slate-200">
+          <Table.LoadingRow loading={loading} repeat={5}>
+            <Table.LoadingTd />
+            <Table.LoadingTd />
+            <Table.LoadingTd />
+            <Table.LoadingTd />
+          </Table.LoadingRow>
           {data.map((user) => (
             <tr className="hover:bg-slate-100">
               <Table.Td>{user.name || "Usuário sem nome"}</Table.Td>
@@ -77,8 +83,8 @@ export default function UsersTable({
             </tr>
           ))}
         </tbody>
-      </Table.Root>
-      {!data.length && !loading && <Table.EmptyData />}
-    </>
+      </Table.Table>
+      <Table.EmptyData visible={!data.length && !loading} />
+    </Table.Root>
   );
 }

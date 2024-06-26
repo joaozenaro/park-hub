@@ -5,11 +5,17 @@ import { MdMoreHoriz } from "react-icons/md";
 import Lottie from "lottie-react";
 import emptyDataAnimation from "../../assets/animations/empty-data.json";
 import { Text } from "./Text";
+import { Skeleton } from "./Skeleton";
 
 interface TableRootProps {
   children: ReactNode;
 }
 const TableRoot = ({ children }: TableRootProps) => {
+  return <div className="">{children}</div>;
+};
+TableRoot.displayName = "Table.Root";
+
+const TableTable = ({ children }: TableRootProps) => {
   return (
     <div className="-m-1.5 overflow-x-auto">
       <div className="p-1.5 min-w-full inline-block align-middle">
@@ -22,7 +28,7 @@ const TableRoot = ({ children }: TableRootProps) => {
     </div>
   );
 };
-TableRoot.displayName = "Table.Root";
+TableTable.displayName = "Table.Table";
 
 interface TableElementProps {
   children: ReactNode;
@@ -95,7 +101,8 @@ TableActionItem.displayName = "Table.ActionItem";
 /**
  * Needs to be placed out of the Table.Root
  */
-const TableEmptyData = () => {
+const TableEmptyData = ({ visible }: { visible: boolean }) => {
+  if (!visible) return null;
   return (
     <div className="flex flex-col justify-center items-center">
       <div className="w-[13rem] h-[13rem]">
@@ -107,11 +114,39 @@ const TableEmptyData = () => {
 };
 TableEmptyData.displayName = "Table.EmptyData";
 
+const TableLoadingRow = ({
+  loading,
+  repeat = 1,
+  children,
+}: {
+  loading: boolean;
+  repeat?: number;
+  children: ReactNode;
+}) => {
+  if (!loading) return null;
+  return Array(repeat)
+    .fill(0)
+    .map((_, index) => <tr key={index}>{children}</tr>);
+};
+TableLoadingRow.displayName = "Table.LoadingRow";
+
+const TableLoadingTd = () => {
+  return (
+    <td className="px-6 py-4">
+      <Skeleton className="inline h-4" />
+    </td>
+  );
+};
+TableLoadingTd.displayName = "Table.LoadingTd";
+
 export const Table = {
   Root: TableRoot,
+  Table: TableTable,
   Th: TableTh,
   Td: TableTd,
   ActionsDropdown: TableActionsDropdown,
   ActionItem: TableActionItem,
   EmptyData: TableEmptyData,
+  LoadingRow: TableLoadingRow,
+  LoadingTd: TableLoadingTd,
 };
