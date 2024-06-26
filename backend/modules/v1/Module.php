@@ -20,6 +20,18 @@ class Module extends \yii\base\Module implements BootstrapInterface
             'POST <module>/user/search' => '<module>/user/search',
             'PATCH <module>/user/update/<id:\d+>' => '<module>/user/update',
             'DELETE <module>/user/delete/<id:\d+>' => '<module>/user/delete',
+            
+            'GET <module>/spot/<id:\d+>' => '<module>/spot/view',
+            'POST <module>/spot/search' => '<module>/spot/search',
+            'POST <module>/spot/add' => '<module>/spot/add',
+            'PATCH <module>/spot/update/<id:\d+>' => '<module>/spot/update',
+            'DELETE <module>/spot/delete/<id:\d+>' => '<module>/spot/delete',
+
+            'GET <module>/spot-type/<id:\d+>' => '<module>/spot-type/view',
+            'POST <module>/spot-type/search' => '<module>/spot-type/search',
+            'POST <module>/spot-type/add' => '<module>/spot-type/add',
+            'PATCH <module>/spot-type/update/<id:\d+>' => '<module>/spot-type/update',
+            'DELETE <module>/spot-type/delete/<id:\d+>' => '<module>/spot-type/delete',    
         ], false);
     }
 

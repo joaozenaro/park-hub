@@ -17,7 +17,7 @@ class ProfileForm extends Model
 
     public function rules()
     {
-       return [
+        return [
             [['name', 'username', 'avatar'], 'trim'],
             ['username', 'unique', 'targetClass' => User::class],
             ['username', 'string', 'min' => 4, 'max' => 60],
