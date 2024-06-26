@@ -38,7 +38,7 @@ export const usePagination = ({
     setCurrentPage(Math.min(Math.max(page, 1), totalPages));
   };
 
-  const skip = (currentPage - 1) * pageSize;
+  const skip = Math.max(0, (currentPage - 1) * pageSize);
 
   return {
     currentPage,
