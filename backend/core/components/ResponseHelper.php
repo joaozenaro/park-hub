@@ -14,6 +14,11 @@ class ResponseHelper
         throw new HttpException(401, "Sua requisição foi feita com credenciais invalidas.");
     }
 
+    public static function Forbidden(): Throwable
+    {
+        throw new HttpException(403, "Você não possui permissão para executar essa ação.");
+    }
+
     public static function BadRequest(string $message, array $data = null)
     {
         Yii::$app->response->statusCode = 400;

@@ -7,7 +7,7 @@ use app\core\models\User;
 use Yii;
 use yii\base\Model;
 
-class Profile extends Model
+class ProfileForm extends Model
 {
     use SaveModelTrait;
 
@@ -25,10 +25,10 @@ class Profile extends Model
         ];
     }
 
-    public function profileSave()
+    public function profileSave(int $id)
     {
         if ($this->validate()) {
-            $user = User::findOne(Yii::$app->user->id);
+            $user = User::findOne($id);
             if ($this->username) $user->username = $this->username;
             if ($this->name) $user->name = $this->name;
             if ($this->avatar) $user->avatar = $this->avatar;
