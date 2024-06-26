@@ -1,10 +1,10 @@
 import { MdOutlineDelete, MdOutlineEdit } from "react-icons/md";
-import Avatar from "../../../components/ui/Avatar";
-import { Table } from "../../../components/ui/Table";
-import { IUser } from "../../../models/IUser";
-import { printDate } from "../../../utils/date/printDate";
-import Tag from "../../../components/ui/Tag";
-import { IPagination } from "../../../hooks/usePagination";
+import Avatar from "../../components/ui/Avatar";
+import { Table } from "../../components/ui/Table";
+import { IUser } from "../../models/IUser";
+import { printDate } from "../../utils/date/printDate";
+import Tag from "../../components/ui/Tag";
+import { IPagination } from "../../hooks/usePagination";
 
 interface Props {
   data: IUser[];
