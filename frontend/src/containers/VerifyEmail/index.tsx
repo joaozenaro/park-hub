@@ -22,10 +22,10 @@ export default function VerifyEmail({ email, onGoBack }: Props) {
         </Button>
       </Link>
       <h4 className="font-normal text-gray-400 flex justify-center text-center pt-6">Não recebeu o email? &#160;< Link to="/esqueceu-sua-senha" onClick={() => onGoBack()} className="text-amber-500 hover:text-amber-600" > Clique para reenviar </Link></h4>
-      <div className="flex min-w-0 max-w-45 justify-center">
-        <Link to="/Login" className="group mt-6 flex justify-center text-slate-500 hover:underline outline-none"> <MdArrowBack className="h-6 w-6 mr-1 text-zinc-900 group-hover:text-amber-500 " />  Voltar para o Login </Link>
+      <div className="flex min-w-0 max-w-45 justify-center mt-auto pb-10">
+        <Link to="/Login" className="group flex justify-center text-slate-500 hover:underline outline-none"> <MdArrowBack className="h-6 w-6 mr-1 text-zinc-900 group-hover:text-amber-500 " />  Voltar para o Login </Link>
       </div>
-      <div className="flex justify-center mt-10">
+      <div className="flex justify-center pb-5">
          <Logo />
       </div>
     </CenteredCard>
