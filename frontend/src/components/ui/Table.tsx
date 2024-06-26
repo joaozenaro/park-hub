@@ -142,6 +142,9 @@ interface TablePaginationProps {
   pagination: IPagination;
 }
 const TablePagination = ({ pagination }: TablePaginationProps) => {
+  if (!pagination.totalPages) {
+    return null;
+  }
   return (
     <div className="mt-8 flex items-center justify-end">
       <p className="mr-4 text-sm text-slate-500">
