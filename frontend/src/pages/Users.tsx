@@ -19,6 +19,8 @@ import Avatar from "../components/ui/Avatar";
 import { debounce } from "lodash";
 import { useToast } from "../hooks/useToast";
 import UpdateUserDialog from "../containers/users/UpdateUserDialog";
+import { usePagination } from "../hooks/usePagination";
+import Pagination from "../components/ui/Pagination";
 
 export default function Users() {
   const { launchToast } = useToast();
@@ -27,11 +29,13 @@ export default function Users() {
   const [searchText, setSearchText] = useState("");
   const [data, setData] = useState<IUser[]>([]);
   const [userToUpdate, setUserToUpdate] = useState<IUser | null>(null);
+  const { currentPage, nextPage, prevPage, setPage, totalPages } =
+    usePagination(1, 10);
 
   const getData = useCallback(
     (text?: string) => {
       userService
-        .search({ searchTerm: text || searchText })
+        .search({ searchTerm: text || searchText, take: 10 })
         .then((res) => {
           setData(res.data);
         })
@@ -42,7 +46,8 @@ export default function Users() {
               "Verifique sua conexão com a internet e tente novamente.",
             type: "error",
           });
-        }).finally(() => setLoading(false));
+        })
+        .finally(() => setLoading(false));
     },
     [searchText]
   );
@@ -78,7 +83,6 @@ export default function Users() {
   useEffect(() => {
     loading && getData();
     !loading && debouncedSearch(searchText);
-
   }, [searchText]);
 
   return (
@@ -119,7 +123,7 @@ export default function Users() {
           Criar usuário
         </Button>
       </div>
-      <div className="mt-8">
+      <div className="mt-8 space-y-8">
         <Table.Root>
           <thead>
             <tr>
@@ -177,6 +181,13 @@ export default function Users() {
             ))}
           </tbody>
         </Table.Root>
+        <Pagination
+          currentPage={currentPage}
+          nextPage={nextPage}
+          prevPage={prevPage}
+          setPage={setPage}
+          totalPages={totalPages}
+        />
       </div>
     </Content>
   );

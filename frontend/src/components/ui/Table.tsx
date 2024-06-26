@@ -44,7 +44,7 @@ const TableTd = ({ children, className }: TableElementProps) => {
   return (
     <td
       className={clsx(
-        "px-6 py-4 whitespace-nowrap text-sm font-medium text-zinc-900",
+        "px-6 py-2 whitespace-nowrap text-sm font-medium text-zinc-900",
         className
       )}
     >
