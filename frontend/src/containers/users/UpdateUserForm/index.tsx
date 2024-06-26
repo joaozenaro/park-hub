@@ -17,24 +17,24 @@ const defaultData = {
 };
 interface Props {
   initialData: IUpdateUserForm;
-  userId: number;
+  id: number;
   isProfile?: boolean;
   onSuccess?: () => void;
 }
 export default function UpdateUserForm({
-  userId,
+  id,
   initialData,
   isProfile = false,
   onSuccess = () => {},
 }: Props) {
   const { user } = useAuth();
-  const isUpdatingLoggedUser = user?.id === userId;
+  const isUpdatingLoggedUser = user?.id === id;
   const { launchToast } = useToast();
   const { handleProfileUpdate } = useAuth();
   const onSubmit = async (data: IUpdateUserForm) => {
     const payload = getChangedProps<IUpdateUserForm>(initialData, data);
     await userService
-      .update(userId, payload)
+      .update(id, payload)
       .then(() => {
         if (isUpdatingLoggedUser) {
           handleProfileUpdate(data);

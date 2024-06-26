@@ -18,10 +18,7 @@ export default function SignupDialog({ open, onOpenChange, onSuccess }: Props) {
           </Text>
           {open && (
             <SignupForm
-              onSuccess={() => {
-                onOpenChange(false);
-                onSuccess();
-              }}
+              onSuccess={onSuccess}
             />
           )}
         </div>

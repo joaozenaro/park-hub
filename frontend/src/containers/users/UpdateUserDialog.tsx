@@ -22,7 +22,7 @@ export default function UpdateUserDialog({
           <Text>Altere as informações básicas do usuário</Text>
           {open && (
             <UpdateUserForm
-              userId={user.id}
+              id={user.id}
               initialData={{
                 avatar: user.avatar,
                 name: user.name,

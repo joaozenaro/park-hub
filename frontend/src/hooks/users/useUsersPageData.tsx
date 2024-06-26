@@ -92,6 +92,11 @@ export function useUsersPageData() {
     !loading && getData();
   }, [pagination.currentPage]);
 
+  const refreshData = () => {
+    getData();
+    setUserToUpdate(null);
+  }
+
   return {
     userToUpdate,
     setUserToUpdate,
@@ -99,7 +104,7 @@ export function useUsersPageData() {
     createModalOpen,
     setCreateModalOpen,
 
-    getData,
+    refreshData,
     data,
 
     searchText,

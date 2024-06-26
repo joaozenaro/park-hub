@@ -16,7 +16,7 @@ export default function Users() {
     createModalOpen,
     setCreateModalOpen,
     data,
-    getData,
+    refreshData,
     searchText,
     setSearchText,
     pagination,
@@ -30,13 +30,13 @@ export default function Users() {
           user={userToUpdate}
           open={!!userToUpdate}
           onClose={() => setUserToUpdate(null)}
-          onSuccess={() => getData()}
+          onSuccess={refreshData}
         />
       )}
       <SignupDialog
         open={createModalOpen}
         onOpenChange={setCreateModalOpen}
-        onSuccess={() => getData()}
+        onSuccess={refreshData}
       />
       <Heading>Usuários</Heading>
       <div className="flex mt-8">
