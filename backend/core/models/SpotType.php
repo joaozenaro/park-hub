@@ -20,6 +20,7 @@ class SpotType extends ActiveRecord
         return [
             [['name', 'default_price'], 'required'],
             [['name'], 'string', 'max' => 60],
+            ['name', 'filter', 'filter' => 'strtolower'],
             ['name', 'unique', 'targetClass' => SpotType::class],
             [['default_price'], 'number'],
         ];

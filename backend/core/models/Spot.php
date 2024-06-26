@@ -9,7 +9,7 @@ class Spot extends ActiveRecord
 {
     use SaveModelTrait;
 
-    public $spotTypeName;
+    public $spot_type_name;
 
     public static function tableName()
     {
@@ -19,11 +19,12 @@ class Spot extends ActiveRecord
     public function rules()
     {
         return [
-            [['code', 'floor', 'spotTypeName'], 'trim'],
-            [['code', 'floor', 'spotTypeName'], 'required'],
-            [['code', 'floor', 'spotTypeName'], 'string', 'max' => 20],
+            [['code', 'floor', 'spot_type_name'], 'trim'],
+            [['code', 'floor', 'spot_type_name'], 'required'],
+            [['code', 'floor', 'spot_type_name'], 'string', 'max' => 20],
+            [['code', 'floor'], 'filter', 'filter' => 'strtoupper'],
             ['code', 'unique', 'targetClass' => Spot::class],
-            [['spotTypeName'], 'exist', 'targetClass' => SpotType::class, 'targetAttribute' => 'name'],
+            [['spot_type_name'], 'exist', 'targetClass' => SpotType::class, 'targetAttribute' => 'name'],
             [['spot_type_id'], 'exist', 'targetClass' => SpotType::class, 'targetAttribute' => 'id'],
         ];
     }
