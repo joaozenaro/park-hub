@@ -16,7 +16,7 @@ export function useUsersPageData() {
   const [searchText, setSearchText] = useState("");
   const [data, setData] = useState<IUser[]>([]);
 
-  const PAGE_SIZE = 8;
+  const PAGE_SIZE = 5;
   const [totalRecords, setTotalRecords] = useState(0);
   const pagination = usePagination({
     initialPage: 1,
