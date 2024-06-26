@@ -4,8 +4,10 @@ import { userService } from "../../services/userService";
 import { debounce } from "lodash";
 import { useToast } from "../useToast";
 import { usePagination } from "../usePagination";
+import { useAuth } from "../../contexts/AuthContext";
 
 export function useUsersPageData() {
+  const { user: userFromSession, handleLogout } = useAuth();
   const { launchToast } = useToast();
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [userToUpdate, setUserToUpdate] = useState<IUser | null>(null);
@@ -14,7 +16,7 @@ export function useUsersPageData() {
   const [searchText, setSearchText] = useState("");
   const [data, setData] = useState<IUser[]>([]);
 
-  const PAGE_SIZE = 5;
+  const PAGE_SIZE = 8;
   const [totalRecords, setTotalRecords] = useState(0);
   const pagination = usePagination({
     initialPage: 1,
@@ -57,7 +59,11 @@ export function useUsersPageData() {
           description: "Usuário deletado com sucesso",
           type: "success",
         });
-        getData();
+        if (userFromSession?.id === id) {
+          handleLogout();
+        } else {
+          getData();
+        }
       })
       .catch(() => {
         launchToast({
