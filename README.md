@@ -1,8 +1,8 @@
-# 🐳 Dockerized Yii API + React SPA: Park Hub
-
 <img src="logo-bgdark.jpg" alt="Park Hub Logo" />
 
-Desenvolvimento de aplicação de **gerenciamento de estacionamento** utilizando o Framework definido por sorteio. 
+# 🐳 Dockerized Yii API + React SPA: Park Hub
+
+Desenvolvimento de aplicação de **gerenciamento de estacionamento** utilizando o Framework definido por sorteio.   
 **Programação III: CC 2022 Unoesc.**
 
 ## 🎲 Framework Definido
@@ -35,22 +35,6 @@ Desenvolvimento de aplicação de **gerenciamento de estacionamento** utilizando
 </summary>
 <br>
 
-# O que é Yii
-Yii é um framework PHP de alto desempenho, baseado em componentes, para o rápido desenvolvimento de aplicações Web modernas. O nome Yii (pronunciado "Yi" ou [ji:]) significa "simples e evolutivo" em chinês. Também pode ser visto como um acrônimo para "Yes It Is!" (Sim, é isso!).
-
-## Para que o Yii é melhor?
-Yii é um framework genérico de programação Web, o que significa que pode ser usado para desenvolver todos os tipos de aplicações Web usando PHP. Devido à sua arquitetura baseada em componentes e suporte sofisticado de cache, ele é especialmente adequado para desenvolver aplicações em larga escala, como portais, fóruns, sistemas de gerenciamento de conteúdo (CMS), projetos de e-commerce, serviços Web RESTful, e assim por diante.
-
-## Como o Yii se compara a outros frameworks?
-Se você já está familiarizado com outro framework, pode achar útil saber como o Yii se compara:
-
-Como a maioria dos frameworks PHP, o Yii implementa o padrão arquitetural MVC (Model-View-Controller) e promove a organização do código com base nesse padrão.
-O Yii adota a filosofia de que o código deve ser escrito de forma simples, mas elegante. O Yii nunca tenta superprojetar as coisas apenas com o propósito de seguir estritamente algum padrão de design.
-O Yii é um framework completo, fornecendo muitos recursos comprovados e prontos para uso: construtores de consultas e ActiveRecord para bancos de dados relacionais e NoSQL; suporte ao desenvolvimento de APIs RESTful; suporte a cache em vários níveis; e muito mais.
-O Yii é extremamente extensível. Você pode personalizar ou substituir quase todas as partes do código central. Também pode tirar proveito da sólida arquitetura de extensões do Yii para usar ou desenvolver extensões redistribuíveis.
-Alto desempenho é sempre um objetivo principal do Yii.
-O Yii não é um show de um homem só; é apoiado por uma forte equipe de desenvolvedores principais, bem como por uma grande comunidade de profissionais que constantemente contribuem para o desenvolvimento do Yii. A equipe de desenvolvedores do Yii mantém um olhar atento às últimas tendências de desenvolvimento Web e às melhores práticas e recursos encontrados em outros frameworks e projetos. As práticas e recursos mais relevantes encontrados em outros lugares são regularmente incorporados ao núcleo do framework e expostos através de interfaces simples e elegantes.
-
 [What is Yii?](https://www.yiiframework.com/doc/guide/2.0/en/intro-yii)
 
 # Estrutura
@@ -81,35 +65,6 @@ $$
 $$
 
 ou seja, websites totalmente divididos e especializados em suas responsabilidades. Aplicativos de "única página" fazem requisições de transferência de estado representacional (*REST*) através de interfaces de programação de aplicativos (*APIs*), isso permite uma grande separação e uma aproximação maior dos princípios *SOLID*, de que cada componente do sistema é focado em uma única responsabilidade, promovendo a independência e a modularidade.
-
-## Nomenclatura sugerida *git*
-
-### Branches
-Sigla|Significado
--|-
-Feat|*Feature*, ou seja, funcionalidade ou recurso novo
-Fix|Correção de algum bug, erro de gramatica, formatação
-WIP|*Work in Progress*, ou seja, trabalho em andamento em algo não bem definido, que pode ou não ser uma *feature*
-
-```bash
-$ git checkout -b feat/jwt-implementation
-
-$ git checkout -b fix/customer-form-bugfix
-
-$ git checkout -b wip/new-nginx-config
-
-# Obs.: Fazer push da branch para remote pela primeira vez
-$ git push --set-upstream origin branch-name
-```
-
-### Commits:
-```bash
-$ git commit -m "feat: Added Unit tests"
-
-$ git commit -m "feat: Organized project structure"
-
-$ git commit -m "fix: Fixed bug where customer form was sending 404"
-```
 
 </details>
 
