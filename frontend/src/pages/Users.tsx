@@ -23,21 +23,28 @@ import { usePagination } from "../hooks/usePagination";
 import Pagination from "../components/ui/Pagination";
 
 export default function Users() {
+  const PAGE_SIZE = 10;
   const { launchToast } = useToast();
   const [loading, setLoading] = useState(true);
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [data, setData] = useState<IUser[]>([]);
   const [userToUpdate, setUserToUpdate] = useState<IUser | null>(null);
+  const [totalRecords, setTotalRecords] = useState(0);
   const { currentPage, nextPage, prevPage, setPage, totalPages } =
-    usePagination(1, 10);
+    usePagination(1, Math.ceil(totalRecords / PAGE_SIZE));
 
   const getData = useCallback(
     (text?: string) => {
       userService
-        .search({ searchTerm: text || searchText, take: 10 })
+        .search({
+          searchTerm: text || searchText,
+          take: PAGE_SIZE,
+          skip: (currentPage - 1) * PAGE_SIZE,
+        })
         .then((res) => {
-          setData(res.data);
+          setData(res.data.records);
+          setTotalRecords(res.data.total_count);
         })
         .catch(() => {
           launchToast({
@@ -49,7 +56,7 @@ export default function Users() {
         })
         .finally(() => setLoading(false));
     },
-    [searchText]
+    [searchText, currentPage]
   );
 
   const handleDeleteUser = (id: number) => {
@@ -76,6 +83,7 @@ export default function Users() {
   const debouncedSearch = useCallback(
     debounce((text) => {
       getData(text);
+      setPage(1);
     }, 700),
     []
   );
@@ -84,6 +92,10 @@ export default function Users() {
     loading && getData();
     !loading && debouncedSearch(searchText);
   }, [searchText]);
+
+  useEffect(() => {
+    !loading && getData();
+  }, [currentPage]);
 
   return (
     <Content>

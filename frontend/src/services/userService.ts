@@ -41,9 +41,15 @@ function signup(data: ISignupPayload) {
     SignupForm: data,
   });
 }
-
+interface ISearchUserResponse {
+  records: IUser[];
+  total_count: number;
+}
 function search(data?: ISearchModel) {
-  return api.post<IUser[]>("/user/search", data ? { SearchModel: data } : {});
+  return api.post<ISearchUserResponse>(
+    "/user/search",
+    data ? { SearchModel: data } : {}
+  );
 }
 
 export const userService = {
