@@ -29,7 +29,7 @@ export default function LoginForm() {
         onChangeValue={handleChangeValue}
       />
       <Button type="brand" className="w-full justify-center mt-6">
-        {loading && <Loading size="sm" />}
+        {loading && <Loading size="sm" className="mr-2" />}
         Entrar
       </Button>
     </form>

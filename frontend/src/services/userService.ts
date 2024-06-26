@@ -1,3 +1,5 @@
+import { IProfileForm } from "../models/IProfileForm";
+import { IUser } from "../models/IUser";
 import api from "./api";
 
 interface ICompleteSignupResponse {
@@ -16,6 +18,12 @@ function completeSignup(data: ICompleteSignupPayload) {
   });
 }
 
+function update(id: number, data: Partial<IProfileForm>) {
+  return api.patch<IUser>("/user/update/"+ id, {
+    Profile: data,
+  });
+}
+
 interface ISignupResponse {
   message: string;
 }
@@ -31,5 +39,6 @@ function signup(data: ISignupPayload) {
 
 export const userService = {
   signup,
-  completeSignup
+  completeSignup,
+  update
 };

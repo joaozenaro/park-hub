@@ -78,6 +78,11 @@ class UserController extends Controller
 
     public function actionUpdate(int $id): User | array | null
     {
+        $loggedUser = Yii::$app->user;
+        if (!$loggedUser->can("manageUsers") && $loggedUser->id !== $id) {
+            return ResponseHelper::Forbidden();
+        }
+
         $model = new ProfileForm();
         $model->load(Yii::$app->request->post());
         if (!$model->validate()) {
@@ -111,13 +116,22 @@ class UserController extends Controller
         $take = $searchModel->take ?? 10;
         $skip = $searchModel->skip ?? 0;
 
-        return $search->limit($take)
+        $totalCount = $search->count();
+
+        $records = $search->limit($take)
             ->offset($skip)
             ->all();
+
+        return $this->asJson(["records" => $records, "total_count" => $totalCount]);
     }
 
     public function actionDelete(int $id)
     {
+        $loggedUser = Yii::$app->user;
+        if (!$loggedUser->can("manageUsers") && $loggedUser->id !== $id) {
+            return ResponseHelper::Forbidden();
+        }
+
         if (User::deleteAll(['id' => $id]) > 0) {
             return ResponseHelper::Success("Usuario id: $id removido com sucessso");
         }
