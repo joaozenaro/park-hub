@@ -7,7 +7,7 @@ use app\core\models\User;
 use Yii;
 use yii\base\Model;
 
-class Profile extends Model
+class ProfileForm extends Model
 {
     use SaveModelTrait;
 
