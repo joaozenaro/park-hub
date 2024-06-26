@@ -56,20 +56,19 @@ const router = createBrowserRouter([
         path: '/login',
         element: <Login />,
       },
+      {
+        path: '/invite',
+        element: <CompleteSignup />
+      },
+      {
+        path: '/password-reset',
+        element: <PasswordReset />
+      },
     ]
   },
-  
   {
     path: '/about',
     element: <About />,
-  },
-  {
-    path: '/invite',
-    element: <CompleteSignup />
-  },
-  {
-    path: '/password-reset',
-    element: <PasswordReset />
   },
   {
     path: '*',

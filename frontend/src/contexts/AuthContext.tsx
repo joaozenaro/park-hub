@@ -14,7 +14,7 @@ import { IUser } from "../models/IUser";
 import { IPasswordResetPayload } from "../models/IPasswordResetPayload";
 import { useToast } from "../hooks/useToast";
 import SplashScreen from "../components/layout/SplashScreen";
-import { IProfileForm } from "../models/IProfileForm";
+import { IUpdateUserForm } from "../models/IUpdateUserForm";
 
 interface AuthProviderProps {
   authenticated: boolean;
@@ -23,7 +23,7 @@ interface AuthProviderProps {
   user: IUser | null;
   handleLogout: () => void;
   handleLogin: (data: ILoginForm) => Promise<void>;
-  handleProfileUpdate: (data: IProfileForm) => void;
+  handleProfileUpdate: (data: IUpdateUserForm) => void;
   handlePasswordReset: (
     data: IPasswordResetPayload
   ) => Promise<AxiosResponse<any>>;
@@ -59,7 +59,7 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
     setToken_(newToken);
   };
 
-  const handleProfileUpdate = (data: IProfileForm) => {
+  const handleProfileUpdate = (data: IUpdateUserForm) => {
     setUser({ ...user, ...data } as IUser)
   }
   const handleLogin = async (data: ILoginForm) => {

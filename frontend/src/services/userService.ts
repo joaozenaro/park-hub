@@ -1,4 +1,5 @@
-import { IProfileForm } from "../models/IProfileForm";
+import { IUpdateUserForm } from "../models/IUpdateUserForm";
+import { ISearchModel } from "../models/ISearchModel";
 import { IUser } from "../models/IUser";
 import api from "./api";
 
@@ -18,10 +19,14 @@ function completeSignup(data: ICompleteSignupPayload) {
   });
 }
 
-function update(id: number, data: Partial<IProfileForm>) {
-  return api.patch<IUser>("/user/update/"+ id, {
-    Profile: data,
+function update(id: number, data: Partial<IUpdateUserForm>) {
+  return api.patch<IUser>("/user/update/" + id, {
+    ProfileForm: data,
   });
+}
+
+function deleteUser(id: number) {
+  return api.delete<IUser>("/user/delete/" + id);
 }
 
 interface ISignupResponse {
@@ -36,9 +41,21 @@ function signup(data: ISignupPayload) {
     SignupForm: data,
   });
 }
+interface ISearchUserResponse {
+  records: IUser[];
+  total_count: number;
+}
+function search(data?: ISearchModel) {
+  return api.post<ISearchUserResponse>(
+    "/user/search",
+    data ? { SearchModel: data } : {}
+  );
+}
 
 export const userService = {
   signup,
   completeSignup,
-  update
+  update,
+  delete: deleteUser,
+  search,
 };

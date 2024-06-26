@@ -2,11 +2,22 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import clsx from "clsx";
 import React, { ReactNode } from "react";
 import { MdMoreHoriz } from "react-icons/md";
+import Lottie from "lottie-react";
+import emptyDataAnimation from "../../assets/animations/empty-data.json";
+import { Text } from "./Text";
+import { Skeleton } from "./Skeleton";
+import Pagination from "./Pagination";
+import { IPagination } from "../../hooks/usePagination";
 
 interface TableRootProps {
   children: ReactNode;
 }
 const TableRoot = ({ children }: TableRootProps) => {
+  return <div className="">{children}</div>;
+};
+TableRoot.displayName = "Table.Root";
+
+const TableTable = ({ children }: TableRootProps) => {
   return (
     <div className="-m-1.5 overflow-x-auto">
       <div className="p-1.5 min-w-full inline-block align-middle">
@@ -19,7 +30,7 @@ const TableRoot = ({ children }: TableRootProps) => {
     </div>
   );
 };
-TableRoot.displayName = "Table.Root";
+TableTable.displayName = "Table.Table";
 
 interface TableElementProps {
   children: ReactNode;
@@ -44,7 +55,7 @@ const TableTd = ({ children, className }: TableElementProps) => {
   return (
     <td
       className={clsx(
-        "px-6 py-4 whitespace-nowrap text-sm font-medium text-zinc-900",
+        "px-6 py-2 whitespace-nowrap text-sm font-medium text-zinc-900",
         className
       )}
     >
@@ -89,10 +100,73 @@ const TableActionItem = React.forwardRef(
 );
 TableActionItem.displayName = "Table.ActionItem";
 
+const TableEmptyData = ({ visible }: { visible: boolean }) => {
+  if (!visible) return null;
+  return (
+    <div className="flex flex-col justify-center items-center">
+      <div className="w-[13rem] h-[13rem]">
+        <Lottie animationData={emptyDataAnimation} loop={false} />
+      </div>
+      <Text>Nenhum resultado encontrado :(</Text>
+    </div>
+  );
+};
+TableEmptyData.displayName = "Table.EmptyData";
+
+const TableLoadingRow = ({
+  loading,
+  repeat = 1,
+  children,
+}: {
+  loading: boolean;
+  repeat?: number;
+  children: ReactNode;
+}) => {
+  if (!loading) return null;
+  return Array(repeat)
+    .fill(0)
+    .map((_, index) => <tr key={index}>{children}</tr>);
+};
+TableLoadingRow.displayName = "Table.LoadingRow";
+
+const TableLoadingTd = () => {
+  return (
+    <td className="px-6 py-4">
+      <Skeleton className="inline h-4" />
+    </td>
+  );
+};
+TableLoadingTd.displayName = "Table.LoadingTd";
+
+interface TablePaginationProps {
+  pagination: IPagination;
+}
+const TablePagination = ({ pagination }: TablePaginationProps) => {
+  return (
+    <div className="mt-8 flex items-center justify-end">
+      <p className="mr-4 text-sm text-slate-500">
+        {pagination.skip + 1}-
+        {Math.min(
+          pagination.skip + pagination.pageSize,
+          pagination.totalRecords
+        )}{" "}
+        de {pagination.totalRecords}
+      </p>
+      <Pagination {...pagination} />
+    </div>
+  );
+};
+TablePagination.displayName = "Table.Pagination";
+
 export const Table = {
   Root: TableRoot,
+  Table: TableTable,
   Th: TableTh,
   Td: TableTd,
   ActionsDropdown: TableActionsDropdown,
   ActionItem: TableActionItem,
+  EmptyData: TableEmptyData,
+  LoadingRow: TableLoadingRow,
+  LoadingTd: TableLoadingTd,
+  Pagination: TablePagination,
 };

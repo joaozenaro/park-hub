@@ -1,5 +1,5 @@
 import { MdOutlineImage, MdOutlinePerson } from "react-icons/md";
-import { IFieldProps } from "../../../components/form/SmartField";
+import { IFieldProps } from "../../../../components/form/SmartField";
 
 export const fields: IFieldProps[] = [
   {
