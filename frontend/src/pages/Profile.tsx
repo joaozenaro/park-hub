@@ -30,7 +30,7 @@ export default function Profile() {
       <div className="max-w-[700px]">
         <UpdateUserForm
           isProfile
-          userId={Number(user?.id)}
+          id={Number(user?.id)}
           initialData={{
             username: user?.username || "",
             name: user?.name || "",
