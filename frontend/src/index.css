@@ -6,23 +6,24 @@
   --content-height: calc(100vh - 4rem);
   --spot-width: 56px;
   --spot-height: 102px;
+  --car-height: calc(var(--spot-height) - 32px);
 }
 
-@media (min-width: 1200px ) {
+@media (min-width: 1200px) {
   :root {
     --spot-width: 70px;
     --spot-height: 128px;
   }
 }
 
-@media (min-width: 1500px ) {
+@media (min-width: 1500px) {
   :root {
     --spot-width: 84px;
     --spot-height: 154px;
   }
 }
 
-@media (min-width: 1700px ) {
+@media (min-width: 1700px) {
   :root {
     --spot-width: 98px;
     --spot-height: 180px;
@@ -35,8 +36,8 @@
 }
 
 .scrollbar::-webkit-scrollbar {
-  width: .75rem;
-  height: .75rem;
+  width: 0.75rem;
+  height: 0.75rem;
 }
 /* Track */
 .scrollbar ::-webkit-scrollbar-track {

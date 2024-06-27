@@ -13,6 +13,7 @@ import { Select } from "../components/form/Select";
 import { useState } from "react";
 import { Dialog } from "../components/ui/Dialog";
 import { AlertDialog } from "../components/ui/AlertDialog";
+import Spot from "../containers/home/Spot";
 
 export default function Home() {
   const [floor, setFloor] = useState("");
@@ -98,10 +99,7 @@ export default function Home() {
                         key={spot.id}
                         className="border-white border-4 w-[var(--spot-width)] h-[var(--spot-height)]"
                       >
-                        <div className="flex w-full h-full flex-col">
-                          <div className="bg-teal-200 flex-1"></div>
-                          {spot.code}
-                        </div>
+                        <Spot data={spot} />
                       </td>
                     ))}
                   </tr>
