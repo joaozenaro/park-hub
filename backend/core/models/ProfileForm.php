@@ -4,7 +4,6 @@ namespace app\core\models;
 
 use app\core\components\SaveModelTrait;
 use app\core\models\User;
-use Yii;
 use yii\base\Model;
 
 class ProfileForm extends Model
