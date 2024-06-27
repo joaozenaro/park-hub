@@ -1,6 +1,6 @@
 <?php
 
-namespace app\core\models;
+namespace app\core\models\base;
 
 use app\core\components\SaveModelTrait;
 use yii\db\ActiveRecord;
@@ -46,5 +46,13 @@ class Spot extends ActiveRecord
     public function getReservations()
     {
         return $this->hasMany(Reservation::class, ['spot_id' => 'id']);
+    }
+
+    public static function getCurrentReservation(int $id) {
+        $reservation = Reservation::find()
+            ->where(["spot_id" => $id, "check_out" => null])
+            ->one();
+
+        return $reservation ?? null;
     }
 }

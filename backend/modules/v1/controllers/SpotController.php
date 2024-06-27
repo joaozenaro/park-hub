@@ -3,9 +3,10 @@
 namespace app\modules\v1\controllers;
 
 use app\core\components\ResponseHelper;
-use app\core\models\Reservation;
+use app\core\models\base\Reservation;
+use app\core\models\base\Spot;
+use app\core\models\form\SpotReservationsSearchForm;
 use app\core\models\SearchModel;
-use app\core\models\Spot;
 use Yii;
 use yii\rest\Controller;
 use yii\web\NotFoundHttpException;
@@ -83,6 +84,10 @@ class SpotController extends Controller
 
         $search = Spot::find();
 
+        if ($searchModel->searchTerm) {
+            $search->where(['like', 'code', '%' . $searchModel->searchTerm . '%', false]);
+        }
+
         if ($searchModel->startDate) {
             $search->andWhere(['>=', 'created_at', date('Y-m-d', strtotime($searchModel->startDate))]);
         }
@@ -115,25 +120,25 @@ class SpotController extends Controller
 
     public function actionReservations()
     {
-        $searchModel = new SearchModel();
+        $searchModel = new SpotReservationsSearchForm();
         $searchModel->load(Yii::$app->request->post());
     
-        $query = Spot::find()->with(['spotType', 'reservations.user']);
-    
-        if ($searchModel->startDate) {
-            $query->andWhere(['>=', 'created_at', date('Y-m-d', strtotime($searchModel->startDate))]);
+        $search = Spot::find()->with(['spotType']);
+
+        if ($searchModel->licensePlate) {
+            $search->where(['like', 'license_plate', '%' . $searchModel->licensePlate . '%', false]);
         }
-    
-        if ($searchModel->endDate) {
-            $query->andWhere(['<=', 'created_at', date('Y-m-d', strtotime($searchModel->endDate))]);
+
+        if ($searchModel->floor) {
+            $search->where(['like', 'floor', '%' . $searchModel->floor . '%', false]);
         }
     
         $take = $searchModel->take ?? 10;
         $skip = $searchModel->skip ?? 0;
     
-        $totalCount = $query->count();
+        $totalCount = $search->count();
     
-        $records = $query
+        $records = $search
             ->limit($take)
             ->offset($skip)
             ->all();
@@ -141,13 +146,16 @@ class SpotController extends Controller
         $response = [];
         foreach ($records as $spot) {
             $spotData = $spot->toArray();
-            $spotData['reservations'] = array_map(function($reservation) {
+
+            $reservation = Spot::getCurrentReservation($spot->id);
+            if ($reservation) {
                 $reservation->scenario = Reservation::SCENARIO_NO_SPOT;
-                return $reservation->toArray();
-            }, $spot->reservations);
+            $spotData['reservation'] = $reservation;
+            }
+
             $response[] = $spotData;
         }
-    
+
         return $this->asJson(["records" => $response, "total_count" => $totalCount]);
     }    
 }

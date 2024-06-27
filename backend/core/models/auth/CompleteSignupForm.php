@@ -2,7 +2,7 @@
 
 namespace app\core\models\auth;
 
-use app\core\models\User;
+use app\core\models\base\User;
 use Yii;
 use yii\base\Model;
 

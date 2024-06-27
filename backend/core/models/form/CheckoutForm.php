@@ -1,22 +1,23 @@
 <?php
 
-namespace app\core\models;
+namespace app\core\models\form;
 
 use app\core\components\SaveModelTrait;
+use app\core\models\base\Reservation;
 use DateTime;
 use yii\base\Model;
 
-class ReservationForm extends Model
+class CheckoutForm extends Model
 {
     use SaveModelTrait;
 
-    public $paid;
+    public $was_paid;
     public $check_out;
     public $price;
 
     public function rules() {
         return [
-            [['paid', 'check_out'], 'boolean'],
+            [['was_paid', 'check_out'], 'boolean'],
             ['price', 'double'],
         ];
     }
@@ -25,9 +26,11 @@ class ReservationForm extends Model
     {
         if ($this->validate()) {
             $res = Reservation::findOne($id);
+            if (!$res) return null;
 
-            if ($this->paid && $res->was_paid === 0) {
+            if ($this->was_paid && $res->was_paid === 0) {
                 $res->was_paid = true;
+                $this->check_out = true;
             }
 
             if ($this->check_out) {

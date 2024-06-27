@@ -23,10 +23,15 @@ class Module extends \yii\base\Module implements BootstrapInterface
             'DELETE <module>/user/delete/<id:\d+>' => '<module>/user/delete',
 
             'POST <module>/spot/reservations' => '<module>/spot/reservations',
+            'GET <module>/reservation/<id:\d+>' => '<module>/reservation/view',
+            'POST <module>/checkin' => '<module>/reservation/add',
+            'PATCH <module>/checkout/<id:\d+>' => '<module>/reservation/update',
+            'POST <module>/reservation/search' => '<module>/reservation/search',
+            'DELETE <module>/reservation/delete/<id:\d+>' => '<module>/reservation/delete',
         ], false);
 
         // Shared route actions
-        foreach (['spot', 'spot-type', 'reservation'] as $entity) {
+        foreach (['spot', 'spot-type'] as $entity) {
             $app->getUrlManager()->addRules([
                 "GET <module>/$entity/<id:\d+>" => "<module>/$entity/view",
                 "POST <module>/$entity/search" => "<module>/$entity/search",
