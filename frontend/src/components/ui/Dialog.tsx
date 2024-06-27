@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { AiOutlineClose } from "react-icons/ai";
 import { Text } from "./Text";
+import clsx from "clsx";
 
 interface DialogRootProps {
   children: ReactNode;
@@ -29,16 +30,27 @@ interface DialogContentProps {
   title: string;
   description: string;
   children: ReactNode;
+  size?: "sm" | "md" | "lg";
 }
 export function DialogContent({
   title,
   description,
   children,
+  size = "sm",
 }: DialogContentProps) {
   return (
     <DialogPrimitive.Portal>
       <DialogPrimitive.Overlay className="z-40 bg-black opacity-50 data-[state=open]:animate-overlayShow fixed inset-0" />
-      <DialogPrimitive.Content className="z-50 data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-md bg-white p-4 shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
+      <DialogPrimitive.Content
+        className={clsx(
+          "z-50 data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] translate-x-[-50%] translate-y-[-50%] rounded-md bg-white p-4 shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none",
+          {
+            "max-w-[450px]": size === "sm",
+            "max-w-[650px]": size === "md",
+            "max-w-[1050px]": size === "lg",
+          }
+        )}
+      >
         <DialogPrimitive.Title className="text-zinc-900 mb-2 text-[17px] font-bold">
           {title}
         </DialogPrimitive.Title>
