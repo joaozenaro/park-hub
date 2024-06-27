@@ -42,7 +42,7 @@ export default function SpotFormDialog({
   }, [open]);
 
   const optionsByField = {
-    spot_type_name: spotTypes.map((st) => ({ value: st.name, label: st.name })),
+    spot_type_id: spotTypes.map((st) => ({ value: String(st.id), label: st.name })),
   };
 
   return (

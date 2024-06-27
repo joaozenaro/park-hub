@@ -22,7 +22,7 @@ interface Props {
 const defaultData = {
   name: "",
   default_price: "",
-  spot_type_name: "",
+  spot_type_id: "",
 };
 const TOAST_MODULE = "Spot";
 export default function SpotForm({ id, initialData, optionsByField, onSuccess }: Props) {
