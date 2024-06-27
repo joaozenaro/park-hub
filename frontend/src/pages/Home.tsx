@@ -7,23 +7,56 @@ import Spot from "../containers/home/Spot";
 import HomeFilters from "../containers/home/HomeFilters";
 import { ISpotWithReservation, spotService } from "../services/spotService";
 import ViewSpotDialog from "../containers/home/ViewSpotDialog";
+import ReservationCheckinFormDialog from "../containers/home/CheckinFormDialog";
+import { ISelectOption } from "../models/ISelectOption";
+import { TOAST_MESSAGES } from "../constants/toastMessages";
+import { useToast } from "../hooks/useToast";
 
 const SPOTS_COLUMNS = 8;
 export default function Home() {
+  const { launchToast } = useToast();
+  const [data, setData] = useState<ISpotWithReservation[]>([]);
+  const [totalRecords, setTotalRecords] = useState(0);
+  
+  const [loading, setLoading] = useState(false);
+  const [checkinOpen, setCheckinOpen] = useState(false);
+  const [spotToCheckin, setSpotToCheckin] =
+    useState<ISpotWithReservation | null>(null);
   const [spotToUpdate, setSpotToUpdate] = useState<ISpotWithReservation | null>(
     null
   );
-  const [data, setData] = useState<ISpotWithReservation[]>([]);
+
+  const getData = () => {
+    spotService
+      .searchWithReservations({ take: 1000000 })
+      .then((res) => {
+        console.log(res.data);
+        setData(res.data.records);
+        setTotalRecords(res.data.total_count);
+      })
+      .catch(() => {
+        launchToast({
+          title: TOAST_MESSAGES.COMMON.LIST_ERROR_TITLE,
+          description: TOAST_MESSAGES.COMMON.ERROR_DESCRIPTION,
+          type: "error",
+        });
+      })
+      .finally(() => setLoading(false));
+  };
+
   useEffect(() => {
-    spotService.searchWithReservations({ take: 1000 }).then((res) => {
-      console.log(res.data);
-      setData(res.data.records);
-    });
+    getData();
   }, []);
 
   const parkingLots = _.chunk(data, SPOTS_COLUMNS * 2);
-  const refreshData = () => {};
-  
+  const refreshData = () => {
+    getData();
+  };
+
+  const spotsOptions: ISelectOption[] = data.map((spot) => ({
+    value: String(spot.id),
+    label: spot.code,
+  }));
   return (
     <div className="flex flex-1">
       {spotToUpdate && (
@@ -34,6 +67,20 @@ export default function Home() {
           onSuccess={refreshData}
         />
       )}
+      <ReservationCheckinFormDialog
+        open={checkinOpen || !!spotToCheckin}
+        initialData={
+          spotToCheckin
+            ? { spot_id: String(spotToCheckin.id), license_plate: "" }
+            : undefined
+        }
+        optionsByField={{ spot_id: spotsOptions }}
+        onClose={() => {
+          setCheckinOpen(false);
+          setSpotToCheckin(null);
+        }}
+        onSuccess={refreshData}
+      />
       <div className="flex flex-1 flex-col bg-slate-200 p-10 space-y-10 overflow-y-auto">
         <div>
           <div className="flex mb-6">
@@ -45,7 +92,7 @@ export default function Home() {
             </Text>
           </div>
 
-          <Text>Total de 60 vagas. Tipo: Todos. Disponibilidade: Todos </Text>
+          <Text>Total de {totalRecords} vagas. Tipo: Todos. Disponibilidade: Todos </Text>
         </div>
 
         {parkingLots.map((spots, index) => (
@@ -62,7 +109,7 @@ export default function Home() {
                       >
                         <Spot
                           data={spot}
-                          onOpenCheckin={() => {}}
+                          onOpenCheckin={() => setSpotToCheckin(spot)}
                           onOpenViewSpot={setSpotToUpdate}
                         />
                       </td>

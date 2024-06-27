@@ -7,14 +7,14 @@ import { IReservationCheckoutForm } from "../models/IReservationCheckoutForm";
 const BASE_PATH = "/reservation";
 
 function checkIn(data: Partial<IReservationCheckinForm>) {
-  return api.post<IReservation>(BASE_PATH + "/add", {
-    Reservation: data,
+  return api.post<IReservation>("/checkin", {
+    CheckinForm: data,
   });
 }
 
 function checkOut(id: number, data: Partial<IReservationCheckoutForm>) {
-  return api.patch<IReservation>(BASE_PATH + "/update/" + id, {
-    Reservation: data,
+  return api.patch<IReservation>("/checkout/" + id, {
+    CheckoutForm: data,
   });
 }
 
