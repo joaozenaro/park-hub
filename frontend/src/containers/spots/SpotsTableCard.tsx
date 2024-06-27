@@ -42,7 +42,7 @@ export default function SpotsTableCard() {
           ? {
             code: spotToUpdate.code,
             floor: spotToUpdate.floor,
-            spot_type_name: spotToUpdate.spotType.name
+            spot_type_id: String(spotToUpdate.spotType.id)
           }
           : undefined}
         onSuccess={() => refreshData()}

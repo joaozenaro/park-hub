@@ -1,18 +1,17 @@
 import { useForm } from "../../../hooks/useForm";
-import { isValidSpot } from "./validation";
+import { isValidReservationCheckin } from "./validation";
 import { Button } from "../../../components/ui/Button";
 import { Loading } from "../../../components/ui/Loading";
 import { useToast } from "../../../hooks/useToast";
 import axios, { AxiosError } from "axios";
 import SmartFormFields from "../../../components/form/SmartFormFields";
 import { fields } from "./fields";
-import { spotService } from "../../../services/spotService";
+import { reservationService } from "../../../services/reservationService";
 import { TOAST_MESSAGES } from "../../../constants/toastMessages";
-import { ISpotForm } from "../../../models/ISpotForm";
+import { IReservationCheckinForm } from "../../../models/IReservationCheckinForm";
 
 interface Props {
-  id?: number;
-  initialData?: ISpotForm;
+  initialData?: IReservationCheckinForm;
   onSuccess: () => void;
   optionsByField: {
     [fieldId: string]: any[];
@@ -20,25 +19,25 @@ interface Props {
 }
 
 const defaultData = {
-  name: "",
-  default_price: "",
-  spot_type_id: "",
+  license_plate: "",
+  spot_id: "",
 };
-const TOAST_MODULE = "Spot";
-export default function SpotForm({ id, initialData, optionsByField, onSuccess }: Props) {
+const TOAST_MODULE = "ReservationCheckin";
+export default function ReservationCheckinForm({
+  initialData,
+  onSuccess,
+  optionsByField,
+}: Props) {
   const { launchToast } = useToast();
 
-  const onSubmit = async (data: ISpotForm) => {
-    const submitRequest = id
-      ? spotService.update(id, data)
-      : spotService.create(data);
-
-    await submitRequest
+  const onSubmit = async (data: IReservationCheckinForm) => {
+    await reservationService
+      .checkIn(data)
       .then(() => {
         onSuccess();
         launchToast({
-          title: TOAST_MESSAGES[TOAST_MODULE][id ? 'UPDATED_TITLE' : 'CREATED_TITLE'],
-          description: TOAST_MESSAGES[TOAST_MODULE][id ? 'UPDATED_DESCRIPTION' : 'CREATED_DESCRIPTION'],
+          title: TOAST_MESSAGES[TOAST_MODULE]["CREATED_TITLE"],
+          description: TOAST_MESSAGES[TOAST_MODULE]["CREATED_DESCRIPTION"],
           type: "success",
         });
       })
@@ -60,11 +59,11 @@ export default function SpotForm({ id, initialData, optionsByField, onSuccess }:
   };
 
   const { data, loading, errors, handleChangeValue, handleSubmit } =
-    useForm<ISpotForm>({
+    useForm<IReservationCheckinForm>({
       defaultData,
       initialData,
       onSubmit,
-      validator: isValidSpot,
+      validator: isValidReservationCheckin,
     });
 
   return (
@@ -78,7 +77,7 @@ export default function SpotForm({ id, initialData, optionsByField, onSuccess }:
       />
       <Button className="w-full justify-center mt-6">
         {loading && <Loading size="sm" className="mr-2" />}
-        Salvar vaga
+        Criar reserva
       </Button>
     </form>
   );

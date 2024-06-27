@@ -14,7 +14,7 @@ export const fields: IFieldProps[] = [
     type: "text",
   },
   {
-    id: "spot_type_name",
+    id: "spot_type_id",
     label: "Tipo da vaga",
     placeholder: "Selecione o tipo da vaga",
     type: "select",
