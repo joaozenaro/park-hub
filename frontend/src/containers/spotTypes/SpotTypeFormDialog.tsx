@@ -10,7 +10,7 @@ interface Props {
   onOpenChange: (state: boolean) => void;
   onSuccess: () => void;
 }
-export default function SpotTypeDialog({ open, onOpenChange, id, initialData, onSuccess }: Props) {
+export default function SpotTypeFormDialog({ open, onOpenChange, id, initialData, onSuccess }: Props) {
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Content title="Criar tipo de vaga">

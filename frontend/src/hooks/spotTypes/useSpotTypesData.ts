@@ -7,7 +7,9 @@ import { TOAST_MESSAGES } from "../../constants/toastMessages";
 export default function useSpotTypesData() {
   const { launchToast } = useToast();
   const [loading, setLoading] = useState(true);
-  const [spotTypeToUpdate, setSpotTypeToUpdate] = useState<ISpotType | null>(null)
+  const [spotTypeToUpdate, setSpotTypeToUpdate] = useState<ISpotType | null>(
+    null
+  );
   const [data, setData] = useState<ISpotType[]>([]);
 
   const getData = () => {
@@ -18,9 +20,8 @@ export default function useSpotTypesData() {
       })
       .catch(() => {
         launchToast({
-          title: "Erro ao buscar dados",
-          description:
-            "Verifique sua conexão com a internet e tente novamente.",
+          title: TOAST_MESSAGES.COMMON.LIST_ERROR_TITLE,
+          description: TOAST_MESSAGES.COMMON.ERROR_DESCRIPTION,
           type: "error",
         });
       })
@@ -28,28 +29,29 @@ export default function useSpotTypesData() {
   };
 
   const onDelete = (id: number) => {
-    spotTypeService.delete(id).then(() => {
-      launchToast({
-        title: TOAST_MESSAGES["SpotType"].DELETED_TITLE,
-        description: TOAST_MESSAGES["SpotType"].DELETED_DESCRIPTION,
-        type: "success",
-      });
-      getData();
-    })
+    spotTypeService
+      .delete(id)
+      .then(() => {
+        launchToast({
+          title: TOAST_MESSAGES["SpotType"].DELETED_TITLE,
+          description: TOAST_MESSAGES["SpotType"].DELETED_DESCRIPTION,
+          type: "success",
+        });
+        getData();
+      })
       .catch(() => {
         launchToast({
           title: TOAST_MESSAGES["SpotType"].DELETED_ERROR_TITLE,
-          description:
-            TOAST_MESSAGES.COMMON.ERROR_DESCRIPTION,
+          description: TOAST_MESSAGES.COMMON.ERROR_DESCRIPTION,
           type: "error",
         });
       });
-  }
+  };
 
   const refreshData = () => {
     getData();
     setSpotTypeToUpdate(null);
-  }
+  };
   useEffect(() => {
     getData();
   }, []);
@@ -60,6 +62,6 @@ export default function useSpotTypesData() {
     refreshData,
     onDelete,
     spotTypeToUpdate,
-    setSpotTypeToUpdate
+    setSpotTypeToUpdate,
   };
 }

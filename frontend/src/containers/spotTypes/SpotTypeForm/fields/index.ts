@@ -10,7 +10,7 @@ export const fields: IFieldProps[] = [
   {
     id: "default_price",
     label: "Preço padrão",
-    placeholder: "Categoria para vaga",
+    placeholder: "0",
     type: "text",
   },
 ];

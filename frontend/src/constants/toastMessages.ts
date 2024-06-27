@@ -10,8 +10,20 @@ export const TOAST_MESSAGES = {
     DELETED_DESCRIPTION: "Tipo de vaga removido.",
     DELETED_ERROR_TITLE: "Erro ao deletar tipo de vaga.",
   },
+  Spot: {
+    CREATED_TITLE: "Nova vaga adicionada!",
+    CREATED_DESCRIPTION: "Vaga criada com sucesso.",
+    CREATED_ERROR_TITLE: "Erro ao criar vaga.",
+    UPDATED_TITLE: "Vaga atualizada!",
+    UPDATED_DESCRIPTION: "Vaga atualizada com sucesso.",
+    UPDATED_ERROR_TITLE: "Erro ao atualizar vaga.",
+    DELETED_TITLE: "Vaga deletada com sucesso!",
+    DELETED_DESCRIPTION: "Vaga removida.",
+    DELETED_ERROR_TITLE: "Erro ao deletar vaga.",
+  },
   COMMON: {
     ERROR_TITLE: "Erro inesperado",
+    LIST_ERROR_TITLE: "Erro inesperado",
     ERROR_DESCRIPTION: "Verifique sua conexão ou tente novamente mais tarde",
   },
 };
