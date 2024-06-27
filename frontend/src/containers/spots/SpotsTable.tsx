@@ -1,15 +1,18 @@
 import { MdOutlineDelete, MdOutlineEdit } from "react-icons/md";
 import { Table } from "../../components/ui/Table";
 import { ISpot } from "../../models/ISpot";
+import { IPagination } from "../../hooks/usePagination";
 
 interface Props {
   data: ISpot[];
+  pagination: IPagination,
   loading: boolean;
   onUpdate: (spot: ISpot) => void;
   onDelete: (id: number) => void;
 }
 export default function SpotsTable({
   data,
+  pagination,
   loading,
   onDelete,
   onUpdate,
@@ -69,6 +72,7 @@ export default function SpotsTable({
           ))}
         </tbody>
       </Table.Table>
+      <Table.Pagination pagination={pagination}/>
       <Table.EmptyData visible={!data.length && !loading} />
     </Table.Root>
   );

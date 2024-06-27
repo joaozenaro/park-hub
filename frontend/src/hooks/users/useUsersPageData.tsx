@@ -19,8 +19,6 @@ export function useUsersPageData() {
   const PAGE_SIZE = 5;
   const [totalRecords, setTotalRecords] = useState(0);
   const pagination = usePagination({
-    initialPage: 1,
-    totalPages: Math.ceil(totalRecords / PAGE_SIZE),
     pageSize: PAGE_SIZE,
     totalRecords,
   });

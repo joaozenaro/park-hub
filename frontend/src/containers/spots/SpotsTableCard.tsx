@@ -15,6 +15,7 @@ export default function SpotsTableCard() {
     loading,
     spotToUpdate,
     setSpotToUpdate,
+    pagination
   } = useSpotsData();
   return (
     <div className="border rounded-md p-6 space-y-6 flex-1 mr-8">
@@ -29,6 +30,7 @@ export default function SpotsTableCard() {
       </div>
       <SpotsTable
         data={data}
+        pagination={pagination}
         loading={loading}
         onDelete={onDelete}
         onUpdate={setSpotToUpdate}
