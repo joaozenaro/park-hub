@@ -86,7 +86,7 @@ export default function Pagination({
           )}
           <li>
             <button
-              onClick={() => setPage(1)}
+              onClick={() => setPage(totalPages)}
               className={clsx(
                 "min-w-12 flex items-center justify-center px-3 h-8 leading-tight border border-slate-300",
                 "text-slate-500 bg-white hover:bg-slate-100"

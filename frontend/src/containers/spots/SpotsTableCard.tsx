@@ -21,11 +21,11 @@ export default function SpotsTableCard() {
     <div className="border rounded-md p-6 space-y-6 flex-1 mr-8">
       <div className="flex">
         <Heading size="xs" asChild>
-          <h3>Tipos de vaga</h3>
+          <h3>Vagas</h3>
         </Heading>
         <Button className="ml-auto h-8" onClick={() => setModalOpen(true)}>
           <MdAdd className="h-6 w-6" />
-          Vaga
+          Criar vaga
         </Button>
       </div>
       <SpotsTable

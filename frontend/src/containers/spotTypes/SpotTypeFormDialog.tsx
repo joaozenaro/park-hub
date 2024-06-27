@@ -16,7 +16,7 @@ export default function SpotTypeFormDialog({ open, onOpenChange, id, initialData
       <Dialog.Content title="Criar tipo de vaga">
         <div className="space-y-4">
           <Text>
-            Categorização de vagas no seu estacionamento
+            Categorização de vagas no seu estacionamento.
           </Text>
           {open && (
             <SpotTypeForm
