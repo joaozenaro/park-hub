@@ -1,6 +1,6 @@
 <?php
 
-namespace app\core\models;
+namespace app\core\models\auth;
 
 use Yii;
 use yii\base\Model;

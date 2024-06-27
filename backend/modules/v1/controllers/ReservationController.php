@@ -3,13 +3,14 @@
 namespace app\modules\v1\controllers;
 
 use app\core\components\ResponseHelper;
+use app\core\models\base\Reservation;
+use app\core\models\base\Spot;
+use app\core\models\form\CheckinForm;
+use app\core\models\form\CheckoutForm;
 use app\core\models\SearchModel;
-use app\core\models\Reservation;
-use app\core\models\ReservationForm;
 use DateTime;
 use Yii;
 use yii\rest\Controller;
-use yii\web\NotFoundHttpException;
 
 class ReservationController extends Controller
 {
@@ -25,12 +26,10 @@ class ReservationController extends Controller
 
     public function actionView(int $id)
     {
-        $model = Reservation::find()
-            ->where(['id' => $id])
-            ->one();
+        $model = Reservation::findOne($id);
 
         if (!$model) {
-            throw new NotFoundHttpException("Reserva id: $id não foi encontrada");
+            return ResponseHelper::NotFound("Reserva não encontrada");
         }
 
         return $model;
@@ -38,16 +37,24 @@ class ReservationController extends Controller
 
     public function actionAdd(): Reservation | array | null
     {
-        $model = new Reservation();
+        $model = new CheckinForm();
         $model->load(Yii::$app->request->post());
         if (!$model->validate()) {
             return ResponseHelper::UnprocessableEntity("Modelo invalido", $model->getErrors());
         }
 
-        $model->user_id = Yii::$app->user->id;
+        $isReserved = Spot::getCurrentReservation($model->spot_id);
+        if ($isReserved) {
+            return ResponseHelper::BadRequest("Vaga já está em uso.");
+        }
+
+        $reservation = new Reservation();
+        $reservation->license_plate = $model->license_plate;
+        $reservation->spot_id = $model->spot_id;
+        $reservation->user_id = Yii::$app->user->id;
 
         $sql = <<<SQL
-            SELECT default_price 
+            SELECT default_price
             FROM spot_type st
             INNER JOIN spot s ON st.id = s.spot_type_id
             WHERE s.id = $model->spot_id
@@ -56,31 +63,29 @@ class ReservationController extends Controller
 
         $spotTypeDefaultPrice = Yii::$app->getDb()->createCommand($sql)->queryScalar();
 
-        $model->price = $spotTypeDefaultPrice;
-        $model->check_in = date(DateTime::ATOM, strtotime("now"));
+        $reservation->price = $spotTypeDefaultPrice;
+        $reservation->check_in = date(DateTime::ATOM, strtotime("now"));
 
-        if (!$model->saveModel($model)) {
+        if (!$reservation->saveModel($reservation)) {
             return null;
         }
 
-        return Reservation::find()->where(['id' => $model->id])->one();
+        return Reservation::findOne($reservation->id);
     }
 
     public function actionUpdate(int $id): Reservation | array | null
     {
-        $model = new ReservationForm();
+        $model = new CheckoutForm();
         $model->load(Yii::$app->request->post());
         if (!$model->validate()) {
             return ResponseHelper::UnprocessableEntity("Modelo invalido", $model->getErrors());
         }
-        
+
         if (!$model->reservationSave($id)) {
-            return null;
+            return ResponseHelper::NotFound("Reserva não encontrada");
         }
 
-        return Reservation::find()
-            ->where(['id' => $id])
-            ->one();
+        return Reservation::findOne($id);
     }
 
     public function actionSearch()

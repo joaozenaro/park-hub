@@ -3,11 +3,10 @@
 namespace app\modules\v1\controllers;
 
 use app\core\components\ResponseHelper;
+use app\core\models\base\SpotType;
 use app\core\models\SearchModel;
-use app\core\models\SpotType;
 use Yii;
 use yii\rest\Controller;
-use yii\web\NotFoundHttpException;
 
 class SpotTypeController extends Controller
 {
@@ -23,15 +22,12 @@ class SpotTypeController extends Controller
 
     public function actionView(int $id)
     {
-        $model = SpotType::find()
-            ->where(['id' => $id])
-            ->one();
-
-        if (!$model) {
-            throw new NotFoundHttpException("Tipo de Vaga id: $id não foi encontrada");
+        $spotType = SpotType::findOne($id);
+        if (!$spotType) {
+            return ResponseHelper::NotFound("Tipo de vaga não encontrado");
         }
 
-        return $model;
+        return $spotType;
     }
 
     public function actionAdd(): SpotType | array | null
@@ -42,23 +38,29 @@ class SpotTypeController extends Controller
             return ResponseHelper::UnprocessableEntity("Modelo invalido", $model->getErrors());
         }
 
-        if (!$model->saveModel($model)) return null;
+        if (!$model->saveModel($model)) {
+            return null;
+        }
 
         return $model;
     }
 
     public function actionUpdate(int $id): SpotType | array | null
     {
-        $spotType = SpotType::find()
-            ->where(['id' => $id])
-            ->one();
+        $spotType = SpotType::findOne($id);
 
-        $spotType->load(Yii::$app->request->post());;
+        if (!$spotType) {
+            return ResponseHelper::NotFound("Tipo de vaga não encontrado");
+        }
+
+        $spotType->load(Yii::$app->request->post());
         if (!$spotType->validate()) {
             return ResponseHelper::UnprocessableEntity("Modelo invalido", $spotType->getErrors());
         }
 
-        if (!$spotType->saveModel($spotType)) return null;
+        if (!$spotType->saveModel($spotType)) {
+            return null;
+        }
 
         return SpotType::find()
             ->where(['id' => $id])
@@ -87,9 +89,9 @@ class SpotTypeController extends Controller
     public function actionDelete(int $id)
     {
         if (SpotType::deleteAll(['id' => $id]) > 0) {
-            return ResponseHelper::Success("Tipo de Vaga id: $id removido com sucessso");
+            return ResponseHelper::Success("Tipo de vaga id: $id removido com sucessso");
         }
 
-        return ResponseHelper::BadRequest("Tipo de Vaga id: $id não foi possivel ser removido");
+        return ResponseHelper::BadRequest("Tipo de vaga id: $id não foi possivel ser removido");
     }
 }
