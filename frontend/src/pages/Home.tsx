@@ -6,9 +6,13 @@ import { useEffect, useState } from "react";
 import Spot from "../containers/home/Spot";
 import HomeFilters from "../containers/home/HomeFilters";
 import { ISpotWithReservation, spotService } from "../services/spotService";
+import ViewSpotDialog from "../containers/home/ViewSpotDialog";
 
 const SPOTS_COLUMNS = 8;
 export default function Home() {
+  const [spotToUpdate, setSpotToUpdate] = useState<ISpotWithReservation | null>(
+    null
+  );
   const [data, setData] = useState<ISpotWithReservation[]>([]);
   useEffect(() => {
     spotService.searchWithReservations({ take: 1000 }).then((res) => {
@@ -18,9 +22,18 @@ export default function Home() {
   }, []);
 
   const parkingLots = _.chunk(data, SPOTS_COLUMNS * 2);
-
+  const refreshData = () => {};
+  
   return (
     <div className="flex flex-1">
+      {spotToUpdate && (
+        <ViewSpotDialog
+          open={!!spotToUpdate}
+          data={spotToUpdate}
+          onClose={() => setSpotToUpdate(null)}
+          onSuccess={refreshData}
+        />
+      )}
       <div className="flex flex-1 flex-col bg-slate-200 p-10 space-y-10 overflow-y-auto">
         <div>
           <div className="flex mb-6">
@@ -50,7 +63,7 @@ export default function Home() {
                         <Spot
                           data={spot}
                           onOpenCheckin={() => {}}
-                          onOpenViewSpot={() => {}}
+                          onOpenViewSpot={setSpotToUpdate}
                         />
                       </td>
                     ))}
