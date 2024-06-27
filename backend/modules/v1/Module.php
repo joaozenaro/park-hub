@@ -29,7 +29,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
             'POST <module>/reservation/search' => '<module>/reservation/search',
             'DELETE <module>/reservation/delete/<id:\d+>' => '<module>/reservation/delete',
 
-            'GET <module>/dashboard/history' => '<module>/dashboard/history',
+            'GET <module>/dashboard/history/<spotTypePeriod:\w+>' => '<module>/dashboard/history',
         ], false);
 
         // Shared route actions

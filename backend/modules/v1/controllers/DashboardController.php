@@ -11,7 +11,7 @@ class DashboardController extends Controller
 {
     public $modelClass = Reservation::class;
 
-    public function actionHistory()
+    public function actionHistory(string $spotTypePeriod = "week")
     {
         // Define dates
         $today = new DateTime();
@@ -25,7 +25,12 @@ class DashboardController extends Controller
         $amountYear = $this->getTotalReservations($yearAgo, $today);
 
         // Amount by spot type
-        $amountBySpotType = $this->getAmountBySpotType($weekAgo, $today);
+        $amountBySpotType = match($spotTypePeriod){
+            "week" => $this->getAmountBySpotType($weekAgo, $today),
+            "month" => $this->getAmountBySpotType($monthAgo, $today),
+            "year" => $this->getAmountBySpotType($yearAgo, $today),
+            default => $this->getAmountBySpotType($weekAgo, $today)
+        };
 
         return [
             'amount_today' => $amountToday,
@@ -40,22 +45,28 @@ class DashboardController extends Controller
 
     private function getTotalReservations($startDate, $endDate)
     {
-        return Reservation::find()
+        $total = Reservation::find()
             ->where(['>=', 'check_in', $startDate->format('Y-m-d 00:00:00')])
             ->andWhere(['<=', 'check_in', $endDate->format('Y-m-d 23:59:59')])
-            ->count();
+            ->andWhere(['was_paid' => true])
+            ->sum('price');
+
+        return $total;
     }
 
     private function getAmountBySpotType($startDate, $endDate)
     {
-        return (new Query())
-            ->select(['spot_type.name AS spotType', 'COUNT(*) AS amount'])
+        $amountBySpotType = (new Query())
+            ->select(['spot_type.name AS spotType', 'SUM(reservation.price) AS total_price'])
             ->from('reservation')
             ->innerJoin('spot', 'reservation.spot_id = spot.id')
             ->innerJoin('spot_type', 'spot.spot_type_id = spot_type.id')
             ->where(['>=', 'reservation.check_in', $startDate->format('Y-m-d 00:00:00')])
             ->andWhere(['<=', 'reservation.check_in', $endDate->format('Y-m-d 23:59:59')])
+            ->andWhere(['reservation.was_paid' => true])
             ->groupBy('spot_type.name')
             ->all();
+
+        return $amountBySpotType;
     }
 }

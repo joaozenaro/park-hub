@@ -69,7 +69,7 @@ class m240626_033117_add_reservation_table extends Migration
 
         // Insert reservation history
         $reservas = [];
-        for ($i = 0; $i < 150; $i++) {
+        for ($i = 0; $i < 400; $i++) {
             $checkIn = $this->getRandomDateTime();
             $checkOut = clone $checkIn;
             $checkOut->add(new DateInterval('PT' . rand(1, 24) . 'H' . rand(1, 59) . 'M')); // Random time between 1 hour and 24 hours
@@ -124,8 +124,8 @@ class m240626_033117_add_reservation_table extends Migration
     }
 
     private function getRandomDateTime() {
-        $start = strtotime('2023-01-01');
-        $end = strtotime('2024-01-01');
+        $start = strtotime('2024-01-01');
+        $end = strtotime('2024-12-31');
         $timestamp = mt_rand($start, $end);
 
         return (new DateTime())->setTimestamp($timestamp);
