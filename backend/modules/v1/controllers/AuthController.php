@@ -4,8 +4,9 @@ namespace app\modules\v1\controllers;
 
 use app\core\components\ResponseHelper;
 use app\core\interfaces\{IAuthService,IUserService};
-use app\core\models\{User,PasswordResetForm};
-use app\core\models\auth\{LoginForm};
+use app\core\models\auth\LoginForm;
+use app\core\models\auth\PasswordResetForm;
+use app\core\models\base\User;
 use Yii;
 use yii\rest\Controller;
 

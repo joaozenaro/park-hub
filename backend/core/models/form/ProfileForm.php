@@ -1,10 +1,9 @@
 <?php
 
-namespace app\core\models;
+namespace app\core\models\form;
 
 use app\core\components\SaveModelTrait;
-use app\core\models\User;
-use Yii;
+use app\core\models\base\User;
 use yii\base\Model;
 
 class ProfileForm extends Model
@@ -29,9 +28,19 @@ class ProfileForm extends Model
     {
         if ($this->validate()) {
             $user = User::findOne($id);
-            if ($this->username) $user->username = $this->username;
-            if ($this->name) $user->name = $this->name;
-            if ($this->avatar) $user->avatar = $this->avatar;
+            if (!$user) return null;
+
+            if ($this->username) {
+                $user->username = $this->username;
+            }
+
+            if ($this->name) {
+                $user->name = $this->name;
+            }
+
+            if ($this->avatar) {
+                $user->avatar = $this->avatar;
+            }
 
             if ($this->saveModel($user)) {
                 return $user;

@@ -3,9 +3,9 @@
 namespace app\core\interfaces;
 
 use app\core\models\auth\CompleteSignupForm;
+use app\core\models\auth\PasswordResetForm;
 use app\core\models\auth\SignupForm;
-use app\core\models\User;
-use app\core\models\PasswordResetForm;
+use app\core\models\base\User;
 
 interface IUserService
 {

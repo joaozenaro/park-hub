@@ -15,7 +15,7 @@ class m240622_191751_add_parking_spots_tables extends Migration
         $this->createTable("spot_type", [
             "id" => $this->primaryKey(),
             "name" => $this->string(60)->notNull()->unique(),
-            "default_price" => $this->decimal()->notNull(),
+            "default_price" => $this->decimal(10,2)->notNull(),
         ]);
 
         $this->createTable("spot", [
