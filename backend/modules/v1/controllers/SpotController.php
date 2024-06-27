@@ -123,14 +123,14 @@ class SpotController extends Controller
         $searchModel = new SpotReservationsSearchForm();
         $searchModel->load(Yii::$app->request->post());
     
-        $search = Spot::find()->with(['spotType']);
+        $search = Spot::find()->leftJoin('reservation', 'reservation.spot_id=spot.id');
 
         if ($searchModel->license_plate) {
-            $search->where(['like', 'license_plate', '%' . $searchModel->license_plate . '%', false]);
+            $search->andWhere(['like', 'reservation.license_plate', '%' . $searchModel->license_plate . '%', false]);
         }
 
         if ($searchModel->floor) {
-            $search->where(['like', 'floor', '%' . $searchModel->floor . '%', false]);
+            $search->andWhere(['like', 'floor', '%' . $searchModel->floor . '%', false]);
         }
     
         $take = $searchModel->take ?? 10;
