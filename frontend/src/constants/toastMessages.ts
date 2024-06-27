@@ -26,6 +26,11 @@ export const TOAST_MESSAGES = {
     CREATED_DESCRIPTION: "Reserva criada com sucesso.",
     CREATED_ERROR_TITLE: "Erro ao criar reserva.",
   },
+  ReservationCheckout: {
+    UPDATED_TITLE: "Reserva finalizada!",
+    UPDATED_DESCRIPTION: "Reserva atualizada com sucesso.",
+    UPDATED_ERROR_TITLE: "Erro ao atualizar reserva.",
+  },
   COMMON: {
     ERROR_TITLE: "Erro inesperado",
     LIST_ERROR_TITLE: "Erro inesperado",
