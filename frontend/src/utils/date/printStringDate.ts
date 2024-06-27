@@ -1,11 +1,5 @@
 export function printStringDate() {
-  let options = {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  }
-
   return (
-    new Intl.DateTimeFormat("pt-BR", options).format(new Date)
+    new Intl.DateTimeFormat('pt-BR', { year: "numeric", month: "long", day: "numeric", }).format(new Date)
   );
 }
