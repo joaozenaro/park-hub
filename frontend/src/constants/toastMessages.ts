@@ -21,6 +21,11 @@ export const TOAST_MESSAGES = {
     DELETED_DESCRIPTION: "Vaga removida.",
     DELETED_ERROR_TITLE: "Erro ao deletar vaga.",
   },
+  ReservationCheckin: {
+    CREATED_TITLE: "Nova reserva adicionada!",
+    CREATED_DESCRIPTION: "Reserva criada com sucesso.",
+    CREATED_ERROR_TITLE: "Erro ao criar reserva.",
+  },
   COMMON: {
     ERROR_TITLE: "Erro inesperado",
     LIST_ERROR_TITLE: "Erro inesperado",

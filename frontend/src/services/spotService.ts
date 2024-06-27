@@ -43,7 +43,7 @@ interface ISearchSpotWithReservationsResponse {
 function searchWithReservations(data?: ISearchModel) {
   return api.post<ISearchSpotWithReservationsResponse>(
     BASE_PATH + "/reservations",
-    data ? { SearchModel: data } : {}
+    data ? { SpotReservationsSearchForm: data } : {}
   );
 }
 
