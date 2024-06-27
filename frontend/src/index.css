@@ -29,6 +29,13 @@
     --spot-height: 180px;
   }
 }
+
+@media (min-width: 1920px) {
+  :root {
+    --spot-width: 128px;
+    --spot-height: 230px;
+  }
+}
 #root {
   width: 100%;
   height: 100vh;
