@@ -7,7 +7,7 @@ use yii\base\Model;
 
 class SpotReservationsSearchForm extends Model
 {
-    public $licensePlate;
+    public $license_plate;
     public $floor;
     public $skip;
     public $take;
@@ -15,7 +15,7 @@ class SpotReservationsSearchForm extends Model
     public function rules()
     {
         return [
-            [['licensePlate', 'floor'], 'string'],
+            [['license_plate', 'floor'], 'string'],
             [['skip', 'take'], 'integer'],
         ];
     }
@@ -23,7 +23,7 @@ class SpotReservationsSearchForm extends Model
     public function attributeLabels()
     {
         return [
-            'licensePlate' => Yii::t('app', 'Placa'),
+            'license_plate' => Yii::t('app', 'Placa'),
             'floor' => Yii::t('app', 'Andar'),
         ];
     }

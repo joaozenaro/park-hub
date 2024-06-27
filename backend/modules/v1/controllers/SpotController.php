@@ -125,8 +125,8 @@ class SpotController extends Controller
     
         $search = Spot::find()->with(['spotType']);
 
-        if ($searchModel->licensePlate) {
-            $search->where(['like', 'license_plate', '%' . $searchModel->licensePlate . '%', false]);
+        if ($searchModel->license_plate) {
+            $search->where(['like', 'license_plate', '%' . $searchModel->license_plate . '%', false]);
         }
 
         if ($searchModel->floor) {
