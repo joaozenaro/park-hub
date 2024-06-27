@@ -13,7 +13,7 @@ import Users from "../pages/Users";
 import ParkingSpots from "../pages/ParkingSpots";
 import CompleteSignup from "../pages/CompleteSignup";
 import Finances from "../pages/Finances";
-// import Financeiro from "../pages/Financeiro";
+import VehiclesFlow from "../pages/VehiclesFlow";
 
 const router = createBrowserRouter([
   {
@@ -36,7 +36,7 @@ const router = createBrowserRouter([
           },
           {
             path: "/fluxo-de-veiculos",
-            element: <ParkingSpots />,
+            element: <VehiclesFlow />,
           },
           {
             path: "/financeiro",

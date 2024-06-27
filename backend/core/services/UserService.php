@@ -5,9 +5,9 @@ namespace app\core\services;
 use app\core\components\SendMailHelper;
 use app\core\interfaces\IUserService;
 use app\core\models\auth\CompleteSignupForm;
+use app\core\models\auth\PasswordResetForm;
 use app\core\models\auth\SignupForm;
-use app\core\models\PasswordResetForm;
-use app\core\models\User;
+use app\core\models\base\User;
 use app\core\types\UserStatus;
 use DateTime;
 use DateTimeZone;
@@ -23,10 +23,10 @@ class UserService implements IUserService
         $user->setPassword($user->getAuthKey());
         if ($user->saveModel($user)) {
             SendMailHelper::sendInviteEmail($user->getPrimaryKey(), $user->getAuthKey(), $user->email);
-    
+
             $role = Yii::$app->authManager->getRole($form->role);
             Yii::$app->authManager->assign($role, $user->getPrimaryKey());
-            
+
             return $user;
         }
 
@@ -36,9 +36,13 @@ class UserService implements IUserService
     public function completeUserSignup(CompleteSignupForm $form): ?User
     {
         $user = User::findOne($form->id);
-        if (!isset($user)) null;
+        if (!isset($user)) {
+            null;
+        }
 
-        if (!$user->validateAuthKey($form->token)) return null;
+        if (!$user->validateAuthKey($form->token)) {
+            return null;
+        }
 
         $user->name = $form->name;
         $user->username = $form->username;
@@ -80,13 +84,13 @@ class UserService implements IUserService
     {
         /** @var User */
         $user = User::findIdentity($form->id);
-        
+
         if (isset($user) && $user->password_reset_token === $form->token) {
             preg_match('/\_(.*)$/', $user->password_reset_token, $matches);
             if (!isset($matches[1])) {
                 return false;
             }
-    
+
             $tokenDateTime = new DateTime('@' . $matches[1]);
             $tokenDateTime->setTimezone(new DateTimeZone(Yii::$app->formatter->timeZone));
 
@@ -95,7 +99,7 @@ class UserService implements IUserService
                 $user->password_reset_token = null;
                 $user->setPassword($form->password);
                 $user->generateAuthKey();
-                
+
                 return $user->saveModel($user);
             }
         }

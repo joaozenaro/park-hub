@@ -1,6 +1,6 @@
 <?php
 
-namespace app\core\models;
+namespace app\core\models\base;
 
 use app\core\components\SaveModelTrait;
 use app\core\types\UserStatus;

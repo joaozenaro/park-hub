@@ -12,18 +12,17 @@ export interface IPagination {
 }
 
 interface Props {
-  initialPage: number;
-  totalPages: number;
+  initialPage?: number;
   totalRecords: number;
   pageSize: number;
 }
 
 export const usePagination = ({
-  initialPage,
-  totalPages,
+  initialPage = 1,
   totalRecords,
   pageSize,
 }: Props): IPagination => {
+  const totalPages = Math.ceil(totalRecords / pageSize);
   const [currentPage, setCurrentPage] = useState(initialPage);
 
   const nextPage = () => {
@@ -38,7 +37,7 @@ export const usePagination = ({
     setCurrentPage(Math.min(Math.max(page, 1), totalPages));
   };
 
-  const skip = (currentPage - 1) * pageSize;
+  const skip = Math.max(0, (currentPage - 1) * pageSize);
 
   return {
     currentPage,

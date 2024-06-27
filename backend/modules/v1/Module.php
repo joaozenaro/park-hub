@@ -10,6 +10,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
 {
     public function bootstrap($app)
     {
+        // Auth and user routes
         $app->getUrlManager()->addRules([
             'GET ping' => 'site/ping',
             'GET <module>/validate-token' => '<module>/auth/validate-token',
@@ -20,30 +21,33 @@ class Module extends \yii\base\Module implements BootstrapInterface
             'POST <module>/user/search' => '<module>/user/search',
             'PATCH <module>/user/update/<id:\d+>' => '<module>/user/update',
             'DELETE <module>/user/delete/<id:\d+>' => '<module>/user/delete',
-            
-            'GET <module>/spot/<id:\d+>' => '<module>/spot/view',
-            'POST <module>/spot/search' => '<module>/spot/search',
-            'POST <module>/spot/add' => '<module>/spot/add',
-            'PATCH <module>/spot/update/<id:\d+>' => '<module>/spot/update',
-            'DELETE <module>/spot/delete/<id:\d+>' => '<module>/spot/delete',
 
-            'GET <module>/spot-type/<id:\d+>' => '<module>/spot-type/view',
-            'POST <module>/spot-type/search' => '<module>/spot-type/search',
-            'POST <module>/spot-type/add' => '<module>/spot-type/add',
-            'PATCH <module>/spot-type/update/<id:\d+>' => '<module>/spot-type/update',
-            'DELETE <module>/spot-type/delete/<id:\d+>' => '<module>/spot-type/delete',    
+            'POST <module>/spot/reservations' => '<module>/spot/reservations',
+            'GET <module>/reservation/<id:\d+>' => '<module>/reservation/view',
+            'POST <module>/checkin' => '<module>/reservation/add',
+            'PATCH <module>/checkout/<id:\d+>' => '<module>/reservation/update',
+            'POST <module>/reservation/search' => '<module>/reservation/search',
+            'DELETE <module>/reservation/delete/<id:\d+>' => '<module>/reservation/delete',
         ], false);
+
+        // Shared route actions
+        foreach (['spot', 'spot-type'] as $entity) {
+            $app->getUrlManager()->addRules([
+                "GET <module>/$entity/<id:\d+>" => "<module>/$entity/view",
+                "POST <module>/$entity/search" => "<module>/$entity/search",
+                "POST <module>/$entity/add" => "<module>/$entity/add",
+                "PATCH <module>/$entity/update/<id:\d+>" => "<module>/$entity/update",
+                "DELETE <module>/$entity/delete/<id:\d+>" => "<module>/$entity/delete",
+            ], false);
+        }
     }
 
     public function behaviors()
     {
         $behaviors = parent::behaviors();
 
-        // Remove rateLimiter which requires an authenticated user to work
-        unset($behaviors['rateLimiter']);
-
-        // Remove authentication filter
-        unset($behaviors['authenticator']);
+        // Remove rateLimiter and default authentication filter
+        unset($behaviors['rateLimiter'], $behaviors['authenticator']);
 
         $behaviors['corsFilter'] = [
             'class' => Cors::class,

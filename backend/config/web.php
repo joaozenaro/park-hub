@@ -1,6 +1,7 @@
 <?php
 
 use app\core\interfaces\{IAuthService,IUserService};
+use app\core\models\base\User;
 use app\core\services\{UserService,AuthService};
 
 $params = require __DIR__ . '/params.php';
@@ -69,7 +70,7 @@ return [
             'showScriptName' => false,
         ],
         'user' => [
-            'identityClass' => 'app\core\models\User',
+            'identityClass' => User::class,
             'enableAutoLogin' => false,
             'enableSession' => false,
         ],
