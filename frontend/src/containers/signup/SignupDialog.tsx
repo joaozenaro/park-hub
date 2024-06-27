@@ -1,5 +1,4 @@
 import { Dialog } from "../../components/ui/Dialog";
-import { Text } from "../../components/ui/Text";
 import SignupForm from "./SignupForm";
 
 interface Props {
@@ -10,17 +9,12 @@ interface Props {
 export default function SignupDialog({ open, onOpenChange, onSuccess }: Props) {
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
-      <Dialog.Content title="Criar usuário">
+      <Dialog.Content
+        title="Criar usuário"
+        description="Nós enviaremos um email com um convite para o usuário completar seu cadastro."
+      >
         <div className="space-y-4">
-          <Text>
-            Nós enviaremos um email com um convite para o usuário completar seu
-            cadastro
-          </Text>
-          {open && (
-            <SignupForm
-              onSuccess={onSuccess}
-            />
-          )}
+          {open && <SignupForm onSuccess={onSuccess} />}
         </div>
       </Dialog.Content>
     </Dialog.Root>

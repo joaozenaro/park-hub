@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Dialog } from "../../components/ui/Dialog";
-import { Text } from "../../components/ui/Text";
 import { ISpotForm } from "../../models/ISpotForm";
 import { ISpotType } from "../../models/ISpotType";
 import { spotTypeService } from "../../services/spotTypeService";
@@ -48,9 +47,8 @@ export default function SpotFormDialog({
 
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
-      <Dialog.Content title="Criar vaga">
+      <Dialog.Content title="Criar vaga" description="Cadastro de vagas do seu estacionamento.">
         <div className="space-y-4">
-          <Text>Cadastro de vagas do seu estacionamento.</Text>
           {open && (
             <SpotForm
               id={id}

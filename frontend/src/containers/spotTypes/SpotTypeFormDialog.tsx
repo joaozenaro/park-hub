@@ -1,5 +1,4 @@
 import { Dialog } from "../../components/ui/Dialog";
-import { Text } from "../../components/ui/Text";
 import { ISpotTypeForm } from "../../models/ISpotTypeForm";
 import SpotTypeForm from "./SpotTypeForm";
 
@@ -13,11 +12,8 @@ interface Props {
 export default function SpotTypeFormDialog({ open, onOpenChange, id, initialData, onSuccess }: Props) {
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
-      <Dialog.Content title="Criar tipo de vaga">
+      <Dialog.Content title="Criar tipo de vaga" description="Categorização de vagas no seu estacionamento.">
         <div className="space-y-4">
-          <Text>
-            Categorização de vagas no seu estacionamento.
-          </Text>
           {open && (
             <SpotTypeForm
               id={id}

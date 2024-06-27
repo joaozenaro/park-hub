@@ -1,5 +1,4 @@
 import { Dialog } from "../../components/ui/Dialog";
-import { Text } from "../../components/ui/Text";
 import { IUser } from "../../models/IUser";
 import UpdateUserForm from "./UpdateUserForm";
 
@@ -17,9 +16,11 @@ export default function UpdateUserDialog({
 }: Props) {
   return (
     <Dialog.Root open={open} onOpenChange={() => onClose()}>
-      <Dialog.Content title="Atualizar usuário">
+      <Dialog.Content
+        title="Atualizar usuário"
+        description="Altere as informações básicas do usuário"
+      >
         <div className="space-y-4">
-          <Text>Altere as informações básicas do usuário</Text>
           {open && (
             <UpdateUserForm
               id={user.id}

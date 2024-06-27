@@ -11,6 +11,6 @@ export const fields: IFieldProps[] = [
     id: "default_price",
     label: "Preço padrão",
     placeholder: "0",
-    type: "text",
+    type: "currency",
   },
 ];
