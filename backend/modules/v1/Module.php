@@ -28,6 +28,8 @@ class Module extends \yii\base\Module implements BootstrapInterface
             'PATCH <module>/checkout/<id:\d+>' => '<module>/reservation/update',
             'POST <module>/reservation/search' => '<module>/reservation/search',
             'DELETE <module>/reservation/delete/<id:\d+>' => '<module>/reservation/delete',
+
+            'POST <module>/dashboard/history' => '<module>/dashboard/history',
         ], false);
 
         // Shared route actions
