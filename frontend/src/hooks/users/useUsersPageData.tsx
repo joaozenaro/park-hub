@@ -28,7 +28,7 @@ export function useUsersPageData() {
       userService
         .search({
           searchTerm: text || searchText,
-          take: PAGE_SIZE,
+          take: pagination.pageSize,
           skip: pagination.skip,
         })
         .then((res) => {

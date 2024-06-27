@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ISpot } from "../../models/ISpot";
 import { spotService } from "../../services/spotService";
 import { useToast } from "../useToast";
@@ -12,13 +12,16 @@ export default function useSpotsData() {
   const [data, setData] = useState<ISpot[]>([]);
   const [totalRecords, setTotalRecords] = useState(0);
   const pagination = usePagination({
-    pageSize: 5,
+    pageSize: 6,
     totalRecords,
   });
 
-  const getData = () => {
+  const getData = useCallback(() => {
     spotService
-      .search()
+      .search({
+        take: pagination.pageSize,
+        skip: pagination.skip,
+      })
       .then((res) => {
         setData(res.data.records);
         setTotalRecords(res.data.total_count);
@@ -32,7 +35,7 @@ export default function useSpotsData() {
         });
       })
       .finally(() => setLoading(false));
-  };
+  }, [pagination.skip]);
 
   const onDelete = (id: number) => {
     spotService
@@ -61,6 +64,10 @@ export default function useSpotsData() {
   useEffect(() => {
     getData();
   }, []);
+
+  useEffect(() => {
+    !loading && getData();
+  }, [pagination.currentPage]);
 
   return {
     data,
