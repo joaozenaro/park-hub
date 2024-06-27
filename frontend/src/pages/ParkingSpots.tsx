@@ -1,8 +1,16 @@
+import Content from "../components/layout/Content";
+import Heading from "../components/ui/Heading";
+import SpotTypesTableCard from "../containers/spotTypes/SpotTypesTableCard";
+import SpotsTableCard from "../containers/spots/SpotsTableCard";
+
 export default function ParkingSpots() {
   return (
-    <div className="grid place-items-center h-full w-full">
-      <h1>Work in progress</h1>
-      <img src="https://media1.tenor.com/m/J1kq1w0eB2AAAAAC/sasiad-o-6.gif" />
-    </div>
-  )
+    <Content>
+      <Heading>Gerenciar vagas</Heading>
+      <div className="flex mt-8">
+        <SpotsTableCard />
+        <SpotTypesTableCard />
+      </div>
+    </Content>
+  );
 }

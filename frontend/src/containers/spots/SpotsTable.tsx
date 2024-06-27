@@ -1,19 +1,16 @@
 import { MdOutlineDelete, MdOutlineEdit } from "react-icons/md";
-import Avatar from "../../../components/ui/Avatar";
-import { Table } from "../../../components/ui/Table";
-import { IUser } from "../../../models/IUser";
-import { printDate } from "../../../utils/date/printDate";
-import Tag from "../../../components/ui/Tag";
-import { IPagination } from "../../../hooks/usePagination";
+import { Table } from "../../components/ui/Table";
+import { ISpot } from "../../models/ISpot";
+import { IPagination } from "../../hooks/usePagination";
 
 interface Props {
-  data: IUser[];
-  pagination: IPagination;
+  data: ISpot[];
+  pagination: IPagination,
   loading: boolean;
-  onUpdate: (user: IUser) => void;
+  onUpdate: (spot: ISpot) => void;
   onDelete: (id: number) => void;
 }
-export default function UsersTable({
+export default function SpotsTable({
   data,
   pagination,
   loading,
@@ -25,44 +22,32 @@ export default function UsersTable({
       <Table.Table>
         <thead>
           <tr>
-            <Table.Th className="text-start">Nome</Table.Th>
-            <Table.Th className="text-start">Email</Table.Th>
-            <Table.Th className="text-start w-[200px]">Status</Table.Th>
-            <Table.Th className="text-start w-[200px]">Criado em</Table.Th>
-            <Table.Th className="text-start w-[200px]">Editado em</Table.Th>
-            <Table.Th className="text-start w-[100px]">Foto</Table.Th>
+            <Table.Th className="text-start">#</Table.Th>
+            <Table.Th className="text-start">Código</Table.Th>
+            <Table.Th className="text-start">Andar</Table.Th>
+            <Table.Th className="text-start">Tipo de vaga</Table.Th>
             <Table.Th className="text-end w-[40px]">Ações</Table.Th>
           </tr>
         </thead>
         <tbody className="divide-y divide-slate-200">
-          <Table.LoadingRow loading={loading} repeat={5}>
-            <Table.LoadingTd />
+          <Table.LoadingRow loading={loading} repeat={3}>
             <Table.LoadingTd />
             <Table.LoadingTd />
             <Table.LoadingTd />
           </Table.LoadingRow>
-          {data.map((user) => (
-            <tr key={user.id} className="hover:bg-slate-100">
-              <Table.Td>{user.name || "Usuário sem nome"}</Table.Td>
-              <Table.Td>{user.email}</Table.Td>
-              <Table.Td>
-                <Tag type={user.status ? "success" : "danger"}>
-                  {user.status ? "Ativo" : "Inativo"}
-                </Tag>
-              </Table.Td>
-              <Table.Td>{printDate(user.created_at)}</Table.Td>
-              <Table.Td>{printDate(user.updated_at)}</Table.Td>
-              <Table.Td>
-                <Avatar name={user?.name || "Sem Nome"} url={user?.avatar} />
-              </Table.Td>
+          {data.map((item) => (
+            <tr key={item.id} className="hover:bg-slate-100">
+              <Table.Td>{item.id}</Table.Td>
+              <Table.Td className="capitalize">{item.code}</Table.Td>
+              <Table.Td>{item.floor}</Table.Td>
+              <Table.Td>{item.spotType.name}</Table.Td>
               <Table.Td>
                 <Table.ActionsDropdown>
                   <Table.ActionItem>
                     <button
                       onClick={() => {
-                        onUpdate(user);
+                        onUpdate(item);
                       }}
-                      disabled={!user.status}
                       className="text-slate-500 disabled:opacity-50 px-2 text-sm leading-4 rounded-md flex w-full items-center h-8 select-none outline-0 data-[highlighted]:bg-slate-100 data-[highlighted]:text-zinc-900"
                     >
                       <MdOutlineEdit className="h-5 w-5 mr-2" />{" "}
@@ -73,7 +58,7 @@ export default function UsersTable({
                   <Table.ActionItem>
                     <button
                       onClick={() => {
-                        onDelete(user.id);
+                        onDelete(item.id);
                       }}
                       className="text-red-500 px-2 text-sm leading-4 rounded-md flex w-full items-center h-8 select-none outline-0 data-[highlighted]:bg-slate-100 data-[highlighted]:text-red-700"
                     >
@@ -87,8 +72,8 @@ export default function UsersTable({
           ))}
         </tbody>
       </Table.Table>
-      <Table.EmptyData visible={!data.length && !loading} />
       <Table.Pagination pagination={pagination}/>
+      <Table.EmptyData visible={!data.length && !loading} />
     </Table.Root>
   );
 }

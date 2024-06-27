@@ -68,7 +68,7 @@ export default function Home() {
   return (
     <div className="flex flex-1">
       <Dialog.Root open={openModal} onOpenChange={setOpenModal}>
-        <Dialog.Content title="Nova reserva">
+        <Dialog.Content title="Nova reserva" description="qqr coisa kaksdska">
           <Text>Eia eia eia</Text>
         </Dialog.Content>
       </Dialog.Root>

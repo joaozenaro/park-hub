@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { AiOutlineClose } from "react-icons/ai";
+import { Text } from "./Text";
 
 interface DialogRootProps {
   children: ReactNode;
@@ -8,7 +9,11 @@ interface DialogRootProps {
   open?: boolean;
 }
 export function DialogRoot({ children, onOpenChange, open }: DialogRootProps) {
-  return <DialogPrimitive.Root onOpenChange={onOpenChange} open={open}>{children}</DialogPrimitive.Root>;
+  return (
+    <DialogPrimitive.Root onOpenChange={onOpenChange} open={open}>
+      {children}
+    </DialogPrimitive.Root>
+  );
 }
 DialogRoot.displayName = "Drawer.Root";
 
@@ -22,10 +27,12 @@ DialogTrigger.displayName = "Drawer.Trigger";
 
 interface DialogContentProps {
   title: string;
+  description: string;
   children: ReactNode;
 }
 export function DialogContent({
   title,
+  description,
   children,
 }: DialogContentProps) {
   return (
@@ -35,6 +42,9 @@ export function DialogContent({
         <DialogPrimitive.Title className="text-zinc-900 mb-2 text-[17px] font-bold">
           {title}
         </DialogPrimitive.Title>
+        <DialogPrimitive.Description className="mb-4">
+          <Text>{description}</Text>
+        </DialogPrimitive.Description>
         {children}
         <DialogPrimitive.Close asChild>
           <button
