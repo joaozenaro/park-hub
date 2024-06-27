@@ -11,10 +11,11 @@ export default function Pagination({
   if (!totalPages) {
     return null;
   }
+  const OFFSET = 1;
   const getPageNumbers = () => {
     const pageNumbers = [];
-    const startPage = Math.max(currentPage - 5, 1);
-    const endPage = Math.min(currentPage + 5, totalPages);
+    const startPage = Math.max(currentPage - OFFSET, 1);
+    const endPage = Math.min(currentPage + OFFSET, totalPages);
 
     for (let page = startPage; page <= endPage; page++) {
       pageNumbers.push(page);
@@ -40,7 +41,7 @@ export default function Pagination({
             <button
               onClick={() => setPage(1)}
               className={clsx(
-                "flex items-center justify-center px-3 h-8 leading-tight border border-slate-300",
+                "min-w-12 flex items-center justify-center px-3 h-8 leading-tight border border-slate-300",
                 "text-slate-500 bg-white hover:bg-slate-100"
               )}
             >
@@ -49,7 +50,7 @@ export default function Pagination({
           </li>
           {pages[0] !== 2 && (
             <li>
-              <div className="flex items-center justify-center px-3 h-8 leading-tight border border-slate-300 text-slate-500 bg-white">
+              <div className="min-w-12 flex items-center justify-center px-3 h-8 leading-tight border border-slate-300 text-slate-500 bg-white">
                 ...
               </div>
             </li>
@@ -61,7 +62,7 @@ export default function Pagination({
           <button
             onClick={() => setPage(page)}
             className={clsx(
-              "flex items-center justify-center px-3 h-8 leading-tight border border-slate-300",
+              "min-w-12 flex items-center justify-center px-3 h-8 leading-tight border border-slate-300",
               {
                 "bg-zinc-900 text-white hover:bg-zinc-800":
                   page === currentPage,
@@ -85,9 +86,9 @@ export default function Pagination({
           )}
           <li>
             <button
-              onClick={() => setPage(1)}
+              onClick={() => setPage(totalPages)}
               className={clsx(
-                "flex items-center justify-center px-3 h-8 leading-tight border border-slate-300",
+                "min-w-12 flex items-center justify-center px-3 h-8 leading-tight border border-slate-300",
                 "text-slate-500 bg-white hover:bg-slate-100"
               )}
             >
@@ -99,7 +100,7 @@ export default function Pagination({
       <li>
         <button
           onClick={nextPage}
-          className="flex items-center justify-center px-3 h-8 leading-tight text-slate-500 bg-white border border-slate-300 rounded-e-md hover:bg-slate-100"
+          className="min-w-12 flex items-center justify-center px-3 h-8 leading-tight text-slate-500 bg-white border border-slate-300 rounded-e-md hover:bg-slate-100"
         >
           Próxima
         </button>

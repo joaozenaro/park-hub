@@ -19,8 +19,6 @@ export function useUsersPageData() {
   const PAGE_SIZE = 5;
   const [totalRecords, setTotalRecords] = useState(0);
   const pagination = usePagination({
-    initialPage: 1,
-    totalPages: Math.ceil(totalRecords / PAGE_SIZE),
     pageSize: PAGE_SIZE,
     totalRecords,
   });
@@ -30,7 +28,7 @@ export function useUsersPageData() {
       userService
         .search({
           searchTerm: text || searchText,
-          take: PAGE_SIZE,
+          take: pagination.pageSize,
           skip: pagination.skip,
         })
         .then((res) => {
@@ -92,6 +90,11 @@ export function useUsersPageData() {
     !loading && getData();
   }, [pagination.currentPage]);
 
+  const refreshData = () => {
+    getData();
+    setUserToUpdate(null);
+  }
+
   return {
     userToUpdate,
     setUserToUpdate,
@@ -99,7 +102,7 @@ export function useUsersPageData() {
     createModalOpen,
     setCreateModalOpen,
 
-    getData,
+    refreshData,
     data,
 
     searchText,

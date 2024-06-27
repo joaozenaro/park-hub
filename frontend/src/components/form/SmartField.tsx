@@ -4,6 +4,7 @@ import { FormControl } from "./FormControl";
 import { TextInput } from "./TextInput";
 import { Select } from "./Select";
 import { ISelectOption } from "../../models/ISelectOption";
+import { MdMonetizationOn } from "react-icons/md";
 
 export interface IFieldHandlersProps {
   data: any; // Data from form, it's not needed to know its type inside of this component
@@ -18,7 +19,7 @@ export interface IFieldProps {
   placeholder?: string;
   required?: boolean;
   Icon?: IconType;
-  type: "text" | "password" | "number" | "select";
+  type: "text" | "password" | "number" | "select" | "currency";
 }
 
 interface ISmartField extends IFieldHandlersProps, IFieldProps {
@@ -58,9 +59,28 @@ export default function SmartField({
           />
         </TextInput.Root>
       )}
+      {["currency"].includes(type) && (
+        <TextInput.Root>
+          <TextInput.Icon>
+            <MdMonetizationOn />
+          </TextInput.Icon>
+          <TextInput.Currency
+            placeholder={placeholder}
+            intlConfig={{ locale: "pt-BR", currency: "BRL" }}
+            defaultValue={data[id]}
+            decimalsLimit={2}
+            decimalSeparator=","
+            onValueChange={(_, name, values) => {
+              onChangeValue(id, values?.float || 0);
+              console.log(values?.float);
+            }}
+            required
+          />
+        </TextInput.Root>
+      )}
       {["select"].includes(type) && (
         <Select.Root
-          value={data.role}
+          value={data[id]}
           onChange={(value) => onChangeValue(id, value)}
           placeholder={placeholder}
         >
