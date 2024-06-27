@@ -7,12 +7,14 @@ import { ROLES_LABEL } from "../constants";
 import Avatar from "../components/ui/Avatar";
 
 export default function Profile() {
+
   const { user } = useAuth();
   return (
     <Content>
       <div className="flex">
         <Heading>Perfil</Heading>
       </div>
+
       <Text>Configurações do perfil</Text>
 
       <div className="mt-2 space-y-4 mb-5">
@@ -25,12 +27,15 @@ export default function Profile() {
             <p className="font-bold">{user?.name}</p>
             <Text>{ROLES_LABEL[user?.role.name as "employee" | "admin"]}</Text>
           </div>
+      
         </div>
       </div>
+
       <div className="max-w-[700px]">
+        
         <UpdateUserForm
           isProfile
-          userId={Number(user?.id)}
+          id={Number(user?.id)}
           initialData={{
             username: user?.username || "",
             name: user?.name || "",
@@ -38,6 +43,7 @@ export default function Profile() {
           }}
         />
       </div>
-    </Content>
+
+    </Content >
   );
 }
