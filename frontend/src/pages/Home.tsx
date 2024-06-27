@@ -17,7 +17,7 @@ import { AlertDialog } from "../components/ui/AlertDialog";
 export default function Home() {
   const [floor, setFloor] = useState("");
   const [openModal, setOpenModal] = useState(false);
-  const SPOTS_COLUMNS = 12;
+  const SPOTS_COLUMNS = 8;
   const spots = [
     { id: 1, code: "A1" },
     { id: 2, code: "A2" },
@@ -72,7 +72,7 @@ export default function Home() {
         </Dialog.Content>
       </Dialog.Root>
 
-      <div className="flex flex-1 flex-col bg-slate-200 p-10 space-y-10">
+      <div className="flex flex-1 flex-col bg-slate-200 p-10 space-y-10 overflow-y-auto">
         <div>
           <div className="flex mb-6">
             <Heading>Seu estacionamento</Heading>
@@ -88,20 +88,27 @@ export default function Home() {
 
         {parkingLots.map((spots, index) => (
           <div key={index} className="flex">
-            <div className="border-4 rounded-tl-2xl rounded-bl-2xl h-full w-8 border-white" />
-            <div className="border-white border-t-4 border-b-4">
-              <ul className={`grid grid-cols-${SPOTS_COLUMNS} -mr-1 -mb-1`}>
-                {spots.map((spot) => (
-                  <li
-                    key={spot.id}
-                    className="border-white border-r-4 border-b-4"
-                  >
-                    <div className="bg-teal-200 w-[70px] h-[128px]"></div>
-                  </li>
+            <div className="border-4 border-r-0 rounded-tl-2xl rounded-bl-2xl h-full w-8 border-white" />
+            <table className="border-white border-4">
+              <tbody>
+                {_.chunk(spots, SPOTS_COLUMNS).map((row, rowIndex) => (
+                  <tr key={rowIndex}>
+                    {row.map((spot) => (
+                      <td
+                        key={spot.id}
+                        className="border-white border-4 w-[var(--spot-width)] h-[var(--spot-height)]"
+                      >
+                        <div className="flex w-full h-full flex-col">
+                          <div className="bg-teal-200 flex-1"></div>
+                          {spot.code}
+                        </div>
+                      </td>
+                    ))}
+                  </tr>
                 ))}
-              </ul>
-            </div>
-            <div className="border-4 rounded-tr-2xl rounded-br-2xl h-full w-8 border-white" />
+              </tbody>
+            </table>
+            <div className="border-4 border-l-0 rounded-tr-2xl rounded-br-2xl h-full w-8 border-white" />
           </div>
         ))}
       </div>
