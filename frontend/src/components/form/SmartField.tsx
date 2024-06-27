@@ -60,7 +60,7 @@ export default function SmartField({
       )}
       {["select"].includes(type) && (
         <Select.Root
-          value={data.role}
+          value={data[id]}
           onChange={(value) => onChangeValue(id, value)}
           placeholder={placeholder}
         >
