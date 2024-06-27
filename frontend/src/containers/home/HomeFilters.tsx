@@ -99,10 +99,10 @@ export default function HomeFilters({
           <MdOutlineAdd className="h-5 w-5 mr-2" />
           Nova reserva
         </Button>
-        <Button type="secondary" className="w-full">
+        {/* <Button type="secondary" className="w-full">
           <MdOutlineLogout className="h-5 w-5 mr-2" />
           Registrar saída
-        </Button>
+        </Button> */}
       </div>
     </div>
   );
