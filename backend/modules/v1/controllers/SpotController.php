@@ -3,10 +3,9 @@
 namespace app\modules\v1\controllers;
 
 use app\core\components\ResponseHelper;
+use app\core\models\Reservation;
 use app\core\models\SearchModel;
 use app\core\models\Spot;
-use app\core\models\SpotType;
-use Exception;
 use Yii;
 use yii\rest\Controller;
 use yii\web\NotFoundHttpException;
@@ -41,23 +40,12 @@ class SpotController extends Controller
     {
         $model = new Spot();
         $model->load(Yii::$app->request->post());
-
         if (!$model->validate()) {
             return ResponseHelper::UnprocessableEntity("Modelo invalido", $model->getErrors());
         }
 
-        $spotType = SpotType::find()->where(["name" => $model->spot_type_name])->one();
-        if ($spotType === null) {
-            return ResponseHelper::UnprocessableEntity("SpotType not found", []);
-        }
-        $model->spot_type_id = $spotType->getPrimaryKey();
-
-        try {
-            if (!$model->saveModel($model)) {
-                return null;
-            }
-        } catch (Exception $e) {
-            return [$e->getMessage()];
+        if (!$model->saveModel($model)) {
+            return null;
         }
 
         $model = Spot::find()->where(['id' => $model->id])->with('spotType')->one();
@@ -72,16 +60,11 @@ class SpotController extends Controller
             ->with('spotType')
             ->one();
         $spot->load(Yii::$app->request->post());
-
-        $spotType = SpotType::find()->where(["name" => $spot->spot_type_name])->one();
-        if ($spotType === null) {
-            return ResponseHelper::UnprocessableEntity("SpotType not found", []);
-        }
-        $spot->spot_type_id = $spotType->getPrimaryKey();
-
         if (!$spot->validate()) {
             return ResponseHelper::UnprocessableEntity("Modelo invalido", $spot->getErrors());
         }
+
+        $spot->spot_type_id = $spot->spot_type_id;
 
         if (!$spot->saveModel($spot)) {
             return null;
@@ -129,4 +112,42 @@ class SpotController extends Controller
 
         return ResponseHelper::BadRequest("Vaga id: $id não foi possivel ser removido");
     }
+
+    public function actionReservations()
+    {
+        $searchModel = new SearchModel();
+        $searchModel->load(Yii::$app->request->post());
+    
+        $query = Spot::find()->with(['spotType', 'reservations.user']);
+    
+        if ($searchModel->startDate) {
+            $query->andWhere(['>=', 'created_at', date('Y-m-d', strtotime($searchModel->startDate))]);
+        }
+    
+        if ($searchModel->endDate) {
+            $query->andWhere(['<=', 'created_at', date('Y-m-d', strtotime($searchModel->endDate))]);
+        }
+    
+        $take = $searchModel->take ?? 10;
+        $skip = $searchModel->skip ?? 0;
+    
+        $totalCount = $query->count();
+    
+        $records = $query
+            ->limit($take)
+            ->offset($skip)
+            ->all();
+    
+        $response = [];
+        foreach ($records as $spot) {
+            $spotData = $spot->toArray();
+            $spotData['reservations'] = array_map(function($reservation) {
+                $reservation->scenario = Reservation::SCENARIO_NO_SPOT;
+                return $reservation->toArray();
+            }, $spot->reservations);
+            $response[] = $spotData;
+        }
+    
+        return $this->asJson(["records" => $response, "total_count" => $totalCount]);
+    }    
 }

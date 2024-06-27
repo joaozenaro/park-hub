@@ -6,7 +6,6 @@ use app\core\components\ResponseHelper;
 use app\core\models\SearchModel;
 use app\core\models\Reservation;
 use app\core\models\ReservationForm;
-use app\core\models\Spot;
 use DateTime;
 use Yii;
 use yii\rest\Controller;
@@ -28,7 +27,6 @@ class ReservationController extends Controller
     {
         $model = Reservation::find()
             ->where(['id' => $id])
-            ->with('ReservationType')
             ->one();
 
         if (!$model) {
@@ -48,12 +46,17 @@ class ReservationController extends Controller
 
         $model->user_id = Yii::$app->user->id;
 
-        $spot = Spot::find()
-            ->where(['id' => $model->spot_id])
-            ->with('spotType')
-            ->one();
+        $sql = <<<SQL
+            SELECT default_price 
+            FROM spot_type st
+            INNER JOIN spot s ON st.id = s.spot_type_id
+            WHERE s.id = $model->spot_id
+        SQL;
+        str_replace("\n", "", $sql);
 
-        $model->price = $spot->spotType->default_price;
+        $spotTypeDefaultPrice = Yii::$app->getDb()->createCommand($sql)->queryScalar();
+
+        $model->price = $spotTypeDefaultPrice;
         $model->check_in = date(DateTime::ATOM, strtotime("now"));
 
         if (!$model->saveModel($model)) {

@@ -9,22 +9,19 @@ class Spot extends ActiveRecord
 {
     use SaveModelTrait;
 
-    public $spot_type_name;
-
     public static function tableName()
     {
-        return '{{%spot}}';
+        return '{{spot}}';
     }
 
     public function rules()
     {
         return [
-            [['code', 'floor', 'spot_type_name'], 'trim'],
-            [['code', 'floor', 'spot_type_name'], 'required'],
-            [['code', 'floor', 'spot_type_name'], 'string', 'max' => 20],
+            [['code', 'floor'], 'trim'],
+            [['code', 'floor', 'spot_type_id'], 'required'],
+            [['code', 'floor'], 'string', 'max' => 20],
             [['code', 'floor'], 'filter', 'filter' => 'strtoupper'],
             ['code', 'unique', 'targetClass' => Spot::class],
-            [['spot_type_name'], 'exist', 'targetClass' => SpotType::class, 'targetAttribute' => 'name'],
             [['spot_type_id'], 'exist', 'targetClass' => SpotType::class, 'targetAttribute' => 'id'],
         ];
     }
@@ -44,5 +41,10 @@ class Spot extends ActiveRecord
     public function getSpotType()
     {
         return $this->hasOne(SpotType::class, ['id' => 'spot_type_id']);
+    }
+
+    public function getReservations()
+    {
+        return $this->hasMany(Reservation::class, ['spot_id' => 'id']);
     }
 }
