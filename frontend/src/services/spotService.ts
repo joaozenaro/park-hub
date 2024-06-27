@@ -2,6 +2,7 @@ import api from "./api";
 import { ISpot } from "../models/ISpot";
 import { ISearchModel } from "../models/ISearchModel";
 import { ISpotForm } from "../models/ISpotForm";
+import { IReservation } from "../models/IReservation";
 
 const BASE_PATH = "/spot";
 
@@ -32,8 +33,23 @@ function search(data?: ISearchModel) {
   );
 }
 
+export interface ISpotWithReservation extends ISpot {
+  reservation: IReservation | null;
+}
+interface ISearchSpotWithReservationsResponse {
+  records: ISpotWithReservation[];
+  total_count: number;
+}
+function searchWithReservations(data?: ISearchModel) {
+  return api.post<ISearchSpotWithReservationsResponse>(
+    BASE_PATH + "/reservations",
+    data ? { SearchModel: data } : {}
+  );
+}
+
 export const spotService = {
   search,
+  searchWithReservations,
   create,
   update,
   delete: deleteSpotType,
