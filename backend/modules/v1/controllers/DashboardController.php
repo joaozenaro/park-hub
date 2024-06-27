@@ -4,6 +4,7 @@ namespace app\modules\v1\controllers;
 
 use app\core\models\base\Reservation;
 use DateTime;
+use Yii;
 use yii\db\Query;
 use yii\rest\Controller;
 
@@ -11,7 +12,7 @@ class DashboardController extends Controller
 {
     public $modelClass = Reservation::class;
 
-    public function actionHistory(string $spotTypePeriod = "week")
+    public function actionHistory()
     {
         // Define dates
         $today = new DateTime();
@@ -24,8 +25,10 @@ class DashboardController extends Controller
         $amountMonth = $this->getTotalReservations($monthAgo, $today);
         $amountYear = $this->getTotalReservations($yearAgo, $today);
 
+        $spot_type_period = Yii::$app->request->post("spot_type_period");
+
         // Amount by spot type
-        $amountBySpotType = match($spotTypePeriod){
+        $amountBySpotType = match($spot_type_period) {
             "week" => $this->getAmountBySpotType($weekAgo, $today),
             "month" => $this->getAmountBySpotType($monthAgo, $today),
             "year" => $this->getAmountBySpotType($yearAgo, $today),
