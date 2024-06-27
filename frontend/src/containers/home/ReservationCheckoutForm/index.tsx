@@ -1,51 +1,50 @@
 import { useForm } from "../../../hooks/useForm";
-import { isValidSpot } from "./validation";
+import { isValidReservationCheckout } from "./validation";
 import { Button } from "../../../components/ui/Button";
 import { Loading } from "../../../components/ui/Loading";
+import { ROLES_OPTIONS } from "../../../constants";
 import { useToast } from "../../../hooks/useToast";
 import axios, { AxiosError } from "axios";
 import SmartFormFields from "../../../components/form/SmartFormFields";
 import { fields } from "./fields";
-import { spotService } from "../../../services/spotService";
+import { reservationService } from "../../../services/reservationService";
 import { TOAST_MESSAGES } from "../../../constants/toastMessages";
-import { ISpotForm } from "../../../models/ISpotForm";
+import { IReservationCheckoutForm } from "../../../models/IReservationCheckoutForm";
 
 interface Props {
-  id?: number;
-  initialData?: ISpotForm;
+  id: number;
+  initialData?: IReservationCheckoutForm;
   onSuccess: () => void;
-  optionsByField: {
-    [fieldId: string]: any[];
-  };
 }
 
 const defaultData = {
-  name: "",
-  default_price: "",
-  spot_type_id: "",
+  was_paid: false,
+  check_out: false,
+  price: "",
 };
-const TOAST_MODULE = "Spot";
-export default function SpotForm({ id, initialData, optionsByField, onSuccess }: Props) {
+const TOAST_MODULE = "ReservationCheckout";
+export default function ReservationCheckoutForm({
+  id,
+  initialData,
+  onSuccess,
+}: Props) {
   const { launchToast } = useToast();
 
-  const onSubmit = async (data: ISpotForm) => {
-    const submitRequest = id
-      ? spotService.update(id, data)
-      : spotService.create(data);
-
-    await submitRequest
+  const onSubmit = async (data: IReservationCheckoutForm) => {
+    await reservationService
+      .checkOut(id, data)
       .then(() => {
         onSuccess();
         launchToast({
-          title: TOAST_MESSAGES[TOAST_MODULE][id ? 'UPDATED_TITLE' : 'CREATED_TITLE'],
-          description: TOAST_MESSAGES[TOAST_MODULE][id ? 'UPDATED_DESCRIPTION' : 'CREATED_DESCRIPTION'],
+          title: TOAST_MESSAGES[TOAST_MODULE]["UPDATED_TITLE"],
+          description: TOAST_MESSAGES[TOAST_MODULE]["UPDATED_DESCRIPTION"],
           type: "success",
         });
       })
       .catch((err: AxiosError<any>) => {
         if (axios.isAxiosError(err) && err.response) {
           launchToast({
-            title: TOAST_MESSAGES[TOAST_MODULE].CREATED_ERROR_TITLE,
+            title: TOAST_MESSAGES[TOAST_MODULE].UPDATED_ERROR_TITLE,
             description: err.response.data.message,
             type: "error",
           });
@@ -60,12 +59,25 @@ export default function SpotForm({ id, initialData, optionsByField, onSuccess }:
   };
 
   const { data, loading, errors, handleChangeValue, handleSubmit } =
-    useForm<ISpotForm>({
+    useForm<IReservationCheckoutForm>({
       defaultData,
       initialData,
       onSubmit,
-      validator: isValidSpot,
+      validator: isValidReservationCheckout,
     });
+
+  const optionsByField = {
+    was_paid: [
+      {
+        value: true,
+        label: "Sim",
+      },
+      {
+        value: false,
+        label: "Não",
+      },
+    ],
+  };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -78,7 +90,7 @@ export default function SpotForm({ id, initialData, optionsByField, onSuccess }:
       />
       <Button className="w-full justify-center mt-6">
         {loading && <Loading size="sm" className="mr-2" />}
-        Salvar vaga
+        Registrar saida
       </Button>
     </form>
   );

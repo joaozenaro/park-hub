@@ -4,7 +4,9 @@ import { Dialog } from "../../components/ui/Dialog";
 import Heading from "../../components/ui/Heading";
 import Tag from "../../components/ui/Tag";
 import { Text } from "../../components/ui/Text";
+import getReservationAmount from "../../logic/getReservationAmount";
 import { ISpotWithReservation } from "../../services/spotService";
+import { printDate } from "../../utils/date/printDate";
 import { printTime } from "../../utils/date/printTime";
 import { toCurrency } from "../../utils/toCurrency";
 
@@ -12,13 +14,13 @@ interface Props {
   data: ISpotWithReservation;
   open: boolean;
   onClose: () => void;
-  onSuccess: () => void;
+  onCheckout: () => void;
 }
 export default function ViewSpotDialog({
   data,
   open,
   onClose,
-  onSuccess,
+  onCheckout,
 }: Props) {
   const tableData = [
     {
@@ -28,7 +30,12 @@ export default function ViewSpotDialog({
     { label: "Andar", value: data.floor },
     { label: "Tipo da vaga", value: data.spotType.name },
     { label: "Placa", value: <Tag>{data.reservation?.license_plate}</Tag> },
-    { label: "Entrada", value: printTime(data.reservation!.check_in) },
+    {
+      label: "Entrada",
+      value: `${printDate(data.reservation!.check_in)} ${printTime(
+        data.reservation!.check_in
+      )}`,
+    },
     {
       label: "Horário de saída",
       value: data.reservation?.check_out
@@ -78,23 +85,11 @@ export default function ViewSpotDialog({
                 </table>
               </div>
             </div>
-            {/* {open && (
-            <UpdateUserForm
-              id={data.id}
-              initialData={{
-                avatar: data.avatar,
-                name: data.name,
-                username: data.username,
-              }}
-              onSuccess={() => {
-                onSuccess();
-                onClose();
-              }}
-            />
-          )} */}
           </div>
           <div className="flex justify-end">
-            <Button>Registrar saída</Button>
+            <Button onClick={onCheckout}>
+              Registrar saída {toCurrency(getReservationAmount(data))}
+            </Button>
           </div>
         </div>
       </Dialog.Content>

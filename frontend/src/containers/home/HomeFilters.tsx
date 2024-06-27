@@ -1,32 +1,34 @@
-import { MdOutlineFilterAlt, MdOutlineSearch } from "react-icons/md";
+import {
+  MdOutlineAdd,
+  MdOutlineFilterAlt,
+  MdOutlineFilterAltOff,
+  MdOutlineLogout,
+  MdOutlineSearch,
+} from "react-icons/md";
 import Heading from "../../components/ui/Heading";
 import { FormControl } from "../../components/form/FormControl";
 import { TextInput } from "../../components/form/TextInput";
-import { useState } from "react";
-import { Text } from "../../components/ui/Text";
-import { Dialog } from "../../components/ui/Dialog";
 import { Select } from "../../components/form/Select";
 import { Button } from "../../components/ui/Button";
-import { AlertDialog } from "../../components/ui/AlertDialog";
+import { ISearchSpotReservationModel } from "../../services/spotService";
 
-export default function HomeFilters() {
-  const [floor, setFloor] = useState("");
-  const [openModal, setOpenModal] = useState(false);
-  const selectItems = [
-    { value: "1", label: "SUB1" },
-    { value: "2", label: "SUB2" },
-    { value: "3", label: "SUB3" },
-    { value: "4", label: "SUB4" },
-  ];
-
+interface Props {
+  filters: ISearchSpotReservationModel;
+  setFilters: (filters: ISearchSpotReservationModel) => void;
+  onOpenCheckinForm: () => void;
+  onApplyFilters: () => void;
+  floors: string[];
+}
+export default function HomeFilters({
+  floors,
+  filters,
+  setFilters,
+  onApplyFilters,
+  onOpenCheckinForm,
+}: Props) {
+  const floorOptions = floors.map((f) => ({ value: f, label: f }));
   return (
     <div className="w-[20rem] h-[--content-height] sticky top-[4rem] bg-white">
-      <Dialog.Root open={openModal} onOpenChange={setOpenModal}>
-        <Dialog.Content title="Nova reserva" description="qqr coisa kaksdska">
-          <Text>Eia eia eia</Text>
-        </Dialog.Content>
-      </Dialog.Root>
-
       <div className="border-b h-11 flex items-center border-slate-300 px-8">
         <Heading size="xs">Gerenciar vagas</Heading>
       </div>
@@ -43,8 +45,10 @@ export default function HomeFilters() {
               <MdOutlineSearch />
             </TextInput.Icon>
             <TextInput.Input
-              value={""}
-              onChange={(e) => {}}
+              value={filters.license_plate}
+              onChange={(e) =>
+                setFilters({ ...filters, license_plate: e.target.value })
+              }
               placeholder="Digite a placa..."
               required
             />
@@ -52,19 +56,36 @@ export default function HomeFilters() {
         </FormControl>
         <FormControl id="pass" label="Andar" errors={[]}>
           <Select.Root
-            value={floor}
-            onChange={setFloor}
+            value={filters.floor}
+            onChange={(value: string) =>
+              setFilters({ ...filters, floor: value })
+            }
             placeholder="Selecione o andar"
           >
             <Select.Item value={null}>Selecione o andar</Select.Item>
-            {selectItems.map((item) => (
+            {floorOptions.map((item) => (
               <Select.Item value={item.value} key={item.value}>
                 {item.label}
               </Select.Item>
             ))}
           </Select.Root>
         </FormControl>
-        <Button type="tertiary">Limpar filtros</Button>
+        <Button
+          type="tertiary"
+          onClick={() => {
+            setFilters({
+              floor: "",
+              license_plate: "",
+            });
+          }}
+        >
+          <MdOutlineFilterAltOff className="h-5 w-5 mr-2" />
+          Limpar filtros
+        </Button>
+        <Button className="w-full" onClick={onApplyFilters}>
+          <MdOutlineFilterAlt className="h-5 w-5 mr-2" />
+          Aplicar filtros
+        </Button>
       </div>
       <div className="p-8 pt-0 space-y-4">
         <Heading size="xs" asChild>
@@ -73,20 +94,15 @@ export default function HomeFilters() {
 
         <Button
           className="w-full items-start"
-          onClick={() => setOpenModal(true)}
+          onClick={() => onOpenCheckinForm()}
         >
+          <MdOutlineAdd className="h-5 w-5 mr-2" />
           Nova reserva
         </Button>
-        <AlertDialog
-          title="Deletar reserva"
-          description="Esta ação não poderá ser desfeita. Você realmente deseja deletar essa reserva?"
-          okText="Sim, deletar"
-          onConfirm={() => {}}
-        >
-          <Button type="secondary" className="w-full">
-            Registrar saída
-          </Button>
-        </AlertDialog>
+        <Button type="secondary" className="w-full">
+          <MdOutlineLogout className="h-5 w-5 mr-2" />
+          Registrar saída
+        </Button>
       </div>
     </div>
   );

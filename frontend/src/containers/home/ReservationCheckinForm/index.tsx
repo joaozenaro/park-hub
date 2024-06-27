@@ -19,8 +19,8 @@ interface Props {
 }
 
 const defaultData = {
-  name: "",
-  default_price: "",
+  license_plate: "",
+  spot_id: "",
 };
 const TOAST_MODULE = "ReservationCheckin";
 export default function ReservationCheckinForm({
@@ -77,7 +77,7 @@ export default function ReservationCheckinForm({
       />
       <Button className="w-full justify-center mt-6">
         {loading && <Loading size="sm" className="mr-2" />}
-        Salvar tipo de vaga
+        Criar reserva
       </Button>
     </form>
   );
