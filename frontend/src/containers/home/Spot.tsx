@@ -30,7 +30,7 @@ export default function Spot({ data, onOpenCheckin, onOpenViewSpot }: Props) {
         </button>
       )}
       <div className="h-8 flex items-center px-2 w-[var(--spot-width)] overflow-hidden">
-        <strong className="text-slate-500 text-xs mr-1 xl:text-md">
+        <strong className="text-slate-500 text-xs mr-1 xl:text-md 2xl:text-lg">
           {data.code}
         </strong>
 
