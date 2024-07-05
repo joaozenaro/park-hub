@@ -20,10 +20,10 @@ class DashboardController extends Controller
         $monthAgo = (clone $today)->modify('-1 month');
         $yearAgo = (clone $today)->modify('-1 year');
 
-        $amountToday = $this->getTotalReservations($today, $today);
-        $amountWeek = $this->getTotalReservations($weekAgo, $today);
-        $amountMonth = $this->getTotalReservations($monthAgo, $today);
-        $amountYear = $this->getTotalReservations($yearAgo, $today);
+        $amountToday = (float) $this->getTotalReservations($today, $today);
+        $amountWeek = (float) $this->getTotalReservations($weekAgo, $today);
+        $amountMonth = (float) $this->getTotalReservations($monthAgo, $today);
+        $amountYear = (float) $this->getTotalReservations($yearAgo, $today);
 
         $spot_type_period = Yii::$app->request->post("spot_type_period");
 
