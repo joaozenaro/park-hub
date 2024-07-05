@@ -4,54 +4,33 @@ import { Text } from "../components/ui/Text";
 import { printStringDate } from "../utils/date/printStringDate";
 import _ from "lodash";
 import { PieChart } from "../components/ui/PieChart";
-import { useEffect, useState } from "react";
-import {
-  dashboardService,
-  IFinanceResponse,
-} from "../services/dashboardService";
 import { toCurrency } from "../utils/toCurrency";
 import { ToggleGroup } from "../components/ui/ToggleGroup";
-import { useToast } from "../hooks/useToast";
-import { TOAST_MESSAGES } from "../constants/toastMessages";
+import useFinancesData from "../hooks/finance/useFinancesData";
+import { Card } from "../components/ui/Card";
+import { TIME_RANGE_OPTIONS } from "../constants";
 
 export default function Finances() {
-  const { launchToast } = useToast();
-  const [timeRangeFilter, setTimeRangeFilter] = useState("week");
-  const [loading, setLoading] = useState(true);
-  const [data, setData] = useState<IFinanceResponse | null>(null);
+  const {
+    data,
+    getGrowthPercentageBetween,
+    timeRangeFilter,
+    setTimeRangeFilter,
+  } = useFinancesData();
 
-  useEffect(() => {
-    dashboardService
-      .finance()
-      .then((res) => {
-        setData(res.data);
-      })
-      .catch(() => {
-        launchToast({
-          title: TOAST_MESSAGES.COMMON.LIST_ERROR_TITLE,
-          description: TOAST_MESSAGES.COMMON.ERROR_DESCRIPTION,
-          type: "error",
-        });
-      })
-      .finally(() => setLoading(false));
-  }, []);
-
-  const getGrowthPercentageBetween = (number1: number, number2: number) => {
-    return Number((number1 / number2) * 100 - 100).toFixed(0);
-  };
   return (
     <Content>
       <div className="flex">
         <Heading>Financeiro</Heading>
         <div className="ml-auto align-middle">
-          <Text> {printStringDate()}</Text>
+          <Text> {printStringDate(new Date())}</Text>
         </div>
       </div>
       {data && (
         <div className="flex space-x-6 mt-8">
           <div className="flex flex-[3] flex-col space-y-6 justify-start">
-            <div className="border p-6 rounded-md space-y-4">
-              <h2 className="font-semibold">Total hoje</h2>
+            <Card className="space-y-6">
+              <Heading size="xs">Total hoje</Heading>
               <p className="text-3xl font-semibold">
                 {toCurrency(data.amount_today)}
               </p>
@@ -62,9 +41,9 @@ export default function Finances() {
                 )}
                 % da média semanal
               </Text>
-            </div>
-            <div className="border rounded-md p-6 space-y-6">
-              <h2 className="font-semibold">Total semanal (ultimos 7 dias )</h2>
+            </Card>
+            <Card className="space-y-6">
+              <Heading size="xs">Total semanal (ultimos 7 dias)</Heading>
               <p className="text-3xl font-semibold">
                 {toCurrency(data.amount_week)}
               </p>
@@ -75,9 +54,9 @@ export default function Finances() {
                 )}
                 % da média mensal
               </Text>
-            </div>
-            <div className="border rounded-md p-6 space-y-6">
-              <h2 className="font-semibold">Total mensal</h2>
+            </Card>
+            <Card className="space-y-6">
+              <Heading size="xs">Total mensal (ultimos 30 dias)</Heading>
               <p className="text-3xl font-semibold">
                 {toCurrency(data.amount_month)}
               </p>
@@ -88,19 +67,15 @@ export default function Finances() {
                 )}
                 % da média anual
               </Text>
-            </div>
+            </Card>
           </div>
-          <div className="border rounded-md p-6 space-y-4">
-            <h2 className="font-semibold">Total por tipo de vaga</h2>
+          <Card className="space-y-6">
+            <Heading size="xs">Total por tipo de vaga</Heading>
             <div className="">
               <ToggleGroup
                 value={timeRangeFilter}
                 onChangeValue={setTimeRangeFilter}
-                options={[
-                  { label: "7d", value: "week" },
-                  { label: "30d", value: "month" },
-                  { label: "12m", value: "year" },
-                ]}
+                options={TIME_RANGE_OPTIONS}
                 aria-label="Selecionar período de tempo"
               />
             </div>
@@ -112,7 +87,7 @@ export default function Finances() {
                 }))}
               />
             </div>
-          </div>
+          </Card>
         </div>
       )}
     </Content>
