@@ -106,7 +106,8 @@ export default function Home() {
       />
       {!!spotToCheckout && (
         <ReservationCheckoutFormDialog
-          id={spotToCheckout.id}
+          id={spotToCheckout.reservation!.id}
+          spot={spotToCheckout}
           open={!!spotToCheckout}
           onClose={() => setSpotToCheckout(null)}
           onSuccess={refreshData}

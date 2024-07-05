@@ -2,6 +2,7 @@ import { Button } from "../../components/ui/Button";
 import Car from "../../components/ui/Car";
 import { Dialog } from "../../components/ui/Dialog";
 import Heading from "../../components/ui/Heading";
+import SimpleDataView from "../../components/ui/SimpleDataView";
 import Tag from "../../components/ui/Tag";
 import { Text } from "../../components/ui/Text";
 import getReservationAmount from "../../logic/getReservationAmount";
@@ -66,24 +67,7 @@ export default function ViewSpotDialog({
                 <h3>Reserva</h3>
               </Heading>
               <Text>Confira os detalhes da reserva aberta</Text>
-              <div className="bg-slate-100 p-4 rounded-md w-full">
-                <table>
-                  <tbody>
-                    {tableData.map((item) => (
-                      <tr key={item.label}>
-                        <td className="text-right py-1">
-                          <Text>{item.label}</Text>
-                        </td>
-                        <td className="pl-4 py-1">
-                          <Text asChild>
-                            <p className="text-zinc-900 ">{item.value}</p>
-                          </Text>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+              <SimpleDataView data={tableData} />
             </div>
           </div>
           <div className="flex justify-end">
