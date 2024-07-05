@@ -9,6 +9,8 @@ import { ToggleGroup } from "../components/ui/ToggleGroup";
 import useFinancesData from "../hooks/finance/useFinancesData";
 import { Card } from "../components/ui/Card";
 import { TIME_RANGE_OPTIONS } from "../constants";
+import clsx from "clsx";
+import { useMemo } from "react";
 
 export default function Finances() {
   const {
@@ -17,6 +19,42 @@ export default function Finances() {
     timeRangeFilter,
     setTimeRangeFilter,
   } = useFinancesData();
+
+  const dataCards = useMemo(
+    () =>
+      data
+        ? [
+            {
+              title: "Total hoje",
+              value: data.amount_today,
+              growthPercentage: getGrowthPercentageBetween(
+                data.amount_today,
+                data.average_amount_week
+              ),
+              growthText: "da média semanal",
+            },
+            {
+              title: "Total semanal (ultimos 7 dias)",
+              value: data.amount_week,
+              growthPercentage: getGrowthPercentageBetween(
+                data.amount_week,
+                data.average_amount_month
+              ),
+              growthText: "da média mensal",
+            },
+            {
+              title: "Total mensal (ultimos 30 dias)",
+              value: data.amount_month,
+              growthPercentage: getGrowthPercentageBetween(
+                data.amount_month,
+                data.average_amount_year
+              ),
+              growthText: "da média anual",
+            },
+          ]
+        : [],
+    [data]
+  );
 
   return (
     <Content>
@@ -29,45 +67,26 @@ export default function Finances() {
       {data && (
         <div className="flex space-x-6 mt-8">
           <div className="flex flex-[3] flex-col space-y-6 justify-start">
-            <Card className="space-y-6">
-              <Heading size="xs">Total hoje</Heading>
-              <p className="text-3xl font-semibold">
-                {toCurrency(data.amount_today)}
-              </p>
-              <Text>
-                {getGrowthPercentageBetween(
-                  data.amount_today,
-                  data.average_amount_week
+            {dataCards.map((item) => (
+              <Card key={item.title} className="space-y-6">
+                <Heading size="xs">{item.title}</Heading>
+                <p className="text-3xl font-semibold">
+                  {toCurrency(item.value)}
+                </p>
+                {item.growthPercentage !== 0 && (
+                  <p
+                    className={clsx("text-sm", {
+                      "text-red-600": item.growthPercentage < 0,
+                      "text-emerald-600": item.growthPercentage > 0,
+                    })}
+                  >
+                    {item.growthPercentage}%{" "}
+                    {item.growthPercentage > 0 ? "acima" : "abaixo"}{" "}
+                    {item.growthText}
+                  </p>
                 )}
-                % da média semanal
-              </Text>
-            </Card>
-            <Card className="space-y-6">
-              <Heading size="xs">Total semanal (ultimos 7 dias)</Heading>
-              <p className="text-3xl font-semibold">
-                {toCurrency(data.amount_week)}
-              </p>
-              <Text>
-                {getGrowthPercentageBetween(
-                  data.amount_week,
-                  data.average_amount_month
-                )}
-                % da média mensal
-              </Text>
-            </Card>
-            <Card className="space-y-6">
-              <Heading size="xs">Total mensal (ultimos 30 dias)</Heading>
-              <p className="text-3xl font-semibold">
-                {toCurrency(data.amount_month)}
-              </p>
-              <Text>
-                {getGrowthPercentageBetween(
-                  data.amount_month,
-                  data.average_amount_year
-                )}
-                % da média anual
-              </Text>
-            </Card>
+              </Card>
+            ))}
           </div>
           <Card className="space-y-6">
             <Heading size="xs">Total por tipo de vaga</Heading>

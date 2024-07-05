@@ -14,7 +14,9 @@ export default function useFinancesData() {
 
   useEffect(() => {
     dashboardService
-      .finance()
+      .finance({
+        spot_type_period: timeRangeFilter as "week" | "month" | "year",
+      })
       .then((res) => {
         setData(res.data);
       })
@@ -26,10 +28,10 @@ export default function useFinancesData() {
         });
       })
       .finally(() => setLoading(false));
-  }, []);
+  }, [timeRangeFilter]);
 
   const getGrowthPercentageBetween = (number1: number, number2: number) => {
-    return Number((number1 / number2) * 100 - 100).toFixed(0);
+    return Number(Number((number1 / number2) * 100 - 100).toFixed(0));
   };
 
   return {
