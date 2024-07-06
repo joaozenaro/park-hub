@@ -28,26 +28,26 @@ export default function Finances() {
               title: "Total hoje",
               value: data.amount_today,
               growthPercentage: getGrowthPercentageBetween(
-                data.amount_today,
-                data.average_amount_week
+                Number(data.amount_today),
+                Number(data.average_amount_week)
               ),
               growthText: "da média semanal",
             },
             {
-              title: "Total semanal (ultimos 7 dias)",
+              title: "Total semanal (últimos 7 dias)",
               value: data.amount_week,
               growthPercentage: getGrowthPercentageBetween(
-                data.amount_week,
-                data.average_amount_month
+                Number(data.amount_week),
+                Number(data.average_amount_month)
               ),
               growthText: "da média mensal",
             },
             {
-              title: "Total mensal (ultimos 30 dias)",
+              title: "Total mensal (últimos 30 dias)",
               value: data.amount_month,
               growthPercentage: getGrowthPercentageBetween(
-                data.amount_month,
-                data.average_amount_year
+                Number(data.amount_month),
+                Number(data.average_amount_year)
               ),
               growthText: "da média anual",
             },
@@ -71,7 +71,7 @@ export default function Finances() {
               <Card key={item.title} className="space-y-6">
                 <Heading size="xs">{item.title}</Heading>
                 <p className="text-3xl font-semibold">
-                  {toCurrency(item.value)}
+                  {toCurrency(Number(item.value))}
                 </p>
                 {item.growthPercentage !== 0 && (
                   <p

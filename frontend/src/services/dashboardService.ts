@@ -3,12 +3,12 @@ import api from "./api";
 const BASE_PATH = "/dashboard";
 
 export interface IFinanceResponse {
-  amount_today: number;
-  average_amount_week: number;
-  amount_week: number;
-  average_amount_month: number;
-  amount_month: number;
-  average_amount_year: number;
+  amount_today: string;
+  average_amount_week: string;
+  amount_week: string;
+  average_amount_month: string;
+  amount_month: string;
+  average_amount_year: string;
   amount_by_spot_type: {
     spotType: string;
     total_price: string;

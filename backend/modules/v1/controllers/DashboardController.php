@@ -20,15 +20,15 @@ class DashboardController extends Controller
         $monthAgo = (clone $today)->modify('-1 month');
         $yearAgo = (clone $today)->modify('-1 year');
 
-        $amountToday = (float) $this->getTotalReservations($today, $today);
-        $amountWeek = (float) $this->getTotalReservations($weekAgo, $today);
-        $amountMonth = (float) $this->getTotalReservations($monthAgo, $today);
-        $amountYear = (float) $this->getTotalReservations($yearAgo, $today);
+        $amountToday = $this->getTotalReservations($today, $today);
+        $amountWeek = $this->getTotalReservations($weekAgo, $today);
+        $amountMonth = $this->getTotalReservations($monthAgo, $today);
+        $amountYear = $this->getTotalReservations($yearAgo, $today);
 
         $spot_type_period = Yii::$app->request->post("spot_type_period");
 
         // Amount by spot type
-        $amountBySpotType = match($spot_type_period) {
+        $amountBySpotType = match ($spot_type_period) {
             "week" => $this->getAmountBySpotType($weekAgo, $today),
             "month" => $this->getAmountBySpotType($monthAgo, $today),
             "year" => $this->getAmountBySpotType($yearAgo, $today),
@@ -36,12 +36,12 @@ class DashboardController extends Controller
         };
 
         return [
-            'amount_today' => $amountToday,
-            'average_amount_week' => $amountWeek / 7,
-            'amount_week' => $amountWeek,
-            'average_amount_month' => $amountMonth / 30,
-            'amount_month' => $amountMonth,
-            'average_amount_year' => $amountYear / 365,
+            'amount_today' => (string) $amountToday,
+            'average_amount_week' => (string) $amountWeek / 7,
+            'amount_week' => (string) $amountWeek,
+            'average_amount_month' => (string) $amountMonth / 30,
+            'amount_month' => (string) $amountMonth,
+            'average_amount_year' => (string) $amountYear / 365,
             'amount_by_spot_type' => $amountBySpotType,
         ];
     }
