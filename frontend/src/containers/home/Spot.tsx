@@ -39,6 +39,9 @@ export default function Spot({ data, onOpenCheckin, onOpenViewSpot }: Props) {
             {data.spotType.name}
           </p>
         </Text>
+        <Text size="sm" asChild>
+          <p className="ml-auto hidden 2xl:flex">{data.spotType.name}</p>
+        </Text>
       </div>
     </div>
   );

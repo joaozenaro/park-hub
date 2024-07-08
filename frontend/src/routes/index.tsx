@@ -12,6 +12,7 @@ import ForgotPassword from "../pages/ForgotPassword";
 import Users from "../pages/Users";
 import ParkingSpots from "../pages/ParkingSpots";
 import CompleteSignup from "../pages/CompleteSignup";
+import Finances from "../pages/Finances";
 import VehiclesFlow from "../pages/VehiclesFlow";
 
 const router = createBrowserRouter([
@@ -39,7 +40,7 @@ const router = createBrowserRouter([
           },
           {
             path: "/financeiro",
-            element: <ParkingSpots />,
+            element: <Finances />,
           },
           {
             path: "/profile",

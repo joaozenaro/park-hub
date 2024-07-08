@@ -28,7 +28,7 @@ class DashboardController extends Controller
         $spot_type_period = Yii::$app->request->post("spot_type_period");
 
         // Amount by spot type
-        $amountBySpotType = match($spot_type_period) {
+        $amountBySpotType = match ($spot_type_period) {
             "week" => $this->getAmountBySpotType($weekAgo, $today),
             "month" => $this->getAmountBySpotType($monthAgo, $today),
             "year" => $this->getAmountBySpotType($yearAgo, $today),
@@ -36,12 +36,12 @@ class DashboardController extends Controller
         };
 
         return [
-            'amount_today' => $amountToday,
-            'average_amount_week' => $amountWeek / 7,
-            'amount_week' => $amountWeek,
-            'average_amount_month' => $amountMonth / 30,
-            'amount_month' => $amountMonth,
-            'average_amount_year' => $amountYear / 365,
+            'amount_today' => (string) $amountToday,
+            'average_amount_week' => (string) $amountWeek / 7,
+            'amount_week' => (string) $amountWeek,
+            'average_amount_month' => (string) $amountMonth / 30,
+            'amount_month' => (string) $amountMonth,
+            'average_amount_year' => (string) $amountYear / 365,
             'amount_by_spot_type' => $amountBySpotType,
         ];
     }

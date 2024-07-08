@@ -14,6 +14,13 @@ Object.freeze(ROLES_LABEL);
 
 export const ROLES_OPTIONS: ISelectOption[] = [
   { value: ROLES.admin, label: ROLES_LABEL.admin },
-  { value: ROLES.employee, label: ROLES_LABEL.employee }
+  { value: ROLES.employee, label: ROLES_LABEL.employee },
 ];
 Object.freeze(ROLES_OPTIONS);
+
+export const TIME_RANGE_OPTIONS = [
+  { label: "7d", value: "week" },
+  { label: "30d", value: "month" },
+  { label: "12m", value: "year" },
+];
+Object.freeze(TIME_RANGE_OPTIONS);

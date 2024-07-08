@@ -1,5 +1,5 @@
-import clsx from "clsx";
 import { IPagination } from "../../hooks/usePagination";
+import { ButtonGroup } from "./ButtonGroup";
 
 export default function Pagination({
   totalPages,
@@ -26,85 +26,43 @@ export default function Pagination({
   const pages = getPageNumbers();
 
   return (
-    <ul className="inline-flex -space-x-px text-sm">
-      <li>
-        <button
-          onClick={prevPage}
-          className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-slate-500 bg-white border border-e-0 border-slate-300 rounded-s-md hover:bg-slate-100"
-        >
-          Anterior
-        </button>
-      </li>
+    <ButtonGroup.Root>
+      <ButtonGroup.Button onClick={prevPage}>Anterior</ButtonGroup.Button>
       {pages[0] !== 1 && (
         <>
-          <li>
-            <button
-              onClick={() => setPage(1)}
-              className={clsx(
-                "min-w-12 flex items-center justify-center px-3 h-8 leading-tight border border-slate-300",
-                "text-slate-500 bg-white hover:bg-slate-100"
-              )}
-            >
-              1
-            </button>
-          </li>
+          <ButtonGroup.Button className="min-w-12" onClick={() => setPage(1)}>
+            1
+          </ButtonGroup.Button>
+
           {pages[0] !== 2 && (
-            <li>
-              <div className="min-w-12 flex items-center justify-center px-3 h-8 leading-tight border border-slate-300 text-slate-500 bg-white">
-                ...
-              </div>
-            </li>
+            <ButtonGroup.Button disabled>...</ButtonGroup.Button>
           )}
         </>
       )}
       {pages.map((page) => (
-        <li key={page}>
-          <button
-            onClick={() => setPage(page)}
-            className={clsx(
-              "min-w-12 flex items-center justify-center px-3 h-8 leading-tight border border-slate-300",
-              {
-                "bg-zinc-900 text-white hover:bg-zinc-800":
-                  page === currentPage,
-                "text-slate-500 bg-white hover:bg-slate-100":
-                  page !== currentPage,
-              }
-            )}
-          >
-            {page}
-          </button>
-        </li>
+        <ButtonGroup.Button
+          key={page}
+          className="min-w-12"
+          onClick={() => setPage(page)}
+          active={page === currentPage}
+        >
+          {page}
+        </ButtonGroup.Button>
       ))}
       {pages[pages.length - 1] !== totalPages && (
         <>
           {pages[pages.length - 1] !== totalPages - 1 && (
-            <li>
-              <div className="flex items-center justify-center px-3 h-8 leading-tight border border-slate-300 text-slate-500 bg-white">
-                ...
-              </div>
-            </li>
+            <ButtonGroup.Button disabled>...</ButtonGroup.Button>
           )}
-          <li>
-            <button
-              onClick={() => setPage(totalPages)}
-              className={clsx(
-                "min-w-12 flex items-center justify-center px-3 h-8 leading-tight border border-slate-300",
-                "text-slate-500 bg-white hover:bg-slate-100"
-              )}
-            >
-              {totalPages}
-            </button>
-          </li>
+          <ButtonGroup.Button
+            className="min-w-12"
+            onClick={() => setPage(totalPages)}
+          >
+            {totalPages}
+          </ButtonGroup.Button>
         </>
       )}
-      <li>
-        <button
-          onClick={nextPage}
-          className="min-w-12 flex items-center justify-center px-3 h-8 leading-tight text-slate-500 bg-white border border-slate-300 rounded-e-md hover:bg-slate-100"
-        >
-          Próxima
-        </button>
-      </li>
-    </ul>
+      <ButtonGroup.Button onClick={nextPage}>Próxima</ButtonGroup.Button>
+    </ButtonGroup.Root>
   );
 }
